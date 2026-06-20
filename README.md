@@ -1,8 +1,10 @@
 # Guestly
 
-Guestly is an AI-powered customer feedback intelligence platform for hotels, boutique hotels, cafes, restaurants, and hospitality operators.
+Guestly is an AI-powered guest intelligence operating system for hotels, boutique hotels, cafes, restaurants, and hospitality groups.
 
-This repository contains the Guestly product application: guest feedback intake, operational intelligence, action routing, analytics, location management, and plan operations in one polished workspace.
+Guestly converts high-friction guest signals into structured operational workflows: QR intake, risk classification, recurrence detection, SLA routing, playbook orchestration, manager escalation, recovery evidence, portfolio analytics, and executive-ready reporting. It is designed as an intelligence layer between raw feedback and day-to-day hospitality operations.
+
+The product combines a polished manager workspace with a deeper signal intelligence layer. Public feedback links collect guest input at service touchpoints, classification logic turns unstructured comments into operational metadata, workflow planning assigns the correct owner and recovery path, and analytics surfaces the patterns leadership needs before private complaints become public reputation issues.
 
 ## Run
 
@@ -38,6 +40,13 @@ Guestly includes:
 - Public feedback links for rooms, tables, counters, receipts, lobbies, and post-stay email flows
 - Signal classification for sentiment, urgency, priority, department, and issue type
 - Risk flags for allergy, safety, theft, injury, discrimination, legal, and social escalation
+- Workflow orchestration for intake, enrichment, routing, escalation, recovery, monitoring, and resolution
+- SLA-aware playbooks, owner assignment, evidence requirements, and executive visibility rules
+- Pattern intelligence for recurrence, location heatmaps, anomaly detection, and operating load
+- Privacy redaction for guest-provided contact, room, and payment references
+- Forecasting utilities for volume, urgent load, and staffing pressure
+- Portfolio rollups for hospitality groups managing multiple properties or concepts
+- Notification payload generation for manager alerts, daily digests, and recovery queues
 - Manager inbox with filters, search, status updates, and action creation
 - Analytics for recurring complaints, department load, urgency distribution, and location performance
 - Billing and plan management UI for Core and Pro plans
@@ -48,12 +57,22 @@ Guestly includes:
 - Next.js App Router
 - TypeScript application code
 - Tailwind CSS design system
-- Deterministic signal intelligence engine in `lib/classifier.ts`
 - Browser persistence adapter in `lib/store.ts`
-- SQL schema, analytics views, routing policies, and launch workspace seed data in `database/`
-- Python signal intelligence package in `intelligence/`
+- Python signal intelligence, workflow orchestration, playbooks, SLA routing, privacy, anomaly detection, portfolio rollups, and reporting exports in `intelligence/`
+- SQL schema, analytics views, materialized intelligence models, routing policies, billing entitlements, workflow events, and launch workspace seed data in `database/`
 - Python reporting utility in `tools/feedback_report.py`
-- Shell launch check in `scripts/launch-check.sh`
+- Shell launch and SQL checks in `scripts/`
+
+## Intelligence Layer
+
+The intelligence layer is organized around a signal lifecycle:
+
+1. Intake captures the guest message, source location, rating, timestamp, and channel.
+2. Classification assigns sentiment, urgency, priority, department, issue type, summary, suggested action, risk flags, and score.
+3. Enrichment evaluates recurrence, location pressure, department load, and anomaly baselines.
+4. Workflow planning maps the signal to owners, SLAs, playbooks, evidence requirements, and escalation channels.
+5. Recovery operations create action items, notification payloads, manager visibility, and audit events.
+6. Analytics roll up trends into daily summaries, recurring pattern candidates, location performance, and portfolio-level risk.
 
 ## Launch Checks
 

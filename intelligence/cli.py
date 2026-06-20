@@ -6,6 +6,7 @@ import argparse
 import sys
 
 from .classifier import classify_signal
+from .exporters import export_operations_packet
 from .fixtures import MERIDIAN_SIGNALS
 from .reporting import build_csv_export, build_markdown_report
 
@@ -13,6 +14,9 @@ from .reporting import build_csv_export, build_markdown_report
 def _report(format_name: str) -> int:
     if format_name == "csv":
         print(build_csv_export(MERIDIAN_SIGNALS))
+        return 0
+    if format_name == "json":
+        print(export_operations_packet(MERIDIAN_SIGNALS))
         return 0
     print(build_markdown_report(MERIDIAN_SIGNALS))
     return 0
@@ -44,7 +48,7 @@ def main(argv: list[str] | None = None) -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     report_parser = subparsers.add_parser("report", help="Generate a signal report")
-    report_parser.add_argument("--format", choices=("markdown", "csv"), default="markdown")
+    report_parser.add_argument("--format", choices=("markdown", "csv", "json"), default="markdown")
     subparsers.add_parser("verify", help="Verify classifier expectations")
 
     args = parser.parse_args(argv)
