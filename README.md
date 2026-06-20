@@ -50,7 +50,8 @@ Guestly includes:
 - Tailwind CSS design system
 - Deterministic signal intelligence engine in `lib/classifier.ts`
 - Browser persistence adapter in `lib/store.ts`
-- SQL reference schema in `database/schema.sql`
+- SQL schema, analytics views, routing policies, and launch workspace seed data in `database/`
+- Python signal intelligence package in `intelligence/`
 - Python reporting utility in `tools/feedback_report.py`
 - Shell launch check in `scripts/launch-check.sh`
 
@@ -59,6 +60,8 @@ Guestly includes:
 ```bash
 npm run lint
 npm run build
+npm run intelligence:verify
+npm run sql:check
 python3 tools/feedback_report.py
 sh scripts/launch-check.sh
 node scripts/visual-check.mjs

@@ -9,6 +9,10 @@
     "start": "next start -H 127.0.0.1",
     "lint": "eslint . --max-warnings=0",
     "report": "python3 tools/feedback_report.py",
+    "intelligence:report": "python3 -m intelligence.cli report",
+    "intelligence:verify": "python3 -m intelligence.cli verify",
+    "intelligence:audit": "python3 tools/intelligence_audit.py",
+    "sql:check": "sh scripts/sql-check.sh",
     "launch:check": "sh scripts/launch-check.sh"
   },
   "dependencies": {
