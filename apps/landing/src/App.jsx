@@ -27,10 +27,9 @@ const navigation = [
   { label: 'Admin', href: '/admin' },
 ];
 
-const defaultAdminCodes = ['LOCAL-DEMO-ACCESS'];
 const appUrl = import.meta.env.VITE_GUESTLY_APP_URL || 'https://app.getguestly.com';
 const demoRequestEmail = import.meta.env.VITE_DEMO_REQUEST_EMAIL || 'hello@getguestly.com';
-const adminCodes = (import.meta.env.VITE_GUESTLY_ADMIN_CODES || defaultAdminCodes.join(','))
+const adminCodes = (import.meta.env.VITE_GUESTLY_ADMIN_CODES || '')
   .split(',')
   .map((code) => code.trim().toUpperCase())
   .filter(Boolean);
@@ -341,7 +340,7 @@ function AdminAccess() {
     event.preventDefault();
     const normalizedCode = code.trim().toUpperCase();
 
-    if (!adminCodes.includes(normalizedCode)) {
+    if (!adminCodes.length || !adminCodes.includes(normalizedCode)) {
       setError('That access code was not recognized. Check spacing and capitalization, then try again.');
       return;
     }

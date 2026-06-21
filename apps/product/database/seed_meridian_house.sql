@@ -8,7 +8,7 @@ on conflict (id) do update set
   subscription_status = excluded.subscription_status;
 
 insert into profiles (id, organization_id, email, name, role, created_at)
-values ('usr_bera', 'org_meridian_house', 'bera@getguestly.com', 'Bera Gumruk', 'owner', '2026-05-18T12:05:00Z')
+values ('usr_bera', 'org_meridian_house', 'manager@getguestly.com', 'Bera Gumruk', 'owner', '2026-05-18T12:05:00Z')
 on conflict (id) do update set
   email = excluded.email,
   name = excluded.name,

@@ -9,8 +9,8 @@ import { LogoMark } from "@/components/app-shell";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("bera@getguestly.com");
-  const [password, setPassword] = useState("workspace-access");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (getSession()) router.replace("/dashboard");
@@ -61,7 +61,7 @@ export default function LoginPage() {
             <LogoMark />
             <p className="mono-label mt-8">Manager login</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.045em] text-zinc-950">Access Guestly</h2>
-            <p className="mt-3 text-sm leading-6 text-zinc-500">Enter the Meridian House manager workspace.</p>
+            <p className="mt-3 text-sm leading-6 text-zinc-500">Enter the manager workspace with credentials issued by Guestly.</p>
           </div>
           <form className="grid gap-4" onSubmit={submit}>
             <FormField label="Email">
@@ -70,9 +70,6 @@ export default function LoginPage() {
             <FormField label="Password">
               <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
             </FormField>
-            <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs leading-5 text-zinc-600">
-              Workspace access: bera@getguestly.com / workspace-access
-            </div>
             <Button type="submit" className="w-full">
               Continue to Workspace
               <ArrowRight className="h-4 w-4" />

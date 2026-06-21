@@ -19,7 +19,7 @@ export const launchOrganization: Organization = {
 
 export const launchUser: UserProfile = {
   id: "usr_bera",
-  email: "bera@getguestly.com",
+  email: "manager@getguestly.com",
   name: "Bera Gumruk",
   organizationId: launchOrganization.id,
   role: "owner",

@@ -23,10 +23,7 @@ npm run build
 
 ## Workspace Access
 
-Use `Continue to Workspace` on `/login`, or enter:
-
-- Email: `bera@getguestly.com`
-- Password: `workspace-access`
+Use `Continue to Workspace` on `/login`, or enter workspace credentials issued by Guestly.
 
 Workspace:
 
