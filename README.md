@@ -62,6 +62,8 @@ npm run build:product
 npm run launch:check
 ```
 
+The root build defaults to the landing site so an existing Vercel project can deploy `getguestly.com` even if its Root Directory is left as `./`. For the product app, create a separate Vercel project with Root Directory set to `apps/product`.
+
 ## Rights
 
 Copyright 2026 Guestly. All rights reserved. No open-source license is granted.

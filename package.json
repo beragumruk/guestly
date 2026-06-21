@@ -11,7 +11,8 @@
     "dev:product": "npm --prefix apps/product run dev",
     "build:landing": "npm --prefix apps/landing run build",
     "build:product": "npm --prefix apps/product run build",
-    "build": "npm run build:landing && npm run build:product",
+    "build": "npm run build:landing",
+    "build:all": "npm run build:landing && npm run build:product",
     "launch:check": "npm --prefix apps/product run launch:check"
   }
 }
