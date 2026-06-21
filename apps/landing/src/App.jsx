@@ -24,12 +24,13 @@ const navigation = [
   { label: 'Pricing', href: '#pricing' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#access' },
-  { label: 'Admin', href: '/admin' },
+  { label: 'Access', href: '/access-code' },
 ];
 
 const appUrl = import.meta.env.VITE_GUESTLY_APP_URL || 'https://app.getguestly.com';
 const demoRequestEmail = import.meta.env.VITE_DEMO_REQUEST_EMAIL || 'hello@getguestly.com';
-const adminCodes = (import.meta.env.VITE_GUESTLY_ADMIN_CODES || '')
+const configuredAccessCodes = import.meta.env.VITE_GUESTLY_ACCESS_CODES || import.meta.env.VITE_GUESTLY_ADMIN_CODES || '';
+const accessCodes = configuredAccessCodes
   .split(',')
   .map((code) => code.trim().toUpperCase())
   .filter(Boolean);
@@ -278,10 +279,10 @@ function Navbar() {
             Try Demo
           </button>
           <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
-            Request Demo
+            Contact for Demo
           </button>
-          <button className="btn-secondary" type="button" onClick={() => goToHref('/admin')}>
-            Admin Login
+          <button className="btn-secondary" type="button" onClick={() => goToHref('/access-code')}>
+            Enter Access Code
           </button>
         </div>
         <button
@@ -315,10 +316,10 @@ function Navbar() {
               Try Demo
             </button>
             <button className="btn-primary w-full" type="button" onClick={() => scrollToSection('#access')}>
-              Request Demo
+              Contact for Demo
             </button>
-            <button className="btn-secondary w-full" type="button" onClick={() => goToHref('/admin')}>
-              Admin Login
+            <button className="btn-secondary w-full" type="button" onClick={() => goToHref('/access-code')}>
+              Enter Access Code
             </button>
           </div>
         </div>
@@ -327,25 +328,25 @@ function Navbar() {
   );
 }
 
-function AdminAccess() {
+function PrivateAccess() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [unlocked, setUnlocked] = useState(false);
 
   useEffect(() => {
-    setUnlocked(window.sessionStorage.getItem('guestly.admin.access') === 'granted');
+    setUnlocked(window.sessionStorage.getItem('guestly.private.access') === 'granted');
   }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
     const normalizedCode = code.trim().toUpperCase();
 
-    if (!adminCodes.length || !adminCodes.includes(normalizedCode)) {
-      setError('That access code was not recognized. Check spacing and capitalization, then try again.');
+    if (!accessCodes.length || !accessCodes.includes(normalizedCode)) {
+      setError('That personal access code was not recognized. Check spacing and capitalization, then try again.');
       return;
     }
 
-    window.sessionStorage.setItem('guestly.admin.access', 'granted');
+    window.sessionStorage.setItem('guestly.private.access', 'granted');
     setError('');
     setUnlocked(true);
     window.setTimeout(openApp, 520);
@@ -358,15 +359,15 @@ function AdminAccess() {
       <main className="min-h-screen px-5 pb-16 pt-28 sm:px-6 lg:px-8">
         <section className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <Reveal className="pt-8">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">Guestly operator access</p>
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">Guestly private demo access</p>
             <h1 className="mt-5 max-w-4xl text-balance text-5xl font-semibold leading-[0.94] tracking-[-0.065em] text-zinc-950 sm:text-6xl lg:text-7xl">
-              Enter the control room for guest intelligence.
+              Enter your personal access code.
             </h1>
             <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-zinc-600">
-              Invited operators can move from the public site into the Guestly workspace with an operator access code.
+              Guestly issues private demo access after a plan conversation so each team enters the right workspace experience.
             </p>
             <div className="mt-8 grid max-w-xl gap-3 sm:grid-cols-3">
-              {['Secure entry', 'Workspace routing', 'Team-ready'].map((item) => (
+              {['Personal code', 'Guided demo', 'Workspace routing'].map((item) => (
                 <div key={item} className="rounded-2xl border border-zinc-200 bg-white/90 p-4 text-sm font-medium text-zinc-700 shadow-sm">
                   {item}
                 </div>
@@ -379,8 +380,8 @@ function AdminAccess() {
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-zinc-400/70 to-transparent" />
               <div className="mb-7 flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Admin gateway</p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-[-0.045em] text-white">Access Guestly</h2>
+                  <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Private demo gateway</p>
+                  <h2 className="mt-3 text-3xl font-semibold tracking-[-0.045em] text-white">Continue to Guestly</h2>
                 </div>
                 <span className="grid h-12 w-12 place-items-center rounded-2xl border border-zinc-200 bg-white text-zinc-950 shadow-sm">
                   <LockKeyhole className="h-5 w-5" />
@@ -394,7 +395,7 @@ function AdminAccess() {
                     <div>
                       <p className="font-semibold text-zinc-950">Access approved.</p>
                       <p className="mt-2 text-sm leading-6 text-zinc-600">
-                        Opening the Guestly workspace. If it does not open automatically, continue below.
+                        Opening your Guestly demo workspace. If it does not open automatically, continue below.
                       </p>
                     </div>
                   </div>
@@ -406,11 +407,11 @@ function AdminAccess() {
               ) : (
                 <form className="grid gap-5" onSubmit={handleSubmit}>
                   <div>
-                    <label className="form-label" htmlFor="adminCode">
-                      Access code
+                    <label className="form-label" htmlFor="personalAccessCode">
+                      Personal access code
                     </label>
                     <input
-                      id="adminCode"
+                      id="personalAccessCode"
                       className="form-input text-base tracking-[0.18em]"
                       autoComplete="one-time-code"
                       placeholder="ACCESS CODE"
@@ -429,7 +430,7 @@ function AdminAccess() {
                     <ArrowRight className="h-4 w-4" />
                   </button>
                   <p className="text-sm leading-6 text-zinc-500">
-                    Need access? Request a guided demo from the public site and the Guestly team will provision an invite code.
+                    Need a code? Contact Guestly for a plan demo and we will issue personal access for your team.
                   </p>
                 </form>
               )}
@@ -479,7 +480,7 @@ function Hero() {
               <ArrowRight className="h-4 w-4" />
             </button>
             <button className="btn-secondary" type="button" onClick={() => scrollToSection('#access')}>
-              Request Demo
+              Contact for Demo
             </button>
           </div>
         </Reveal>
@@ -891,7 +892,7 @@ function PricingCard({ plan }) {
         ))}
       </div>
       <button className="btn-primary mt-8 w-full" type="button" onClick={() => scrollToSection('#access')}>
-        Request a Demo
+        Contact for Demo
       </button>
     </GlassCard>
   );
@@ -1014,7 +1015,7 @@ function RequestAccess() {
       setSubmitted(true);
       form.reset();
     } catch (error) {
-      setSubmitError(error.message || 'Unable to send request right now. Please email Bera directly.');
+      setSubmitError(error.message || 'Unable to send request right now. Please use the contact email configured for Guestly.');
     } finally {
       setSubmitting(false);
     }
@@ -1025,13 +1026,19 @@ function RequestAccess() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
         <div>
           <SectionHeading
-            eyebrow="Request access"
-            title="Bring Guestly into your next guest experience review."
-            text="Request a guided demo and we will walk through how Guestly captures, classifies, and routes guest feedback for your business."
+            eyebrow="Plan demo"
+            title="Contact Guestly to start your guided product demo."
+            text="After we understand your property or hospitality workflow, we issue a personal access code for the Guestly workspace."
           />
           <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-            <p className="text-sm text-slate-500">Access model</p>
-            <p className="mt-2 text-lg leading-7 text-white">Guided onboarding for hospitality teams that want to evaluate Guestly before rollout.</p>
+            <p className="text-sm text-slate-500">Already invited?</p>
+            <p className="mt-2 text-lg leading-7 text-white">
+              Use the personal access code provided by Guestly to open your demo workspace.
+            </p>
+            <button className="btn-secondary mt-5" type="button" onClick={() => goToHref('/access-code')}>
+              Enter Personal Access Code
+              <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
         <Reveal delay={120}>
@@ -1083,7 +1090,7 @@ function RequestAccess() {
                 />
               </div>
               <button className="btn-primary mt-2 w-full disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={submitting}>
-                {submitting ? 'Sending request' : 'Request a Guided Demo'}
+                {submitting ? 'Sending request' : 'Contact for Demo'}
                 {!submitting && <ArrowRight className="h-4 w-4" />}
               </button>
             </form>
@@ -1122,7 +1129,7 @@ function Footer() {
             ['Pricing', '#pricing'],
             ['About', '#about'],
             ['Contact', '#access'],
-            ['Admin', '/admin'],
+            ['Access', '/access-code'],
           ].map(([label, href]) => (
             <a
               key={href}
@@ -1145,8 +1152,8 @@ function Footer() {
 export default function App() {
   const pathname = usePathname();
 
-  if (pathname === '/admin') {
-    return <AdminAccess />;
+  if (pathname === '/access-code') {
+    return <PrivateAccess />;
   }
 
   return (

@@ -4,7 +4,7 @@
   "outputDirectory": "apps/landing/dist",
   "rewrites": [
     {
-      "source": "/admin",
+      "source": "/access-code",
       "destination": "/index.html"
     }
   ]

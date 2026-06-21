@@ -50,7 +50,7 @@ The landing app in `apps/landing` powers `getguestly.com`.
 It includes:
 
 - Premium Guestly marketing site
-- Admin access gateway at `/admin`
+- Private demo access gateway at `/access-code`
 - Request demo flow
 - Operator handoff into the product app
 - Vercel-ready static deployment
@@ -178,7 +178,7 @@ Recommended environment variables:
 
 ```env
 VITE_GUESTLY_APP_URL=https://app.getguestly.com
-VITE_GUESTLY_ADMIN_CODES=your-operator-code,your-secondary-code
+VITE_GUESTLY_ACCESS_CODES=your-private-code,your-secondary-code
 VITE_DEMO_REQUEST_EMAIL=hello@getguestly.com
 VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
 ```
@@ -194,19 +194,19 @@ The product app can run without Supabase, Stripe, OpenAI, Resend, or webhooks. P
 
 ## Access Flow
 
-The public website has an operator gateway at:
+The public website has a private demo access page at:
 
 ```txt
-https://getguestly.com/admin
+https://getguestly.com/access-code
 ```
 
-With a valid operator code, the visitor is routed to:
+With a valid personal access code, the visitor is routed to:
 
 ```txt
 https://app.getguestly.com
 ```
 
-This gateway is a branded handoff, not a replacement for production authentication. The product workspace should enforce real authentication, authorization, billing, and organization provisioning before handling live customer data.
+This page is a branded handoff, not a replacement for production authentication. The product workspace should enforce real authentication, authorization, billing, and organization provisioning before handling live customer data.
 
 ## Configuration
 
