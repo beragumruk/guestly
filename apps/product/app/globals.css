@@ -39,8 +39,8 @@
   }
 
   ::selection {
-    background: oklch(0.142 0.006 255 / 0.14);
-    color: oklch(0.142 0.006 255);
+    background: oklch(0.24 0.008 255);
+    color: oklch(0.985 0.003 255);
   }
 
   button,
