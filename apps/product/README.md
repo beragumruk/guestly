@@ -27,8 +27,8 @@ Use `Continue to Workspace` on `/login`, or enter workspace credentials issued b
 
 Workspace:
 
-- The Meridian House
-- Business type: boutique hotel
+- Guestly Demo Workspace
+- Business type: hospitality group demo
 
 ## Product Surface
 
@@ -56,7 +56,7 @@ Guestly includes:
 - Tailwind CSS design system
 - Browser persistence adapter in `lib/store.ts`
 - Python signal intelligence, workflow orchestration, playbooks, SLA routing, privacy, anomaly detection, portfolio rollups, and reporting exports in `intelligence/`
-- SQL schema, analytics views, materialized intelligence models, routing policies, billing entitlements, workflow events, and launch workspace seed data in `database/`
+- SQL schema, analytics views, materialized intelligence models, routing policies, billing entitlements, workflow events, and generic demo workspace seed data in `database/`
 - Vanilla JavaScript and CSS website embed package in `public/embed/`
 - Python reporting utility in `tools/feedback_report.py`
 - Shell launch and SQL checks in `scripts/`

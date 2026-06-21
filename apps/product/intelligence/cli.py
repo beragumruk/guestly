@@ -7,34 +7,34 @@ import sys
 
 from .classifier import classify_signal
 from .exporters import export_operations_packet
-from .fixtures import MERIDIAN_SIGNALS
+from .fixtures import DEMO_SIGNALS
 from .reporting import build_csv_export, build_markdown_report
 
 
 def _report(format_name: str) -> int:
     if format_name == "csv":
-        print(build_csv_export(MERIDIAN_SIGNALS))
+        print(build_csv_export(DEMO_SIGNALS))
         return 0
     if format_name == "json":
-        print(export_operations_packet(MERIDIAN_SIGNALS))
+        print(export_operations_packet(DEMO_SIGNALS))
         return 0
-    print(build_markdown_report(MERIDIAN_SIGNALS))
+    print(build_markdown_report(DEMO_SIGNALS))
     return 0
 
 
 def _verify() -> int:
-    critical = [classify_signal(signal) for signal in MERIDIAN_SIGNALS if "allergy" in signal.message.lower()]
+    critical = [classify_signal(signal) for signal in DEMO_SIGNALS if "allergy" in signal.message.lower()]
     if not critical or critical[0].priority != "critical":
         print("Allergy signal must classify as critical.", file=sys.stderr)
         return 1
 
-    ac_signal = next(signal for signal in MERIDIAN_SIGNALS if "AC unit" in signal.message)
+    ac_signal = next(signal for signal in DEMO_SIGNALS if "AC unit" in signal.message)
     ac_classification = classify_signal(ac_signal)
     if ac_classification.priority != "high" or ac_classification.department != "maintenance":
         print("AC signal must route to high-priority maintenance.", file=sys.stderr)
         return 1
 
-    positive_signal = next(signal for signal in MERIDIAN_SIGNALS if "excellent" in signal.message)
+    positive_signal = next(signal for signal in DEMO_SIGNALS if "excellent" in signal.message)
     if classify_signal(positive_signal).sentiment != "positive":
         print("Positive front desk signal must classify as positive.", file=sys.stderr)
         return 1

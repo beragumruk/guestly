@@ -14,7 +14,7 @@ import type {
   NotificationPreferences,
 } from "./types";
 
-const STATE_KEY = "guestly.workspace.state.v1";
+const STATE_KEY = "guestly.workspace.state.v2";
 const SESSION_KEY = "guestly.workspace.session.v1";
 
 function copyInitialState(): GuestlyState {

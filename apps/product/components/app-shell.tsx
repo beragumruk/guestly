@@ -98,7 +98,7 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
         </nav>
         <div className="mt-auto rounded-xl border border-zinc-200 bg-white p-4">
           <p className="mono-label">Workspace</p>
-          <p className="mt-2 text-sm font-semibold text-zinc-950">{state?.organization.name || "The Meridian House"}</p>
+          <p className="mt-2 text-sm font-semibold text-zinc-950">{state?.organization.name || "Guestly Demo Workspace"}</p>
           <p className="mt-1 text-xs text-zinc-500">Active, secured session</p>
           <Button className="mt-4 w-full" variant="secondary" onClick={logout}>
             <LogOut className="h-4 w-4" />

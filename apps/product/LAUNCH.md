@@ -4,7 +4,7 @@ Guestly is structured as a complete product workspace with intake, intelligence,
 
 ## Product Checks
 
-- Manager access opens the Meridian House workspace.
+- Manager access opens the Guestly Demo Workspace.
 - Dashboard summarizes total responses, urgent issues, critical issues, top complaint, and open actions.
 - Location management creates public feedback links and QR cards.
 - Public feedback forms accept guest messages and route them into the manager inbox.

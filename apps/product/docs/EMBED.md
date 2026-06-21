@@ -17,10 +17,10 @@ Then place a widget mount point where the feedback action should appear:
 <div
   data-guestly-widget
   data-app-url="https://www.getguestly.com"
-  data-organization="The Meridian House"
-  data-location="Lobby QR"
-  data-reference="LOBBY"
-  data-slug="meridian-lobby"
+  data-organization="Guestly Demo Workspace"
+  data-location="Front Desk / Host Stand"
+  data-reference="ENTRY"
+  data-slug="guestly-demo-front-desk"
   data-trigger-text="Share feedback"
 ></div>
 ```
@@ -36,7 +36,7 @@ Use link mode when the page should send guests directly to a hosted feedback rou
   data-guestly-widget
   data-mode="link"
   data-app-url="https://www.getguestly.com"
-  data-slug="meridian-table-18"
+  data-slug="guestly-demo-table"
   data-trigger-text="Open Guestly feedback"
 ></div>
 ```
@@ -45,8 +45,8 @@ Use link mode when the page should send guests directly to a hosted feedback rou
 
 For production, deploy the Guestly product app to a public domain or subdomain, then point the landing page embed at that domain:
 
-- Same domain: `https://www.getguestly.com/f/meridian-lobby`
-- Product subdomain: `https://app.getguestly.com/f/meridian-lobby`
+- Same domain: `https://www.getguestly.com/f/guestly-demo-front-desk`
+- Product subdomain: `https://app.getguestly.com/f/guestly-demo-front-desk`
 - Property campaign page: embed the modal and route submissions into Guestly signal workflows
 
 During development, use the local product server for previewing the widget. Production pages should use the deployed Guestly app URL in `data-app-url`.

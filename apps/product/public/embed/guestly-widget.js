@@ -3,10 +3,10 @@
 
   var DEFAULTS = {
     appUrl: "https://www.getguestly.com",
-    organization: "The Meridian House",
+    organization: "Guestly Demo Workspace",
     location: "Guest Experience",
     reference: "WEB",
-    slug: "meridian-lobby",
+    slug: "guestly-demo-front-desk",
     triggerText: "Share feedback",
     mode: "modal",
   };

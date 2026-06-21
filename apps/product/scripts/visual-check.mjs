@@ -29,7 +29,7 @@ await page.goto(`${baseUrl}/dashboard/locations`, { waitUntil: 'networkidle' });
 const locationsBody = await page.locator('body').innerText();
 await page.screenshot({ path: 'guestly-dashboard-qr-toast.png', fullPage: true });
 
-await page.goto(`${baseUrl}/f/meridian-table-18`, { waitUntil: 'networkidle' });
+await page.goto(`${baseUrl}/f/guestly-demo-table`, { waitUntil: 'networkidle' });
 await page.getByRole('button', { name: '2' }).click();
 await page.getByLabel('What should the team know?').fill('My food allergy was not handled confidently by the server.');
 await page.getByRole('button', { name: /Submit feedback/i }).click();
@@ -41,7 +41,7 @@ await page.screenshot({ path: 'guestly-dashboard-inbox.png', fullPage: true });
 const inboxBody = await page.locator('body').innerText();
 
 await page.setViewportSize({ width: 390, height: 900 });
-await page.goto(`${baseUrl}/f/meridian-room-307`, { waitUntil: 'networkidle' });
+await page.goto(`${baseUrl}/f/guestly-demo-room`, { waitUntil: 'networkidle' });
 await page.screenshot({ path: 'guestly-guest-mobile.png', fullPage: true });
 
 await browser.close();
@@ -52,7 +52,7 @@ console.log(
       title,
       baseUrl,
       dashboardLoads: body.includes('Command view for guest experience risk'),
-      locationsLoad: locationsBody.includes('meridian-room-307'),
+      locationsLoad: locationsBody.includes('guestly-demo-room'),
       inboxShowsClassification: inboxBody.includes('Critical') && inboxBody.includes('Allergy'),
       success,
       errors,

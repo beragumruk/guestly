@@ -1,14 +1,14 @@
--- Meridian House launch workspace seed data.
+-- Guestly demo workspace seed data.
 
 insert into organizations (id, name, business_type, subscription_status, created_at)
-values ('org_meridian_house', 'The Meridian House', 'boutique_hotel', 'active', '2026-05-18T12:00:00Z')
+values ('org_guestly_demo', 'Guestly Demo Workspace', 'hospitality_group', 'active', '2026-05-18T12:00:00Z')
 on conflict (id) do update set
   name = excluded.name,
   business_type = excluded.business_type,
   subscription_status = excluded.subscription_status;
 
 insert into profiles (id, organization_id, email, name, role, created_at)
-values ('usr_bera', 'org_meridian_house', 'manager@getguestly.com', 'Bera Gumruk', 'owner', '2026-05-18T12:05:00Z')
+values ('usr_demo_manager', 'org_guestly_demo', 'workspace@getguestly.com', 'Demo Manager', 'owner', '2026-05-18T12:05:00Z')
 on conflict (id) do update set
   email = excluded.email,
   name = excluded.name,
@@ -16,12 +16,12 @@ on conflict (id) do update set
 
 insert into feedback_locations (id, organization_id, name, location_type, reference_code, public_slug, active, created_at)
 values
-  ('loc_room_307', 'org_meridian_house', 'Room 307', 'room', '307', 'meridian-room-307', true, '2026-05-24T14:00:00Z'),
-  ('loc_lobby', 'org_meridian_house', 'Lobby QR', 'lobby', 'LOBBY', 'meridian-lobby', true, '2026-05-26T14:00:00Z'),
-  ('loc_cafe_counter', 'org_meridian_house', 'Cafe Counter', 'counter', 'CAFE', 'meridian-cafe-counter', true, '2026-05-29T14:00:00Z'),
-  ('loc_table_18', 'org_meridian_house', 'Table 18', 'table', 'T18', 'meridian-table-18', true, '2026-06-02T14:00:00Z'),
-  ('loc_post_stay', 'org_meridian_house', 'Post-Stay Email', 'email', 'EMAIL', 'meridian-post-stay', true, '2026-06-04T14:00:00Z'),
-  ('loc_receipt', 'org_meridian_house', 'Receipt QR', 'receipt', 'RECEIPT', 'meridian-receipt', true, '2026-06-05T14:00:00Z')
+  ('loc_guest_room', 'org_guestly_demo', 'Guest Room Touchpoint', 'room', 'ROOM', 'guestly-demo-room', true, '2026-05-24T14:00:00Z'),
+  ('loc_front_desk', 'org_guestly_demo', 'Front Desk / Host Stand', 'lobby', 'ENTRY', 'guestly-demo-front-desk', true, '2026-05-26T14:00:00Z'),
+  ('loc_counter', 'org_guestly_demo', 'Counter Service', 'counter', 'COUNTER', 'guestly-demo-counter', true, '2026-05-29T14:00:00Z'),
+  ('loc_dining_table', 'org_guestly_demo', 'Dining Table Touchpoint', 'table', 'TABLE', 'guestly-demo-table', true, '2026-06-02T14:00:00Z'),
+  ('loc_post_visit', 'org_guestly_demo', 'Post-Visit Email', 'email', 'EMAIL', 'guestly-demo-email', true, '2026-06-04T14:00:00Z'),
+  ('loc_receipt', 'org_guestly_demo', 'Receipt QR', 'receipt', 'RECEIPT', 'guestly-demo-receipt', true, '2026-06-05T14:00:00Z')
 on conflict (id) do update set
   name = excluded.name,
   location_type = excluded.location_type,
@@ -53,8 +53,8 @@ insert into feedback (
 values
   (
     'fb_1',
-    'org_meridian_house',
-    'loc_room_307',
+    'org_guestly_demo',
+    'loc_guest_room',
     2,
     'The room felt damp and the hallway noise made it hard to sleep.',
     'Mara L.',
@@ -74,8 +74,8 @@ values
   ),
   (
     'fb_3',
-    'org_meridian_house',
-    'loc_table_18',
+    'org_guestly_demo',
+    'loc_dining_table',
     2,
     'My food allergy was not handled confidently by the server.',
     'Avery K.',

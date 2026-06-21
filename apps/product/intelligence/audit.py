@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .classifier import classify_signal
-from .fixtures import MERIDIAN_SIGNALS, Signal
+from .fixtures import DEMO_SIGNALS, Signal
 from .redaction import redact_guest_text
 
 
@@ -17,9 +17,9 @@ class AuditResult:
 
 
 def audit_classifier() -> tuple[AuditResult, ...]:
-    allergy = Signal("Table 18", 2, "My food allergy was not handled confidently by the server.")
-    ac = Signal("Room 307", 1, "The AC unit kept turning off overnight.")
-    positive = Signal("Lobby QR", 5, "The front desk team was excellent and check-in was fast.")
+    allergy = Signal("Dining Table Touchpoint", 2, "My food allergy was not handled confidently by the server.")
+    ac = Signal("Guest Room Touchpoint", 1, "The AC unit kept turning off overnight.")
+    positive = Signal("Front Desk / Host Stand", 5, "The front desk team was excellent and check-in was fast.")
     billing = Signal("Receipt QR", 2, "I was charged twice and need someone to fix the bill.")
 
     cases = (
@@ -32,7 +32,7 @@ def audit_classifier() -> tuple[AuditResult, ...]:
 
 
 def audit_privacy() -> tuple[AuditResult, ...]:
-    sample = "Please call me at 555-123-4567 or email alex@example.com about Room 307."
+    sample = "Please call me at 555-123-4567 or email alex@example.com about Room 412."
     result = redact_guest_text(sample)
     return (
         AuditResult("phone-redaction", "[phone]" in result.text, "Phone numbers are redacted."),
@@ -43,10 +43,10 @@ def audit_privacy() -> tuple[AuditResult, ...]:
 
 def audit_seed_volume() -> tuple[AuditResult, ...]:
     return (
-        AuditResult("seed-volume", len(MERIDIAN_SIGNALS) >= 10, "Launch workspace contains enough feedback variety."),
+        AuditResult("seed-volume", len(DEMO_SIGNALS) >= 10, "Launch workspace contains enough feedback variety."),
         AuditResult(
             "critical-seed",
-            any(classify_signal(signal).priority == "critical" for signal in MERIDIAN_SIGNALS),
+            any(classify_signal(signal).priority == "critical" for signal in DEMO_SIGNALS),
             "Launch workspace includes critical signal handling.",
         ),
     )
