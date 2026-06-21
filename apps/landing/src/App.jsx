@@ -27,8 +27,9 @@ const navigation = [
   { label: 'Admin', href: '/admin' },
 ];
 
-const defaultAdminCodes = ['MERIDIAN-ACCESS', 'GUESTLY-ACCESS'];
+const defaultAdminCodes = ['LOCAL-DEMO-ACCESS'];
 const appUrl = import.meta.env.VITE_GUESTLY_APP_URL || 'https://app.getguestly.com';
+const demoRequestEmail = import.meta.env.VITE_DEMO_REQUEST_EMAIL || 'hello@getguestly.com';
 const adminCodes = (import.meta.env.VITE_GUESTLY_ADMIN_CODES || defaultAdminCodes.join(','))
   .split(',')
   .map((code) => code.trim().toUpperCase())
@@ -413,7 +414,7 @@ function AdminAccess() {
                       id="adminCode"
                       className="form-input text-base tracking-[0.18em]"
                       autoComplete="one-time-code"
-                      placeholder="MERIDIAN-ACCESS"
+                      placeholder="ACCESS CODE"
                       value={code}
                       onChange={(event) => setCode(event.target.value)}
                       required
@@ -953,7 +954,7 @@ function RequestAccess() {
   const web3FormsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
   function buildMailtoUrl(payload) {
-    const to = 'beragumruk@gmail.com';
+    const to = demoRequestEmail;
     const subject = `Guestly demo request from ${payload.business}`;
     const body = [
       'New Guestly demo request',

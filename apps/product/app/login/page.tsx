@@ -10,7 +10,7 @@ import { LogoMark } from "@/components/app-shell";
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("bera@getguestly.com");
-  const [password, setPassword] = useState("launch-access");
+  const [password, setPassword] = useState("workspace-access");
 
   useEffect(() => {
     if (getSession()) router.replace("/dashboard");
@@ -71,7 +71,7 @@ export default function LoginPage() {
               <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
             </FormField>
             <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs leading-5 text-zinc-600">
-              Workspace access: bera@getguestly.com / launch-access
+              Workspace access: bera@getguestly.com / workspace-access
             </div>
             <Button type="submit" className="w-full">
               Continue to Workspace

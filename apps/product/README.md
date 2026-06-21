@@ -13,7 +13,7 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:3000`.
+Open the local URL printed by Next.js.
 
 ## Build
 
@@ -26,7 +26,7 @@ npm run build
 Use `Continue to Workspace` on `/login`, or enter:
 
 - Email: `bera@getguestly.com`
-- Password: `launch-access`
+- Password: `workspace-access`
 
 Workspace:
 

@@ -42,7 +42,8 @@ Landing project:
 
 ```env
 VITE_GUESTLY_APP_URL=https://app.getguestly.com
-VITE_GUESTLY_ADMIN_CODES=MERIDIAN-ACCESS,GUESTLY-ACCESS
+VITE_GUESTLY_ADMIN_CODES=your-operator-code,your-secondary-code
+VITE_DEMO_REQUEST_EMAIL=hello@getguestly.com
 ```
 
 Product project:
@@ -52,7 +53,7 @@ Product project:
 
 ## Access Flow
 
-Visitors can open `https://getguestly.com/admin`, enter an operator access code, and continue to `https://app.getguestly.com`.
+Visitors can open `https://getguestly.com/admin`, enter an operator access code, and continue to `https://app.getguestly.com`. The website gate is a branded routing layer for invited visitors. The product app maintains its own workspace session flow.
 
 ## Verification
 
