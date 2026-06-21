@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
   ArrowRight,
-  BadgeCheck,
   Check,
   Flag,
-  LockKeyhole,
   Menu,
   MessageSquareText,
   QrCode,
@@ -24,16 +22,10 @@ const navigation = [
   { label: 'Pricing', href: '#pricing' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#access' },
-  { label: 'Access', href: '/access-code' },
 ];
 
 const appUrl = import.meta.env.VITE_GUESTLY_APP_URL || 'https://app.getguestly.com';
 const demoRequestEmail = import.meta.env.VITE_DEMO_REQUEST_EMAIL || 'hello@getguestly.com';
-const configuredAccessCodes = import.meta.env.VITE_GUESTLY_ACCESS_CODES || import.meta.env.VITE_GUESTLY_ADMIN_CODES || '';
-const accessCodes = configuredAccessCodes
-  .split(',')
-  .map((code) => code.trim().toUpperCase())
-  .filter(Boolean);
 
 const capturePoints = ['Room card', 'Table tent', 'Receipt'];
 
@@ -182,20 +174,8 @@ function goToHref(href) {
   window.dispatchEvent(new Event('popstate'));
 }
 
-function openApp() {
-  window.location.href = appUrl;
-}
-
-function usePathname() {
-  const [pathname, setPathname] = useState(window.location.pathname);
-
-  useEffect(() => {
-    const update = () => setPathname(window.location.pathname);
-    window.addEventListener('popstate', update);
-    return () => window.removeEventListener('popstate', update);
-  }, []);
-
-  return pathname;
+function openProductLogin() {
+  window.location.href = `${appUrl.replace(/\/$/, '')}/login`;
 }
 
 function Reveal({ children, className = '', delay = 0, as: Component = 'div' }) {
@@ -275,14 +255,14 @@ function Navbar() {
           ))}
         </div>
         <div className="hidden items-center gap-3 lg:flex">
-          <button className="btn-secondary" type="button" onClick={() => scrollToSection('#demo')}>
+          <button className="btn-secondary" type="button" onClick={openProductLogin}>
             Try Demo
           </button>
           <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
             Contact for Demo
           </button>
-          <button className="btn-secondary" type="button" onClick={() => goToHref('/access-code')}>
-            Enter Access Code
+          <button className="btn-secondary" type="button" onClick={openProductLogin}>
+            Sign In
           </button>
         </div>
         <button
@@ -312,133 +292,19 @@ function Navbar() {
                 {item.label}
               </a>
             ))}
-            <button className="btn-secondary w-full" type="button" onClick={() => scrollToSection('#demo')}>
+            <button className="btn-secondary w-full" type="button" onClick={openProductLogin}>
               Try Demo
             </button>
             <button className="btn-primary w-full" type="button" onClick={() => scrollToSection('#access')}>
               Contact for Demo
             </button>
-            <button className="btn-secondary w-full" type="button" onClick={() => goToHref('/access-code')}>
-              Enter Access Code
+            <button className="btn-secondary w-full" type="button" onClick={openProductLogin}>
+              Sign In
             </button>
           </div>
         </div>
       )}
     </header>
-  );
-}
-
-function PrivateAccess() {
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
-  const [unlocked, setUnlocked] = useState(false);
-
-  useEffect(() => {
-    setUnlocked(window.sessionStorage.getItem('guestly.private.access') === 'granted');
-  }, []);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const normalizedCode = code.trim().toUpperCase();
-
-    if (!accessCodes.length || !accessCodes.includes(normalizedCode)) {
-      setError('That personal access code was not recognized. Check spacing and capitalization, then try again.');
-      return;
-    }
-
-    window.sessionStorage.setItem('guestly.private.access', 'granted');
-    setError('');
-    setUnlocked(true);
-    window.setTimeout(openApp, 520);
-  }
-
-  return (
-    <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
-      <Navbar />
-      <main className="min-h-screen px-5 pb-16 pt-28 sm:px-6 lg:px-8">
-        <section className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <Reveal className="pt-8">
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">Guestly private demo access</p>
-            <h1 className="mt-5 max-w-4xl text-balance text-5xl font-semibold leading-[0.94] tracking-[-0.065em] text-zinc-950 sm:text-6xl lg:text-7xl">
-              Enter your personal access code.
-            </h1>
-            <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-zinc-600">
-              Guestly issues private demo access after a plan conversation so each team enters the right workspace experience.
-            </p>
-            <div className="mt-8 grid max-w-xl gap-3 sm:grid-cols-3">
-              {['Personal code', 'Guided demo', 'Workspace routing'].map((item) => (
-                <div key={item} className="rounded-2xl border border-zinc-200 bg-white/90 p-4 text-sm font-medium text-zinc-700 shadow-sm">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </Reveal>
-
-          <Reveal delay={120}>
-            <GlassCard className="relative overflow-hidden p-5 sm:p-7 lg:p-8">
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-zinc-400/70 to-transparent" />
-              <div className="mb-7 flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Private demo gateway</p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-[-0.045em] text-white">Continue to Guestly</h2>
-                </div>
-                <span className="grid h-12 w-12 place-items-center rounded-2xl border border-zinc-200 bg-white text-zinc-950 shadow-sm">
-                  <LockKeyhole className="h-5 w-5" />
-                </span>
-              </div>
-
-              {unlocked ? (
-                <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-                  <div className="flex items-start gap-3">
-                    <BadgeCheck className="mt-1 h-5 w-5 text-zinc-950" />
-                    <div>
-                      <p className="font-semibold text-zinc-950">Access approved.</p>
-                      <p className="mt-2 text-sm leading-6 text-zinc-600">
-                        Opening your Guestly demo workspace. If it does not open automatically, continue below.
-                      </p>
-                    </div>
-                  </div>
-                  <button className="btn-primary mt-5 w-full" type="button" onClick={openApp}>
-                    Continue to Guestly
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
-              ) : (
-                <form className="grid gap-5" onSubmit={handleSubmit}>
-                  <div>
-                    <label className="form-label" htmlFor="personalAccessCode">
-                      Personal access code
-                    </label>
-                    <input
-                      id="personalAccessCode"
-                      className="form-input text-base tracking-[0.18em]"
-                      autoComplete="one-time-code"
-                      placeholder="ACCESS CODE"
-                      value={code}
-                      onChange={(event) => setCode(event.target.value)}
-                      required
-                    />
-                  </div>
-                  {error && (
-                    <div className="rounded-2xl border border-zinc-300 bg-white p-4 text-sm leading-6 text-zinc-700" role="alert">
-                      {error}
-                    </div>
-                  )}
-                  <button className="btn-primary w-full" type="submit">
-                    Continue to Guestly
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                  <p className="text-sm leading-6 text-zinc-500">
-                    Need a code? Contact Guestly for a plan demo and we will issue personal access for your team.
-                  </p>
-                </form>
-              )}
-            </GlassCard>
-          </Reveal>
-        </section>
-      </main>
-    </div>
   );
 }
 
@@ -475,7 +341,7 @@ function Hero() {
             Guestly turns QR feedback into prioritized operational intelligence for hospitality teams.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <button className="btn-primary" type="button" onClick={() => scrollToSection('#demo')}>
+            <button className="btn-primary" type="button" onClick={openProductLogin}>
               Try Demo
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -1028,15 +894,15 @@ function RequestAccess() {
           <SectionHeading
             eyebrow="Plan demo"
             title="Contact Guestly to start your guided product demo."
-            text="After we understand your property or hospitality workflow, we issue a personal access code for the Guestly workspace."
+            text="After we understand your property or hospitality workflow, we set up the right workspace path and login credentials for your team."
           />
           <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-            <p className="text-sm text-slate-500">Already invited?</p>
+            <p className="text-sm text-slate-500">Already have workspace credentials?</p>
             <p className="mt-2 text-lg leading-7 text-white">
-              Use the personal access code provided by Guestly to open your demo workspace.
+              Sign in through the Guestly product workspace with the email and password issued to your team.
             </p>
-            <button className="btn-secondary mt-5" type="button" onClick={() => goToHref('/access-code')}>
-              Enter Personal Access Code
+            <button className="btn-secondary mt-5" type="button" onClick={openProductLogin}>
+              Open Product Login
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -1129,7 +995,6 @@ function Footer() {
             ['Pricing', '#pricing'],
             ['About', '#about'],
             ['Contact', '#access'],
-            ['Access', '/access-code'],
           ].map(([label, href]) => (
             <a
               key={href}
@@ -1150,12 +1015,6 @@ function Footer() {
 }
 
 export default function App() {
-  const pathname = usePathname();
-
-  if (pathname === '/access-code') {
-    return <PrivateAccess />;
-  }
-
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />

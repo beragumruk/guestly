@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/access-code",
-      "destination": "/index.html"
-    }
-  ]
-}

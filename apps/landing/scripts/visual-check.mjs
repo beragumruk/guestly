@@ -31,7 +31,7 @@ const title = await page.title();
 const body = await page.locator('body').innerText({ timeout: 10000 });
 await page.screenshot({ path: 'guestly-landing-desktop.png', fullPage: true });
 
-await page.getByRole('button', { name: 'Try Demo' }).first().click();
+await page.getByRole('link', { name: 'Demo' }).first().click();
 await page.waitForTimeout(500);
 const demoVisible = await page.locator('#demo').isVisible();
 
@@ -40,8 +40,8 @@ await page.locator('input[name="business"]').fill('Northline Hotel');
 await page.locator('select[name="businessType"]').selectOption({ label: 'Hotel' });
 await page.locator('input[name="email"]').fill('alex@example.com');
 await page.locator('textarea[name="message"]').fill('We want to catch guest complaints before reviews.');
-await page.getByRole('button', { name: 'Request Private Access' }).last().click();
-const success = await page.getByText('Request received').isVisible({ timeout: 5000 });
+await page.getByRole('button', { name: 'Contact for Demo' }).last().click();
+const success = await page.getByText('Demo request sent.').isVisible({ timeout: 5000 });
 
 await page.setViewportSize({ width: 390, height: 900 });
 await page.goto(baseUrl, { waitUntil: 'load' });

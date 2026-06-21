@@ -50,9 +50,8 @@ The landing app in `apps/landing` powers `getguestly.com`.
 It includes:
 
 - Premium Guestly marketing site
-- Private demo access gateway at `/access-code`
 - Request demo flow
-- Operator handoff into the product app
+- Product login handoff into `app.getguestly.com`
 - Vercel-ready static deployment
 
 ### Product Workspace
@@ -178,7 +177,6 @@ Recommended environment variables:
 
 ```env
 VITE_GUESTLY_APP_URL=https://app.getguestly.com
-VITE_GUESTLY_ACCESS_CODES=your-private-code,your-secondary-code
 VITE_DEMO_REQUEST_EMAIL=hello@getguestly.com
 VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
 ```
@@ -192,21 +190,21 @@ VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
 
 The product app can run without Supabase, Stripe, OpenAI, Resend, or webhooks. Production deployments should add those services behind the existing integration boundaries when commercial operations require them.
 
-## Access Flow
+## Demo And Login Flow
 
-The public website has a private demo access page at:
-
-```txt
-https://getguestly.com/access-code
-```
-
-With a valid personal access code, the visitor is routed to:
+The public website sends demo and sign-in intent to the product login:
 
 ```txt
-https://app.getguestly.com
+https://app.getguestly.com/login
 ```
 
-This page is a branded handoff, not a replacement for production authentication. The product workspace should enforce real authentication, authorization, billing, and organization provisioning before handling live customer data.
+Plan interest stays on the public website through the contact form:
+
+```txt
+https://getguestly.com/#access
+```
+
+The product workspace is the only place where workspace authentication belongs. Production deployments should enforce real authentication, authorization, billing, and organization provisioning before handling live customer data.
 
 ## Configuration
 
