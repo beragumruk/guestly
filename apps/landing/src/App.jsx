@@ -452,7 +452,7 @@ function HeroFlowMockup() {
             <span className="h-3 w-3 rounded-full bg-zinc-900/70" />
           </div>
           <div className="rounded-full border border-white/10 bg-black/20 px-4 py-1 font-mono text-[11px] text-slate-400">
-            getguestly.com
+            app.getguestly.com
           </div>
         </div>
         <div className="bg-zinc-50 p-4 sm:p-5">
