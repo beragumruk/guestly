@@ -1,5 +1,15 @@
 # Guestly
 
+<p>
+  <img alt="Version 1.0.0" src="https://img.shields.io/badge/version-1.0.0-18181b?style=for-the-badge&labelColor=52525b">
+  <img alt="License: proprietary source available" src="https://img.shields.io/badge/license-proprietary_source--available-18181b?style=for-the-badge&labelColor=52525b">
+  <img alt="Commercial hosted product" src="https://img.shields.io/badge/commercial-hosted_product_only-18181b?style=for-the-badge&labelColor=52525b">
+  <img alt="Monorepo" src="https://img.shields.io/badge/workspace-monorepo-18181b?style=for-the-badge&labelColor=52525b">
+  <img alt="Landing app: Vite" src="https://img.shields.io/badge/landing-Vite-18181b?style=for-the-badge&labelColor=52525b">
+  <img alt="Product app: Next.js" src="https://img.shields.io/badge/product-Next.js-18181b?style=for-the-badge&labelColor=52525b">
+  <img alt="Local intelligence classifier" src="https://img.shields.io/badge/intelligence-local_classifier-18181b?style=for-the-badge&labelColor=52525b">
+</p>
+
 Guestly is an AI-powered guest intelligence operating system for hospitality teams. It helps hotels, boutique hotels, cafes, restaurants, and hospitality groups capture guest feedback at the point of experience, classify operational risk, route issues to the right owner, and surface recurring service patterns before they become public reputation problems.
 
 This repository contains the public website and the product workspace in one monorepo.
