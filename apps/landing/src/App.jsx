@@ -396,7 +396,7 @@ function HeroFlowMockup() {
 
   function endDrag(event) {
     if (dragState.current) {
-      event.currentTarget.releasePointerCapture(dragState.current.pointerId);
+      event.currentTarget.releasePointerCapture?.(dragState.current.pointerId);
     }
     dragState.current = null;
   }
@@ -496,27 +496,41 @@ function HeroFlowMockup() {
             </div>
             {overlayVisible && (
               <div
-                className="animate-soft-enter absolute right-3 top-24 hidden w-60 rounded-2xl border border-zinc-200 bg-white/95 p-3 text-zinc-950 shadow-[0_28px_70px_-42px_rgba(24,24,27,0.55)] backdrop-blur-xl transition duration-300 hover:shadow-[0_32px_80px_-40px_rgba(24,24,27,0.7)] lg:block"
+                data-guestly-overlay
+                className="overlay-fade-in absolute right-3 top-24 hidden w-60 cursor-grab touch-none rounded-2xl border border-zinc-200 bg-white/95 p-3 text-zinc-950 shadow-[0_28px_70px_-42px_rgba(24,24,27,0.55)] backdrop-blur-xl transition duration-300 hover:shadow-[0_32px_80px_-40px_rgba(24,24,27,0.7)] active:cursor-grabbing lg:block"
                 style={{ transform: `translate(${overlayPosition.x}px, ${overlayPosition.y}px)` }}
+                onPointerDown={beginDrag}
+                onPointerMove={moveDrag}
+                onPointerUp={endDrag}
+                onPointerCancel={endDrag}
               >
-                <button
-                  type="button"
-                  className="flex w-full cursor-grab items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-left active:cursor-grabbing"
-                  onPointerDown={beginDrag}
-                  onPointerMove={moveDrag}
-                  onPointerUp={endDrag}
-                  onPointerCancel={endDrag}
-                >
+                <div className="flex w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-left">
                   <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Operations overlay</span>
-                  <span className="text-xs text-zinc-400">drag</span>
-                </button>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-zinc-400">drag</span>
+                    <button
+                      type="button"
+                      className="inline-flex h-6 items-center gap-1 rounded-full border border-zinc-200 bg-white px-2 text-[11px] font-medium text-zinc-500 transition hover:border-zinc-300 hover:text-zinc-950"
+                      aria-label="Close operations overlay"
+                      onPointerDown={(event) => event.stopPropagation()}
+                      onClick={() => setOverlayVisible(false)}
+                    >
+                      <X className="h-3.5 w-3.5" />
+                      Close
+                    </button>
+                  </div>
+                </div>
                 <div className="mt-3 rounded-xl border border-zinc-200 bg-white p-3">
                   <p className="text-sm font-semibold text-zinc-950">{activePoint.location}</p>
                   <p className="mt-1 text-xs leading-5 text-zinc-500">{activePoint.signal}</p>
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] text-zinc-600">
                   {['Inbox', 'Route', 'Trend'].map((item) => (
-                    <span key={item} className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1.5">
+                    <span
+                      key={item}
+                      className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1.5"
+                      onPointerDown={(event) => event.stopPropagation()}
+                    >
                       {item}
                     </span>
                   ))}
