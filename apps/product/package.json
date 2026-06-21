@@ -1,0 +1,36 @@
+{
+  "name": "guestly",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -H 127.0.0.1",
+    "build": "next build",
+    "start": "next start -H 127.0.0.1",
+    "lint": "eslint . --max-warnings=0",
+    "report": "python3 tools/feedback_report.py",
+    "intelligence:report": "python3 -m intelligence.cli report",
+    "intelligence:verify": "python3 -m intelligence.cli verify",
+    "intelligence:audit": "python3 tools/intelligence_audit.py",
+    "sql:check": "sh scripts/sql-check.sh",
+    "launch:check": "sh scripts/launch-check.sh"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "4.3.1",
+    "autoprefixer": "10.5.0",
+    "lucide-react": "1.14.0",
+    "next": "16.2.9",
+    "postcss": "8.5.14",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "tailwindcss": "4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.0.0",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.9",
+    "typescript": "6.0.3"
+  }
+}
