@@ -365,6 +365,8 @@ function HeroFlowMockup() {
   const [activePoint, setActivePoint] = useState(capturePoints[0]);
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
   const [overlayVisible, setOverlayVisible] = useState(true);
+  const overlayRef = useRef(null);
+  const overlayPositionRef = useRef(overlayPosition);
   const dragState = useRef(null);
   const activeTags =
     activePoint.label === 'Table tent'
@@ -373,29 +375,48 @@ function HeroFlowMockup() {
         ? ['Billing', 'Management', 'Recovery']
         : ['Rooms', 'Environment', 'Sleep disruption'];
 
+  useEffect(() => {
+    overlayPositionRef.current = overlayPosition;
+    if (overlayRef.current) {
+      overlayRef.current.style.transform = `translate3d(${overlayPosition.x}px, ${overlayPosition.y}px, 0)`;
+    }
+  }, [overlayPosition, overlayVisible]);
+
+  function clampOverlayPosition(x, y) {
+    return {
+      x: Math.max(-150, Math.min(90, x)),
+      y: Math.max(-90, Math.min(145, y)),
+    };
+  }
+
   function beginDrag(event) {
+    if (event.button !== undefined && event.button !== 0) return;
+    const currentPosition = overlayPositionRef.current;
     dragState.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
-      originX: overlayPosition.x,
-      originY: overlayPosition.y,
+      originX: currentPosition.x,
+      originY: currentPosition.y,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
   }
 
   function moveDrag(event) {
     if (!dragState.current) return;
     const nextX = dragState.current.originX + event.clientX - dragState.current.startX;
     const nextY = dragState.current.originY + event.clientY - dragState.current.startY;
-    setOverlayPosition({
-      x: Math.max(-150, Math.min(90, nextX)),
-      y: Math.max(-90, Math.min(145, nextY)),
-    });
+    const nextPosition = clampOverlayPosition(nextX, nextY);
+    overlayPositionRef.current = nextPosition;
+    if (overlayRef.current) {
+      overlayRef.current.style.transform = `translate3d(${nextPosition.x}px, ${nextPosition.y}px, 0)`;
+    }
   }
 
   function endDrag(event) {
     if (dragState.current) {
+      setOverlayPosition(overlayPositionRef.current);
       event.currentTarget.releasePointerCapture?.(dragState.current.pointerId);
     }
     dragState.current = null;
@@ -496,9 +517,13 @@ function HeroFlowMockup() {
             </div>
             {overlayVisible && (
               <div
+                ref={overlayRef}
                 data-guestly-overlay
-                className="overlay-fade-in absolute right-3 top-24 hidden w-60 cursor-grab touch-none rounded-2xl border border-zinc-200 bg-white/95 p-3 text-zinc-950 shadow-[0_28px_70px_-42px_rgba(24,24,27,0.55)] backdrop-blur-xl transition duration-300 hover:shadow-[0_32px_80px_-40px_rgba(24,24,27,0.7)] active:cursor-grabbing lg:block"
-                style={{ transform: `translate(${overlayPosition.x}px, ${overlayPosition.y}px)` }}
+                className="overlay-fade-in absolute right-3 top-24 hidden w-60 cursor-grab touch-none rounded-2xl border border-zinc-200 bg-white/95 p-3 text-zinc-950 shadow-[0_28px_70px_-42px_rgba(24,24,27,0.55)] backdrop-blur-xl transition-[box-shadow,border-color,background-color,opacity] duration-200 hover:shadow-[0_32px_80px_-40px_rgba(24,24,27,0.7)] active:cursor-grabbing lg:block"
+                style={{
+                  transform: `translate3d(${overlayPosition.x}px, ${overlayPosition.y}px, 0)`,
+                  willChange: 'transform',
+                }}
                 onPointerDown={beginDrag}
                 onPointerMove={moveDrag}
                 onPointerUp={endDrag}
@@ -536,6 +561,18 @@ function HeroFlowMockup() {
                   ))}
                 </div>
               </div>
+            )}
+            {!overlayVisible && (
+              <button
+                type="button"
+                data-guestly-overlay-restore
+                className="overlay-fade-in absolute right-3 top-24 hidden items-center gap-2 rounded-full border border-zinc-200 bg-white/95 px-3 py-2 text-xs font-medium text-zinc-600 shadow-[0_18px_45px_-34px_rgba(24,24,27,0.85)] transition hover:border-zinc-300 hover:text-zinc-950 hover:shadow-[0_22px_55px_-34px_rgba(24,24,27,0.95)] lg:inline-flex"
+                style={{ transform: `translate3d(${overlayPosition.x}px, ${overlayPosition.y}px, 0)` }}
+                onClick={() => setOverlayVisible(true)}
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                Overlay
+              </button>
             )}
           </div>
         </div>
