@@ -444,9 +444,18 @@ function HeroFlowMockup() {
             </div>
             <button
               type="button"
-              className="w-fit rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-950"
+              className={`group inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-zinc-950/15 ${
+                overlayVisible
+                  ? 'border-zinc-950 bg-zinc-950 text-zinc-50 hover:bg-zinc-800'
+                  : 'border-zinc-300 bg-white text-zinc-950 hover:border-zinc-950'
+              }`}
               onClick={() => setOverlayVisible((value) => !value)}
             >
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  overlayVisible ? 'bg-zinc-50' : 'bg-zinc-950'
+                }`}
+              />
               {overlayVisible ? 'Hide overlay' : 'Show overlay'}
             </button>
           </div>
@@ -531,19 +540,7 @@ function HeroFlowMockup() {
               >
                 <div className="flex w-full items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-left">
                   <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Operations overlay</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-zinc-400">drag</span>
-                    <button
-                      type="button"
-                      className="inline-flex h-6 items-center gap-1 rounded-full border border-zinc-200 bg-white px-2 text-[11px] font-medium text-zinc-500 transition hover:border-zinc-300 hover:text-zinc-950"
-                      aria-label="Close operations overlay"
-                      onPointerDown={(event) => event.stopPropagation()}
-                      onClick={() => setOverlayVisible(false)}
-                    >
-                      <X className="h-3.5 w-3.5" />
-                      Close
-                    </button>
-                  </div>
+                  <span className="rounded-full border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-400">drag</span>
                 </div>
                 <div className="mt-3 rounded-xl border border-zinc-200 bg-white p-3">
                   <p className="text-sm font-semibold text-zinc-950">{activePoint.location}</p>
@@ -561,18 +558,6 @@ function HeroFlowMockup() {
                   ))}
                 </div>
               </div>
-            )}
-            {!overlayVisible && (
-              <button
-                type="button"
-                data-guestly-overlay-restore
-                className="overlay-fade-in absolute right-3 top-24 hidden items-center gap-2 rounded-full border border-zinc-200 bg-white/95 px-3 py-2 text-xs font-medium text-zinc-600 shadow-[0_18px_45px_-34px_rgba(24,24,27,0.85)] transition hover:border-zinc-300 hover:text-zinc-950 hover:shadow-[0_22px_55px_-34px_rgba(24,24,27,0.95)] lg:inline-flex"
-                style={{ transform: `translate3d(${overlayPosition.x}px, ${overlayPosition.y}px, 0)` }}
-                onClick={() => setOverlayVisible(true)}
-              >
-                <Sparkles className="h-3.5 w-3.5" />
-                Overlay
-              </button>
             )}
           </div>
         </div>
