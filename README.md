@@ -1,10 +1,9 @@
 # Guestly
 
 <p>
-  <img alt="Version 1.0.0" src="https://img.shields.io/badge/version-1.0.0-f97316?style=for-the-badge&labelColor=18181b">
-  <img alt="License: proprietary source available" src="https://img.shields.io/badge/license-proprietary_source--available-2563eb?style=for-the-badge&labelColor=18181b">
-  <img alt="Access: hosted product only" src="https://img.shields.io/badge/access-hosted_product_only-16a34a?style=for-the-badge&labelColor=18181b">
-  <img alt="Stack: Next.js and Vite" src="https://img.shields.io/badge/stack-Next.js_%2B_Vite-7c3aed?style=for-the-badge&labelColor=18181b">
+  <img alt="License: proprietary source available" src="https://img.shields.io/badge/license-proprietary_source--available-2563eb?style=for-the-badge&labelColor=1e293b">
+  <img alt="Access: hosted product only" src="https://img.shields.io/badge/access-hosted_product_only-16a34a?style=for-the-badge&labelColor=14532d">
+  <img alt="Stack: Next.js, Vite, TypeScript" src="https://img.shields.io/badge/stack-Next.js_%2B_Vite_%2B_TypeScript-9333ea?style=for-the-badge&labelColor=581c87">
 </p>
 
 Guestly is an AI-powered guest intelligence operating system for hospitality teams. It helps hotels, boutique hotels, cafes, restaurants, and hospitality groups capture guest feedback at the point of experience, classify operational risk, route issues to the right owner, and surface recurring service patterns before they become public reputation problems.
