@@ -60,8 +60,15 @@ Guestly includes:
 - Browser persistence adapter in `lib/store.ts`
 - Python signal intelligence, workflow orchestration, playbooks, SLA routing, privacy, anomaly detection, portfolio rollups, and reporting exports in `intelligence/`
 - SQL schema, analytics views, materialized intelligence models, routing policies, billing entitlements, workflow events, and launch workspace seed data in `database/`
+- Vanilla JavaScript and CSS website embed package in `public/embed/`
 - Python reporting utility in `tools/feedback_report.py`
 - Shell launch and SQL checks in `scripts/`
+
+## Website Embed
+
+Guestly can be placed directly into the public website through the branded embed package in `public/embed/`. The embed supports modal intake and direct-link modes for landing pages, property microsites, post-stay pages, and campaign pages while keeping the same polished Guestly interface.
+
+See `docs/EMBED.md` for the production snippet and deployment patterns.
 
 ## Intelligence Layer
 

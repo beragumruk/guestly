@@ -30,8 +30,18 @@ const navItems = [
 export function LogoMark() {
   return (
     <div className="inline-flex items-center gap-3">
-      <span className="grid h-8 w-8 place-items-center rounded-lg border border-zinc-200 bg-white">
-        <span className="text-sm font-black tracking-[-0.08em] text-zinc-950">G</span>
+      <span className="guestly-logo-mark grid h-9 w-9 place-items-center rounded-xl border border-zinc-200 bg-white">
+        <svg viewBox="0 0 64 64" aria-hidden="true" className="h-6 w-6">
+          <path
+            d="M48.8 18.7A22 22 0 1 0 51.6 36H37.2"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="7.5"
+            strokeLinecap="butt"
+            strokeLinejoin="round"
+          />
+          <circle cx="27.4" cy="32" r="5.8" fill="currentColor" />
+        </svg>
       </span>
       <span className="text-base font-semibold tracking-tight text-zinc-950">Guestly</span>
     </div>
@@ -55,7 +65,7 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
         onClick={onClose}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-zinc-200 bg-zinc-50/96 px-4 py-4 transition md:sticky md:top-0 md:h-screen md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-zinc-200 bg-zinc-50/96 px-4 py-4 transition-smooth md:sticky md:top-0 md:h-screen md:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -76,7 +86,7 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                className={`nav-item flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium ${
                   active ? "bg-zinc-950 text-zinc-50" : "text-zinc-600 hover:bg-white hover:text-zinc-950"
                 }`}
               >
@@ -117,7 +127,7 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
             <p className="text-sm font-semibold text-zinc-950">{state?.user.name}</p>
             <p className="text-xs text-zinc-500">{state?.user.role}</p>
           </div>
-          <div className="grid h-9 w-9 place-items-center rounded-lg border border-zinc-200 bg-zinc-100 text-sm font-semibold text-zinc-950">
+          <div className="grid h-9 w-9 place-items-center rounded-lg border border-zinc-200 bg-zinc-100 text-sm font-semibold text-zinc-950 transition-smooth hover:border-zinc-300 hover:bg-white">
             BG
           </div>
         </div>
@@ -152,7 +162,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Sidebar open={open} onClose={() => setOpen(false)} />
       <div className="min-w-0">
         <TopBar onMenu={() => setOpen(true)} />
-        <main className="px-4 py-6 md:px-6 lg:px-8">{children}</main>
+        <main className="page-flow px-4 py-6 md:px-6 lg:px-8">{children}</main>
       </div>
     </div>
   );

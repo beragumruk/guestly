@@ -4,7 +4,7 @@ import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAt
 import { Search } from "lucide-react";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`panel rounded-xl ${className}`}>{children}</section>;
+  return <section className={`panel motion-panel rounded-xl ${className}`}>{children}</section>;
 }
 
 export function Button({
@@ -80,7 +80,7 @@ export function StatCard({
   detail: string;
 }) {
   return (
-    <Card className="p-5">
+    <Card className="stat-card p-5">
       <p className="mono-label">{label}</p>
       <p className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-zinc-950">{value}</p>
       <p className="mt-2 text-sm text-zinc-500">{detail}</p>
@@ -100,7 +100,7 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+    <div className="animate-rise flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
       <div>
         <p className="mono-label">{eyebrow}</p>
         <h1 className="mt-3 max-w-3xl text-3xl font-semibold tracking-[-0.045em] text-zinc-950 md:text-4xl">{title}</h1>
@@ -121,7 +121,7 @@ export function FilterBar({
   children: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white/90 p-3 lg:flex-row lg:items-center">
+    <div className="animate-rise flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white/90 p-3 lg:flex-row lg:items-center">
       <div className="relative min-w-0 flex-1">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
         <input
