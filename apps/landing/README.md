@@ -4,7 +4,7 @@ Public marketing landing page for Guestly.
 
 ## Configuration
 
-Set these environment variables in the landing Vercel project:
+Optional local configuration:
 
 ```bash
 VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key

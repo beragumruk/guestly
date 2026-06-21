@@ -52,7 +52,6 @@ It includes:
 - Premium Guestly marketing site
 - Request demo flow
 - Product login handoff into `app.getguestly.com`
-- Vercel-ready static deployment
 
 ### Product Workspace
 
@@ -100,8 +99,7 @@ This lets the product feel complete during review while keeping production crede
 |   |-- landing
 |   |   |-- src
 |   |   |-- public
-|   |   |-- package.json
-|   |   `-- vercel.json
+|   |   `-- package.json
 |   `-- product
 |       |-- app
 |       |-- components
@@ -111,14 +109,12 @@ This lets the product feel complete during review while keeping production crede
 |       |-- public
 |       |-- scripts
 |       |-- tools
-|       |-- package.json
-|       `-- vercel.json
+|       `-- package.json
 |-- COMMERCIAL.md
 |-- LICENSE.md
 |-- SECURITY.md
 |-- TRADEMARKS.md
-|-- package.json
-`-- vercel.json
+`-- package.json
 ```
 
 ## Local Development
@@ -160,35 +156,11 @@ Run product launch checks:
 npm run launch:check
 ```
 
-## Deployment
+## Hosted Product
 
-Guestly uses two Vercel projects from the same GitHub repository.
+Guestly is designed to run as a hosted commercial product. The public website lives at `getguestly.com`, and the product workspace lives at `app.getguestly.com`.
 
-### Landing Project
-
-- Repo: `beragumruk/Guestly`
-- Root Directory: `./` or `apps/landing`
-- Domain: `getguestly.com`
-- Domain: `www.getguestly.com`
-
-The root `vercel.json` is configured to deploy the landing site for compatibility with the existing landing project.
-
-Recommended environment variables:
-
-```env
-VITE_GUESTLY_APP_URL=https://app.getguestly.com
-VITE_DEMO_REQUEST_EMAIL=hello@getguestly.com
-VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
-```
-
-### Product Project
-
-- Repo: `beragumruk/Guestly`
-- Root Directory: `apps/product`
-- Framework: Next.js
-- Domain: `app.getguestly.com`
-
-The product app can run without Supabase, Stripe, OpenAI, Resend, or webhooks. Production deployments should add those services behind the existing integration boundaries when commercial operations require them.
+This repository can run locally for review without Supabase, Stripe, OpenAI, Resend, or webhooks. Production services are intentionally kept behind integration boundaries and are not required for local evaluation.
 
 ## Demo And Login Flow
 
