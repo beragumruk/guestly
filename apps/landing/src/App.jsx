@@ -365,6 +365,7 @@ function HeroFlowMockup() {
   const [activePoint, setActivePoint] = useState(capturePoints[0]);
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
   const [overlayVisible, setOverlayVisible] = useState(true);
+  const flowStageRef = useRef(null);
   const overlayRef = useRef(null);
   const overlayPositionRef = useRef(overlayPosition);
   const dragState = useRef(null);
@@ -383,9 +384,27 @@ function HeroFlowMockup() {
   }, [overlayPosition, overlayVisible]);
 
   function clampOverlayPosition(x, y) {
+    if (!flowStageRef.current || !overlayRef.current) {
+      return {
+        x: Math.max(-150, Math.min(0, x)),
+        y: Math.max(-90, Math.min(145, y)),
+      };
+    }
+
+    const inset = 8;
+    const stageRect = flowStageRef.current.getBoundingClientRect();
+    const overlayRect = overlayRef.current.getBoundingClientRect();
+    const currentPosition = overlayPositionRef.current;
+    const baseLeft = overlayRect.left - currentPosition.x - stageRect.left;
+    const baseTop = overlayRect.top - currentPosition.y - stageRect.top;
+    const minX = -baseLeft + inset;
+    const maxX = stageRect.width - baseLeft - overlayRect.width - inset;
+    const minY = -baseTop + inset;
+    const maxY = stageRect.height - baseTop - overlayRect.height - inset;
+
     return {
-      x: Math.max(-150, Math.min(90, x)),
-      y: Math.max(-90, Math.min(145, y)),
+      x: Math.max(minX, Math.min(maxX, x)),
+      y: Math.max(minY, Math.min(maxY, y)),
     };
   }
 
@@ -459,7 +478,11 @@ function HeroFlowMockup() {
               {overlayVisible ? 'Hide overlay' : 'Show overlay'}
             </button>
           </div>
-          <div className="relative grid min-h-[33rem] gap-4 lg:grid-cols-[0.82fr_1.18fr]">
+          <div
+            ref={flowStageRef}
+            data-guestly-flow-stage
+            className="relative grid min-h-[33rem] gap-4 lg:grid-cols-[0.82fr_1.18fr]"
+          >
             <div className="rounded-2xl border border-zinc-200 bg-zinc-950 p-5 text-zinc-50 shadow-panel">
               <div className="flex items-center justify-between">
                 <div>
