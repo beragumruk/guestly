@@ -27,7 +27,13 @@ const navigation = [
 const appUrl = import.meta.env.VITE_GUESTLY_APP_URL || 'https://app.getguestly.com';
 const demoRequestEmail = import.meta.env.VITE_DEMO_REQUEST_EMAIL || 'hello@getguestly.com';
 
-const capturePoints = ['Room card', 'Table tent', 'Receipt'];
+const productLoginUrl = `${appUrl.replace(/\/$/, '')}/login`;
+
+const capturePoints = [
+  { label: 'Room card', location: 'Room 307', signal: 'Noise and humidity signal mapped to room experience risk.' },
+  { label: 'Table tent', location: 'Table 18', signal: 'Possible allergen handling issue routed as exposure risk.' },
+  { label: 'Receipt', location: 'Receipt QR', signal: 'Billing correction request routed to management.' },
+];
 
 const signalStages = [
   { label: 'Capture', detail: 'Context attached' },
@@ -175,7 +181,10 @@ function goToHref(href) {
 }
 
 function openProductLogin() {
-  window.location.href = `${appUrl.replace(/\/$/, '')}/login`;
+  window.dispatchEvent(new CustomEvent('guestly:product-redirect'));
+  window.setTimeout(() => {
+    window.location.href = productLoginUrl;
+  }, 540);
 }
 
 function Reveal({ children, className = '', delay = 0, as: Component = 'div' }) {
@@ -255,14 +264,11 @@ function Navbar() {
           ))}
         </div>
         <div className="hidden items-center gap-3 lg:flex">
-          <button className="btn-secondary" type="button" onClick={openProductLogin}>
-            Try Demo
-          </button>
           <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
             Contact for Demo
           </button>
           <button className="btn-secondary" type="button" onClick={openProductLogin}>
-            Sign In
+            Product Login
           </button>
         </div>
         <button
@@ -292,14 +298,11 @@ function Navbar() {
                 {item.label}
               </a>
             ))}
-            <button className="btn-secondary w-full" type="button" onClick={openProductLogin}>
-              Try Demo
-            </button>
             <button className="btn-primary w-full" type="button" onClick={() => scrollToSection('#access')}>
               Contact for Demo
             </button>
             <button className="btn-secondary w-full" type="button" onClick={openProductLogin}>
-              Sign In
+              Product Login
             </button>
           </div>
         </div>
@@ -341,12 +344,12 @@ function Hero() {
             Guestly turns QR feedback into prioritized operational intelligence for hospitality teams.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <button className="btn-primary" type="button" onClick={openProductLogin}>
-              Try Demo
+            <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
+              Contact for Demo
               <ArrowRight className="h-4 w-4" />
             </button>
-            <button className="btn-secondary" type="button" onClick={() => scrollToSection('#access')}>
-              Contact for Demo
+            <button className="btn-secondary" type="button" onClick={openProductLogin}>
+              Product Login
             </button>
           </div>
         </Reveal>
@@ -359,6 +362,44 @@ function Hero() {
 }
 
 function HeroFlowMockup() {
+  const [activePoint, setActivePoint] = useState(capturePoints[0]);
+  const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
+  const dragState = useRef(null);
+  const activeTags =
+    activePoint.label === 'Table tent'
+      ? ['Kitchen', 'Allergy', 'Critical']
+      : activePoint.label === 'Receipt'
+        ? ['Billing', 'Management', 'Recovery']
+        : ['Rooms', 'Environment', 'Sleep disruption'];
+
+  function beginDrag(event) {
+    dragState.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: overlayPosition.x,
+      originY: overlayPosition.y,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function moveDrag(event) {
+    if (!dragState.current) return;
+    const nextX = dragState.current.originX + event.clientX - dragState.current.startX;
+    const nextY = dragState.current.originY + event.clientY - dragState.current.startY;
+    setOverlayPosition({
+      x: Math.max(-150, Math.min(90, nextX)),
+      y: Math.max(-90, Math.min(145, nextY)),
+    });
+  }
+
+  function endDrag(event) {
+    if (dragState.current) {
+      event.currentTarget.releasePointerCapture(dragState.current.pointerId);
+    }
+    dragState.current = null;
+  }
+
   return (
     <div className="relative">
       <div className="absolute -inset-x-2 bottom-0 top-12 -z-10 rounded-[2rem] bg-zinc-200/45 blur-3xl" />
@@ -379,22 +420,34 @@ function HeroFlowMockup() {
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">QR capture network</p>
               <h3 className="mt-1 text-xl font-semibold tracking-tight text-zinc-950">Guest signal intake flow</h3>
             </div>
+            <p className="hidden rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-500 sm:block">
+              Click a scan point or drag the overlay
+            </p>
           </div>
-          <div className="grid gap-4 lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="relative grid gap-4 lg:grid-cols-[0.82fr_1.18fr]">
             <div className="rounded-2xl border border-zinc-200 bg-zinc-950 p-5 text-zinc-50 shadow-panel">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400">Scan point</p>
-                  <p className="mt-1 text-lg font-semibold tracking-tight">Room 307</p>
+                  <p className="mt-1 text-lg font-semibold tracking-tight">{activePoint.location}</p>
                 </div>
                 <QrCode className="h-5 w-5 text-zinc-300" />
               </div>
               <QrPattern />
               <div className="mt-5 grid grid-cols-2 gap-2">
                 {capturePoints.map((point) => (
-                  <span key={point} className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs text-zinc-300">
-                    {point}
-                  </span>
+                  <button
+                    key={point.label}
+                    type="button"
+                    className={`rounded-xl border px-3 py-2 text-left text-xs transition duration-300 hover:-translate-y-0.5 ${
+                      activePoint.label === point.label
+                        ? 'border-zinc-500 bg-zinc-50 text-zinc-950'
+                        : 'border-zinc-800 bg-zinc-900 text-zinc-300'
+                    }`}
+                    onClick={() => setActivePoint(point)}
+                  >
+                    {point.label}
+                  </button>
                 ))}
               </div>
             </div>
@@ -404,7 +457,7 @@ function HeroFlowMockup() {
                   <div>
                     <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400">Guest input</p>
                     <p className="mt-2 text-sm leading-6 text-zinc-700">
-                      “The room felt damp and the hallway noise made it hard to sleep.”
+                      “{activePoint.signal}”
                     </p>
                   </div>
                   <span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-600">
@@ -412,7 +465,7 @@ function HeroFlowMockup() {
                   </span>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {['Rooms', 'Environment', 'Sleep disruption'].map((item) => (
+                  {activeTags.map((item) => (
                     <span key={item} className="rounded-full border border-zinc-200 px-3 py-1 text-xs text-zinc-500">
                       {item}
                     </span>
@@ -433,6 +486,33 @@ function HeroFlowMockup() {
                       <p className="text-xs leading-5 text-zinc-500">{stage.detail}</p>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+            <div
+              className="absolute right-3 top-24 hidden w-60 rounded-2xl border border-zinc-200 bg-white/95 p-3 text-zinc-950 shadow-[0_28px_70px_-42px_rgba(24,24,27,0.55)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_32px_80px_-40px_rgba(24,24,27,0.7)] lg:block"
+              style={{ transform: `translate(${overlayPosition.x}px, ${overlayPosition.y}px)` }}
+            >
+              <button
+                type="button"
+                className="flex w-full cursor-grab items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-left active:cursor-grabbing"
+                onPointerDown={beginDrag}
+                onPointerMove={moveDrag}
+                onPointerUp={endDrag}
+                onPointerCancel={endDrag}
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Operations overlay</span>
+                <span className="text-xs text-zinc-400">drag</span>
+              </button>
+              <div className="mt-3 rounded-xl border border-zinc-200 bg-white p-3">
+                <p className="text-sm font-semibold text-zinc-950">{activePoint.location}</p>
+                <p className="mt-1 text-xs leading-5 text-zinc-500">{activePoint.signal}</p>
+              </div>
+              <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] text-zinc-600">
+                {['Inbox', 'Route', 'Trend'].map((item) => (
+                  <span key={item} className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1.5">
+                    {item}
+                  </span>
                 ))}
               </div>
             </div>
@@ -501,10 +581,10 @@ function HowItWorks() {
           text="Capture, classify, and route guest issues before they become public reviews."
           align="center"
         />
-        <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4">
           {workflowSteps.map(({ title, text, icon: Icon }, index) => (
-            <Reveal key={title} delay={index * 80}>
-              <GlassCard className="group p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300">
+            <Reveal key={title} delay={index * 80} className="h-full">
+              <GlassCard className="group flex h-full min-h-[18rem] flex-col p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300">
                 <div className="flex items-center justify-between">
                   <span className="grid h-11 w-11 place-items-center rounded-xl border border-zinc-200 bg-white text-zinc-800 transition group-hover:bg-zinc-50">
                     <Icon className="h-5 w-5" />
@@ -535,10 +615,10 @@ function Features() {
           <Reveal>
             <IntelligenceVisual />
           </Reveal>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid items-stretch gap-4 md:grid-cols-2">
             {features.map(({ title, text, icon: Icon }, index) => (
-              <Reveal key={title} delay={(index % 2) * 70}>
-                <GlassCard className="p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300 hover:bg-white">
+              <Reveal key={title} delay={(index % 2) * 70} className="h-full">
+                <GlassCard className="flex h-full min-h-[17rem] flex-col p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300 hover:bg-white">
                   <Icon className="h-5 w-5 text-zinc-800" />
                   <h3 className="mt-5 text-lg font-semibold tracking-tight text-white">{title}</h3>
                   <p className="mt-3 leading-7 text-slate-400">{text}</p>
@@ -668,9 +748,6 @@ function DemoPreview() {
                       </div>
                     ))}
                   </div>
-                  <p className="mt-6 border-t border-white/10 pt-4 text-xs leading-6 text-slate-500">
-                    Future backend connection: scoring models, routing states, and closed-loop resolution data.
-                  </p>
                 </GlassCard>
               </div>
             </div>
@@ -817,7 +894,16 @@ function RequestAccess() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [businessType, setBusinessType] = useState('');
   const web3FormsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+
+  function normalizePayload(payload) {
+    const otherBusinessType = String(payload.businessTypeOther || '').trim();
+    return {
+      ...payload,
+      businessType: payload.businessType === 'Other' && otherBusinessType ? `Other: ${otherBusinessType}` : payload.businessType,
+    };
+  }
 
   function buildMailtoUrl(payload) {
     const to = demoRequestEmail;
@@ -848,6 +934,7 @@ function RequestAccess() {
         name: payload.name,
         business: payload.business,
         business_type: payload.businessType,
+        business_type_detail: payload.businessTypeOther || '',
         email: payload.email,
         message: payload.message,
       }),
@@ -865,7 +952,7 @@ function RequestAccess() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
+    const payload = normalizePayload(Object.fromEntries(formData.entries()));
 
     setSubmitting(true);
     setSubmitError('');
@@ -880,6 +967,7 @@ function RequestAccess() {
 
       setSubmitted(true);
       form.reset();
+      setBusinessType('');
     } catch (error) {
       setSubmitError(error.message || 'Unable to send request right now. Please use the contact email configured for Guestly.');
     } finally {
@@ -902,7 +990,7 @@ function RequestAccess() {
               Sign in through the Guestly product workspace with the email and password issued to your team.
             </p>
             <button className="btn-secondary mt-5" type="button" onClick={openProductLogin}>
-              Open Product Login
+              Product Login
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -929,7 +1017,14 @@ function RequestAccess() {
                   <label className="form-label" htmlFor="businessType">
                     Business type
                   </label>
-                  <select id="businessType" name="businessType" className="form-input" defaultValue="" required>
+                  <select
+                    id="businessType"
+                    name="businessType"
+                    className="form-input"
+                    value={businessType}
+                    onChange={(event) => setBusinessType(event.target.value)}
+                    required
+                  >
                     <option value="" disabled>
                       Select type
                     </option>
@@ -943,6 +1038,11 @@ function RequestAccess() {
                 </div>
                 <Field id="email" label="Email" type="email" placeholder="you@company.com" />
               </div>
+              {businessType === 'Other' && (
+                <div className="animate-soft-enter">
+                  <Field id="businessTypeOther" label="Business type details" placeholder="Tell us what kind of business you operate" />
+                </div>
+              )}
               <div>
                 <label className="form-label" htmlFor="message">
                   Message
@@ -974,6 +1074,29 @@ function Field({ id, label, type = 'text', placeholder }) {
         {label}
       </label>
       <input id={id} name={id} type={type} className="form-input" placeholder={placeholder} required />
+    </div>
+  );
+}
+
+function RedirectOverlay({ active }) {
+  return (
+    <div
+      className={`fixed inset-0 z-[80] grid place-items-center bg-white/82 px-5 backdrop-blur-xl transition duration-500 ${
+        active ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+      }`}
+      aria-hidden={!active}
+    >
+      <div className={`rounded-2xl border border-zinc-200 bg-white p-5 shadow-cold transition duration-500 ${active ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-3 scale-95 opacity-0'}`}>
+        <div className="flex items-center gap-4">
+          <span className="grid h-11 w-11 place-items-center rounded-xl bg-zinc-950">
+            <img src="/favicon.svg" alt="" className="h-7 w-7 invert" aria-hidden="true" />
+          </span>
+          <div>
+            <p className="font-semibold tracking-tight text-zinc-950">Opening Guestly workspace</p>
+            <p className="mt-1 text-sm text-zinc-500">Taking you to the product login.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1015,9 +1138,18 @@ function Footer() {
 }
 
 export default function App() {
+  const [redirecting, setRedirecting] = useState(false);
+
+  useEffect(() => {
+    const handleRedirect = () => setRedirecting(true);
+    window.addEventListener('guestly:product-redirect', handleRedirect);
+    return () => window.removeEventListener('guestly:product-redirect', handleRedirect);
+  }, []);
+
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <RedirectOverlay active={redirecting} />
       <Navbar />
       <main>
         <Hero />
