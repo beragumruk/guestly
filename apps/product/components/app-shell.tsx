@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import {
   BarChart3,
   CreditCard,
@@ -143,36 +143,155 @@ function TopBar({ onMenu, overlayVisible, onToggleOverlay }: { onMenu: () => voi
 }
 
 function OperationsOverlay({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const overlayRef = useRef<HTMLElement | null>(null);
+  const overlayPositionRef = useRef({ x: 0, y: 0 });
+  const dragState = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    originX: number;
+    originY: number;
+  } | null>(null);
+
+  function clampOverlayPosition(x: number, y: number) {
+    if (!overlayRef.current) {
+      return {
+        x: Math.max(-320, Math.min(0, x)),
+        y: Math.max(-420, Math.min(0, y)),
+      };
+    }
+
+    const inset = 12;
+    const overlayRect = overlayRef.current.getBoundingClientRect();
+    const currentPosition = overlayPositionRef.current;
+    const baseLeft = overlayRect.left - currentPosition.x;
+    const baseTop = overlayRect.top - currentPosition.y;
+    const minX = -baseLeft + inset;
+    const maxX = window.innerWidth - baseLeft - overlayRect.width - inset;
+    const minY = -baseTop + inset;
+    const maxY = window.innerHeight - baseTop - overlayRect.height - inset;
+
+    return {
+      x: Math.max(minX, Math.min(maxX, x)),
+      y: Math.max(minY, Math.min(maxY, y)),
+    };
+  }
+
+  function beginDrag(event: PointerEvent<HTMLElement>) {
+    if (event.button !== undefined && event.button !== 0) return;
+    const currentPosition = overlayPositionRef.current;
+    dragState.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: currentPosition.x,
+      originY: currentPosition.y,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  }
+
+  function moveDrag(event: PointerEvent<HTMLElement>) {
+    if (!dragState.current) return;
+    const nextPosition = clampOverlayPosition(
+      dragState.current.originX + event.clientX - dragState.current.startX,
+      dragState.current.originY + event.clientY - dragState.current.startY,
+    );
+    overlayPositionRef.current = nextPosition;
+    if (overlayRef.current) {
+      overlayRef.current.style.transform = `translate3d(${nextPosition.x}px, ${nextPosition.y}px, 0)`;
+    }
+  }
+
+  function endDrag(event: PointerEvent<HTMLElement>) {
+    if (dragState.current) {
+      event.currentTarget.releasePointerCapture?.(dragState.current.pointerId);
+    }
+    dragState.current = null;
+  }
+
   if (!visible) return null;
 
   return (
     <aside
-      className="animate-rise fixed bottom-4 right-4 z-30 w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-zinc-200 bg-white/94 p-4 shadow-[0_30px_90px_-58px_rgba(24,24,27,0.62)] backdrop-blur-xl transition-smooth"
+      ref={overlayRef}
+      data-guestly-app-overlay
+      className="overlay-enter fixed bottom-4 right-4 z-30 w-[min(23rem,calc(100vw-2rem))] touch-none rounded-2xl border border-zinc-200 bg-white/96 p-3 shadow-[0_34px_105px_-62px_rgba(24,24,27,0.72)] backdrop-blur-xl transition-[box-shadow,border-color,background-color,opacity] duration-200 hover:shadow-[0_38px_115px_-60px_rgba(24,24,27,0.82)]"
+      style={{ willChange: "transform" }}
+      onPointerDown={beginDrag}
+      onPointerMove={moveDrag}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="mono-label">Operations overlay</p>
-          <h2 className="mt-2 text-sm font-semibold text-zinc-950">Live routing layer</h2>
+      <div className="cursor-grab rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 active:cursor-grabbing">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="mono-label">Operations overlay</p>
+            <h2 className="mt-1 text-sm font-semibold text-zinc-950">Live routing layer</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full border border-zinc-200 bg-white px-2 py-1 text-[11px] font-medium text-zinc-500">drag</span>
+            <button
+              className="button-ghost min-h-8 px-2"
+              type="button"
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={onClose}
+              aria-label="Hide operations overlay"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
         </div>
-        <button className="button-ghost min-h-8 px-2" type="button" onClick={onClose} aria-label="Hide operations overlay">
-          <X className="h-4 w-4" />
-        </button>
       </div>
-      <div className="mt-4 grid gap-2">
+      <div className="mt-3 grid gap-2">
         {[
-          ["Critical signal", "Allergen handling routed to service lead", "2 min"],
-          ["Pattern watch", "Wait-time cluster across counter service", "18 signals"],
-          ["Recovery queue", "Open owner follow-up items", "6 actions"],
-        ].map(([title, detail, meta]) => (
-          <div key={title} className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+          {
+            title: "Critical signal",
+            detail: "Allergen handling routed to service lead",
+            meta: "2 min",
+            tone: "border-red-200 bg-red-50 text-red-700",
+            dot: "bg-red-500",
+          },
+          {
+            title: "Pattern watch",
+            detail: "Wait-time cluster across counter service",
+            meta: "18 signals",
+            tone: "border-amber-200 bg-amber-50 text-amber-700",
+            dot: "bg-amber-500",
+          },
+          {
+            title: "Recovery queue",
+            detail: "Open owner follow-up items",
+            meta: "6 actions",
+            tone: "border-sky-200 bg-sky-50 text-sky-700",
+            dot: "bg-sky-500",
+          },
+        ].map((item) => (
+          <div key={item.title} className="rounded-xl border border-zinc-200 bg-white p-3">
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold text-zinc-950">{title}</p>
-                <p className="mt-1 text-xs leading-5 text-zinc-500">{detail}</p>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className={`h-2 w-2 rounded-full ${item.dot}`} />
+                  <p className="text-sm font-semibold text-zinc-950">{item.title}</p>
+                </div>
+                <p className="mt-1 text-xs leading-5 text-zinc-500">{item.detail}</p>
               </div>
-              <span className="whitespace-nowrap rounded-full border border-zinc-200 bg-white px-2 py-1 text-[11px] text-zinc-500">{meta}</span>
+              <span className={`whitespace-nowrap rounded-full border px-2 py-1 text-[11px] font-semibold ${item.tone}`}>
+                {item.meta}
+              </span>
             </div>
           </div>
+        ))}
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] font-medium text-zinc-600">
+        {["Inbox", "Route", "Trend"].map((item) => (
+          <span
+            key={item}
+            className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1.5"
+            onPointerDown={(event) => event.stopPropagation()}
+          >
+            {item}
+          </span>
         ))}
       </div>
     </aside>
