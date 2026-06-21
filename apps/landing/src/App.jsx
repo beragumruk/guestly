@@ -364,6 +364,7 @@ function Hero() {
 function HeroFlowMockup() {
   const [activePoint, setActivePoint] = useState(capturePoints[0]);
   const [overlayPosition, setOverlayPosition] = useState({ x: 0, y: 0 });
+  const [overlayVisible, setOverlayVisible] = useState(true);
   const dragState = useRef(null);
   const activeTags =
     activePoint.label === 'Table tent'
@@ -420,11 +421,15 @@ function HeroFlowMockup() {
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">QR capture network</p>
               <h3 className="mt-1 text-xl font-semibold tracking-tight text-zinc-950">Guest signal intake flow</h3>
             </div>
-            <p className="hidden rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-500 sm:block">
-              Click a scan point or drag the overlay
-            </p>
+            <button
+              type="button"
+              className="w-fit rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-950"
+              onClick={() => setOverlayVisible((value) => !value)}
+            >
+              {overlayVisible ? 'Hide overlay' : 'Show overlay'}
+            </button>
           </div>
-          <div className="relative grid gap-4 lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="relative grid min-h-[33rem] gap-4 lg:grid-cols-[0.82fr_1.18fr]">
             <div className="rounded-2xl border border-zinc-200 bg-zinc-950 p-5 text-zinc-50 shadow-panel">
               <div className="flex items-center justify-between">
                 <div>
@@ -452,11 +457,11 @@ function HeroFlowMockup() {
               </div>
             </div>
             <div className="space-y-4">
-              <div className="rounded-2xl border border-zinc-200 bg-white p-5">
+              <div className="min-h-[12.5rem] rounded-2xl border border-zinc-200 bg-white p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400">Guest input</p>
-                    <p className="mt-2 text-sm leading-6 text-zinc-700">
+                    <p className="mt-2 min-h-[3rem] text-sm leading-6 text-zinc-700">
                       “{activePoint.signal}”
                     </p>
                   </div>
@@ -489,33 +494,35 @@ function HeroFlowMockup() {
                 ))}
               </div>
             </div>
-            <div
-              className="absolute right-3 top-24 hidden w-60 rounded-2xl border border-zinc-200 bg-white/95 p-3 text-zinc-950 shadow-[0_28px_70px_-42px_rgba(24,24,27,0.55)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_32px_80px_-40px_rgba(24,24,27,0.7)] lg:block"
-              style={{ transform: `translate(${overlayPosition.x}px, ${overlayPosition.y}px)` }}
-            >
-              <button
-                type="button"
-                className="flex w-full cursor-grab items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-left active:cursor-grabbing"
-                onPointerDown={beginDrag}
-                onPointerMove={moveDrag}
-                onPointerUp={endDrag}
-                onPointerCancel={endDrag}
+            {overlayVisible && (
+              <div
+                className="animate-soft-enter absolute right-3 top-24 hidden w-60 rounded-2xl border border-zinc-200 bg-white/95 p-3 text-zinc-950 shadow-[0_28px_70px_-42px_rgba(24,24,27,0.55)] backdrop-blur-xl transition duration-300 hover:shadow-[0_32px_80px_-40px_rgba(24,24,27,0.7)] lg:block"
+                style={{ transform: `translate(${overlayPosition.x}px, ${overlayPosition.y}px)` }}
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Operations overlay</span>
-                <span className="text-xs text-zinc-400">drag</span>
-              </button>
-              <div className="mt-3 rounded-xl border border-zinc-200 bg-white p-3">
-                <p className="text-sm font-semibold text-zinc-950">{activePoint.location}</p>
-                <p className="mt-1 text-xs leading-5 text-zinc-500">{activePoint.signal}</p>
+                <button
+                  type="button"
+                  className="flex w-full cursor-grab items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-left active:cursor-grabbing"
+                  onPointerDown={beginDrag}
+                  onPointerMove={moveDrag}
+                  onPointerUp={endDrag}
+                  onPointerCancel={endDrag}
+                >
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-zinc-500">Operations overlay</span>
+                  <span className="text-xs text-zinc-400">drag</span>
+                </button>
+                <div className="mt-3 rounded-xl border border-zinc-200 bg-white p-3">
+                  <p className="text-sm font-semibold text-zinc-950">{activePoint.location}</p>
+                  <p className="mt-1 text-xs leading-5 text-zinc-500">{activePoint.signal}</p>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] text-zinc-600">
+                  {['Inbox', 'Route', 'Trend'].map((item) => (
+                    <span key={item} className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1.5">
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] text-zinc-600">
-                {['Inbox', 'Route', 'Trend'].map((item) => (
-                  <span key={item} className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1.5">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </GlassCard>

@@ -7,6 +7,7 @@ import {
   BarChart3,
   CreditCard,
   Inbox,
+  Layers3,
   LayoutDashboard,
   LogOut,
   MapPin,
@@ -110,7 +111,7 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
-function TopBar({ onMenu }: { onMenu: () => void }) {
+function TopBar({ onMenu, overlayVisible, onToggleOverlay }: { onMenu: () => void; overlayVisible: boolean; onToggleOverlay: () => void }) {
   const state = useGuestly();
   return (
     <header className="sticky top-0 z-20 border-b border-zinc-200/90 bg-white/82 px-4 py-3 backdrop-blur-xl md:px-6">
@@ -123,6 +124,10 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
           <p className="text-xs text-zinc-500">Live intelligence workspace</p>
         </div>
         <div className="ml-auto flex items-center gap-3">
+          <Button variant="secondary" className="px-3 sm:px-4" onClick={onToggleOverlay} aria-label={overlayVisible ? "Hide operations overlay" : "Show operations overlay"}>
+            <Layers3 className="h-4 w-4" />
+            <span className="hidden sm:inline">{overlayVisible ? "Hide overlay" : "Show overlay"}</span>
+          </Button>
           <div className="hidden text-right sm:block">
             <p className="text-sm font-semibold text-zinc-950">{state?.user.name}</p>
             <p className="text-xs text-zinc-500">{state?.user.role}</p>
@@ -136,10 +141,48 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
   );
 }
 
+function OperationsOverlay({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  if (!visible) return null;
+
+  return (
+    <aside
+      className="animate-rise fixed bottom-4 right-4 z-30 w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-zinc-200 bg-white/94 p-4 shadow-[0_30px_90px_-58px_rgba(24,24,27,0.62)] backdrop-blur-xl transition-smooth"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="mono-label">Operations overlay</p>
+          <h2 className="mt-2 text-sm font-semibold text-zinc-950">Live routing layer</h2>
+        </div>
+        <button className="button-ghost min-h-8 px-2" type="button" onClick={onClose} aria-label="Hide operations overlay">
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+      <div className="mt-4 grid gap-2">
+        {[
+          ["Critical signal", "Allergen handling routed to service lead", "2 min"],
+          ["Pattern watch", "Wait-time cluster across counter service", "18 signals"],
+          ["Recovery queue", "Open owner follow-up items", "6 actions"],
+        ].map(([title, detail, meta]) => (
+          <div key={title} className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-zinc-950">{title}</p>
+                <p className="mt-1 text-xs leading-5 text-zinc-500">{detail}</p>
+              </div>
+              <span className="whitespace-nowrap rounded-full border border-zinc-200 bg-white px-2 py-1 text-[11px] text-zinc-500">{meta}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(true);
 
   useEffect(() => {
     if (!getSession()) {
@@ -161,9 +204,10 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen md:grid md:grid-cols-[18rem_1fr]">
       <Sidebar open={open} onClose={() => setOpen(false)} />
       <div className="min-w-0">
-        <TopBar onMenu={() => setOpen(true)} />
+        <TopBar onMenu={() => setOpen(true)} overlayVisible={overlayVisible} onToggleOverlay={() => setOverlayVisible((value) => !value)} />
         <main className="page-flow px-4 py-6 md:px-6 lg:px-8">{children}</main>
       </div>
+      <OperationsOverlay visible={overlayVisible} onClose={() => setOverlayVisible(false)} />
     </div>
   );
 }
