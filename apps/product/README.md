@@ -23,7 +23,7 @@ npm run build
 
 ## Workspace Access
 
-Use `Continue to Workspace` on `/login`, or enter workspace credentials issued by Guestly.
+Use `/login` with workspace credentials issued by Guestly. The demo email is configured as `GUESTLY_DEMO_EMAIL`; the password must be provided through `GUESTLY_DEMO_PASSWORD` in the runtime environment and should not be committed to source control.
 
 Workspace:
 

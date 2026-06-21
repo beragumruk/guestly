@@ -54,7 +54,8 @@ function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const router = useRouter();
   const state = useGuestly();
 
-  function logout() {
+  async function logout() {
+    await fetch("/api/auth/demo", { method: "DELETE" }).catch(() => {});
     signOutManager();
     router.replace("/login");
   }

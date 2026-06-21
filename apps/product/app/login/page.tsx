@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, CheckCircle2, Clock3, LockKeyhole, QrCode, Sparkles, TrendingUp } from "lucide-react";
-import { getSession, signInManager } from "@/lib/store";
+import { signInManager } from "@/lib/store";
 import { Button, Card, FormField, Input } from "@/components/ui";
 import { LogoMark } from "@/components/app-shell";
 
@@ -11,19 +11,49 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (getSession()) router.replace("/dashboard");
+    let active = true;
+    fetch("/api/auth/demo")
+      .then((response) => response.json())
+      .then((result: { ok?: boolean }) => {
+        if (!active || !result.ok) return;
+        signInManager();
+        router.replace("/dashboard");
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
   }, [router]);
 
-  function continueToWorkspace() {
-    signInManager();
-    router.replace("/dashboard");
-  }
-
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    continueToWorkspace();
+    setError("");
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/api/auth/demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        setError("Invalid credentials.");
+        return;
+      }
+
+      signInManager();
+      router.replace("/dashboard");
+    } catch {
+      setError("Unable to verify credentials. Try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -106,13 +136,28 @@ export default function LoginPage() {
             </div>
             <form className="grid gap-4" onSubmit={submit}>
               <FormField label="Email">
-                <Input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+                <Input
+                  type="email"
+                  value={email}
+                  autoComplete="email"
+                  onChange={(event) => setEmail(event.target.value)}
+                />
               </FormField>
               <FormField label="Password">
-                <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+                <Input
+                  type="password"
+                  value={password}
+                  autoComplete="current-password"
+                  onChange={(event) => setPassword(event.target.value)}
+                />
               </FormField>
-              <Button type="submit" className="w-full">
-                Continue to Workspace
+              {error ? (
+                <div className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700">
+                  {error}
+                </div>
+              ) : null}
+              <Button type="submit" className="w-full" disabled={submitting}>
+                {submitting ? "Verifying..." : "Continue to Workspace"}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </form>

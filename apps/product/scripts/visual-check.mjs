@@ -5,6 +5,12 @@ const { chromium } = require(
   '/Users/esragumruk/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright',
 );
 const baseUrl = process.env.GUESTLY_BASE_URL || 'http://127.0.0.1:3000';
+const demoEmail = process.env.GUESTLY_DEMO_EMAIL || 'demo@getguestly.com';
+const demoPassword = process.env.GUESTLY_DEMO_PASSWORD;
+
+if (!demoPassword) {
+  throw new Error('GUESTLY_DEMO_PASSWORD is required for the visual workspace check.');
+}
 
 const browser = await chromium.launch({
   headless: true,
@@ -19,6 +25,8 @@ page.on('pageerror', (error) => errors.push(error.message));
 await page.goto(`${baseUrl}/login`, { waitUntil: 'networkidle' });
 await page.evaluate(() => localStorage.clear());
 await page.goto(baseUrl, { waitUntil: 'networkidle' });
+await page.getByLabel('Email').fill(demoEmail);
+await page.getByLabel('Password').fill(demoPassword);
 await page.getByRole('button', { name: /Continue to Workspace/i }).click();
 await page.waitForURL('**/dashboard');
 const title = await page.title();
