@@ -95,8 +95,6 @@ The classifier and analytics modules model:
 - Privacy redaction utilities
 - Forecasting and anomaly helpers
 
-This lets the product feel complete during review while keeping production credentials and hosted infrastructure outside the public repository.
-
 ## Monorepo Layout
 
 ```txt
