@@ -180,10 +180,6 @@ Plan interest stays on the public website through the contact form:
 https://getguestly.com/#access
 ```
 
-The product workspace is the only place where workspace authentication belongs. Production deployments should enforce real authentication, authorization, billing, and organization provisioning before handling live customer data.
-
-The review workspace is gated by `GUESTLY_DEMO_EMAIL` and `GUESTLY_DEMO_PASSWORD`. Keep the password in the hosting environment, never in the repository.
-
 ## Configuration
 
 Landing app configuration lives in:
