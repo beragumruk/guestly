@@ -20,7 +20,6 @@ const navigation = [
   { label: 'How it works', href: '#how-it-works' },
   { label: 'Demo', href: '#demo' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'About', href: '#about' },
   { label: 'Contact', href: '#access' },
 ];
 
@@ -152,12 +151,6 @@ const pricingPlans = [
     featured: true,
   },
 ];
-
-const founder = {
-  name: 'Bera Gumruk',
-  title: 'Founder, Guestly',
-  image: '/bera-gumruk-headshot.png',
-};
 
 function scrollToSection(id) {
   document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -907,55 +900,6 @@ function PricingCard({ plan }) {
   );
 }
 
-function AboutFounder() {
-  const [showPhoto, setShowPhoto] = useState(true);
-
-  return (
-    <section id="about" className="section-padding">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <Reveal>
-          <div className="relative overflow-hidden rounded-[1.5rem] border border-zinc-200 bg-zinc-950 p-6 text-zinc-50 shadow-panel sm:p-8 lg:p-10">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-zinc-500/50 to-transparent" />
-            <div className="grid gap-8 lg:grid-cols-[18rem_1fr] lg:items-center">
-              <div>
-                <div className="relative h-32 w-32 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-                  {showPhoto ? (
-                    <img
-                      src={founder.image}
-                      alt={`${founder.name}, ${founder.title}`}
-                      className="h-full w-full object-cover"
-                      onError={() => setShowPhoto(false)}
-                    />
-                  ) : (
-                    <div className="grid h-full w-full place-items-center bg-zinc-900 text-2xl font-semibold text-zinc-100">
-                      BG
-                    </div>
-                  )}
-                </div>
-                <div className="mt-5">
-                  <p className="text-xl font-semibold tracking-tight text-zinc-50">{founder.name}</p>
-                  <p className="mt-1 text-sm leading-6 text-zinc-400">{founder.title}</p>
-                </div>
-              </div>
-              <div>
-                <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Why I built Guestly</p>
-                <p className="mt-4 max-w-3xl text-pretty text-2xl font-semibold leading-tight tracking-[-0.035em] text-zinc-50 sm:text-3xl">
-                  One of my relatives runs a boutique hotel, and I kept seeing the same problem: guests would mention issues
-                  after checkout, or say nothing at all until it became a review.
-                </p>
-                <p className="mt-5 max-w-3xl text-base leading-8 text-zinc-400">
-                  Guestly came from that gap. I wanted to give hospitality teams a faster way to capture quiet feedback,
-                  classify what is urgent, and act while the guest experience is still fixable.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 function RequestAccess() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -1182,7 +1126,6 @@ function Footer() {
             ['Home', '#home'],
             ['Demo', '#demo'],
             ['Pricing', '#pricing'],
-            ['About', '#about'],
             ['Contact', '#access'],
           ].map(([label, href]) => (
             <a
@@ -1223,7 +1166,6 @@ export default function App() {
         <Features />
         <DemoPreview />
         <Pricing />
-        <AboutFounder />
         <RequestAccess />
       </main>
       <Footer />
