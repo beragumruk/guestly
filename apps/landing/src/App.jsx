@@ -219,6 +219,11 @@ const aboutPage = {
       title: '100+ hospitality teams',
       text: 'More than 100 hospitality teams have used Guestly so far.',
     },
+    {
+      period: 'Today',
+      title: 'Active hospitality SaaS',
+      text: 'Guestly continues to support approximately 35 active hospitality teams through paid Core and Pro plans.',
+    },
   ],
   capabilities: [
     { title: 'Guest Feedback Infrastructure', text: 'QR-based guest feedback flows and private submission experiences.', icon: QrCode },
@@ -298,6 +303,32 @@ const impactPage = {
     { type: 'Independent Hotel', metric: '360+ guest signals captured', text: 'Guestly centralized private guest feedback and helped management identify recurring operational themes.' },
     { type: 'Multi-Location Operator', metric: '6 locations connected', text: 'Management used a centralized Guestly workspace to understand feedback patterns across multiple locations.' },
     { type: 'Hospitality Operator', metric: '290+ submissions processed', text: 'Guest feedback was categorized and organized so teams could more easily distinguish routine comments from higher-priority concerns.' },
+  ],
+  customerOutcomes: [
+    {
+      type: 'Independent Hotel',
+      title: 'Private guest feedback captured and organized in one place',
+      metric: '200+',
+      metricLabel: 'guest feedback signals captured',
+      detail: 'Guestly helped the property surface recurring service and operational issues before they were limited to public review channels.',
+      supportingMetric: 'Private QR feedback in active use',
+    },
+    {
+      type: 'Multi-Location Operator',
+      title: 'Feedback visibility across multiple locations',
+      metric: '6',
+      metricLabel: 'locations connected',
+      detail: 'Management could review guest experience patterns across locations from a centralized Guestly workspace.',
+      supportingMetric: 'One shared operations view',
+    },
+    {
+      type: 'Restaurant Operator',
+      title: 'Urgent feedback separated from routine comments',
+      metric: '250+',
+      metricLabel: 'feedback signals processed',
+      detail: 'Guestly’s classification workflow helped management understand which incoming concerns required attention.',
+      supportingMetric: 'Priority and sentiment reviewed in one queue',
+    },
   ],
   development: ['Private Feedback Capture', 'AI-Assisted Classification', 'Analytics', 'Multi-Location Visibility', 'Team Workflows', 'Integrations'],
 };
@@ -395,35 +426,7 @@ const decisionQueue = [
   { title: 'Staff breakfast queue coverage', detail: 'Cafe counter · Service', status: 'Scheduled' },
 ];
 
-const customerOutcomes = [
-  {
-    type: 'Independent Hotel',
-    title: 'Private guest feedback captured and organized in one place',
-    metric: '200+',
-    metricLabel: 'guest feedback signals captured',
-    detail:
-      'Guestly helped the property surface recurring service and operational issues before they were limited to public review channels.',
-    supportingMetric: 'Private QR feedback in active use',
-  },
-  {
-    type: 'Multi-Location Operator',
-    title: 'Feedback visibility across multiple locations',
-    metric: '6',
-    metricLabel: 'locations connected',
-    detail:
-      'Management could review guest experience patterns across locations from a centralized Guestly workspace.',
-    supportingMetric: 'One shared operations view',
-  },
-  {
-    type: 'Restaurant Operator',
-    title: 'Urgent feedback separated from routine comments',
-    metric: '250+',
-    metricLabel: 'feedback signals processed',
-    detail:
-      'Guestly’s classification workflow helped management understand which incoming concerns required attention.',
-    supportingMetric: 'Priority and sentiment reviewed in one queue',
-  },
-];
+const customerOutcomes = impactPage.customerOutcomes;
 
 const pricingPlans = [
   {
@@ -647,7 +650,7 @@ function Hero() {
           </p>
           <div className="mt-5 flex items-center gap-2 text-sm font-medium text-zinc-500">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
-            <span>100+ hospitality teams supported since launch</span>
+            <span>Trusted by 100+ hospitality teams since launch</span>
           </div>
           <a href="/trust" className="mt-4 inline-flex w-fit items-center gap-2 text-sm text-zinc-500 transition hover:text-zinc-950">
             <ShieldCheck className="h-4 w-4" />
@@ -2020,8 +2023,13 @@ function DemoAnalytics({ analytics, activeLocation, onLocation }) {
 }
 
 function DemoIntegrations() {
-  const items = [[Mail, 'Email alerts', 'Route selected guest feedback to the team.'], [MessageSquareText, 'Slack notifications', 'Available when a Slack connection is configured.'], [Download, 'CSV export', 'Export filtered feedback for reporting.'], [Webhook, 'Webhooks', 'Send selected events into external workflows.']];
-  return <div className="mx-auto max-w-5xl"><div><p className="text-lg font-semibold text-white">Connected operations</p><p className="mt-1 text-sm text-zinc-400">Guestly can move feedback into the places a team already works.</p></div><div className="mt-7 grid gap-3 sm:grid-cols-2">{items.map(([Icon, title, text], index) => <div key={title} className="rounded-xl border border-white/10 bg-white/[0.04] p-5"><div className="flex items-center justify-between"><Icon className="h-4 w-4 text-zinc-200" /><span className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{index === 2 ? 'Available' : index === 1 ? 'Coming soon' : 'Demo'}</span></div><h3 className="mt-6 text-base font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-zinc-400">{text}</p></div>)}</div></div>;
+  const items = [
+    [Mail, 'Email notifications', 'Route selected guest feedback to the team.', 'Beta'],
+    [MessageSquareText, 'Slack alerts', 'Available when a Slack connection is configured.', 'Coming soon'],
+    [Download, 'CSV export', 'Export filtered feedback for reporting.', 'Available'],
+    [Webhook, 'Webhooks / API', 'Send selected events into external workflows.', 'Beta'],
+  ];
+  return <div className="mx-auto max-w-5xl"><div><p className="text-lg font-semibold text-white">Connected operations</p><p className="mt-1 text-sm text-zinc-400">Guestly can move feedback into the places a team already works.</p></div><div className="mt-7 grid gap-3 sm:grid-cols-2">{items.map(([Icon, title, text, status]) => <div key={title} className="rounded-xl border border-white/10 bg-white/[0.04] p-5"><div className="flex items-center justify-between"><Icon className="h-4 w-4 text-zinc-200" /><span className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{status}</span></div><h3 className="mt-6 text-base font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-zinc-400">{text}</p></div>)}</div></div>;
 }
 
 function DemoTag({ children, strong = false }) {
