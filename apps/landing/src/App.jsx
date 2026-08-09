@@ -229,27 +229,30 @@ const decisionQueue = [
 const customerOutcomes = [
   {
     type: 'Independent Hotel',
-    metric: '2.3×',
-    metricLabel: 'more guest feedback captured',
+    title: 'Private guest feedback captured and organized in one place',
+    metric: '200+',
+    metricLabel: 'guest feedback signals captured',
     detail:
-      'After moving private guest feedback into Guestly, the property captured more actionable feedback from guests and gave management a clearer view of recurring service issues.',
-    supportingMetric: '11 recurring issues surfaced in the first 30 days',
+      'Guestly helped the property surface recurring service and operational issues before they were limited to public review channels.',
+    supportingMetric: 'Private QR feedback in active use',
   },
   {
-    type: 'Multi-Location Hospitality Group',
-    metric: '41%',
-    metricLabel: 'faster issue identification',
+    type: 'Multi-Location Operator',
+    title: 'Feedback visibility across multiple locations',
+    metric: '6',
+    metricLabel: 'locations connected',
     detail:
-      'Guestly gave management one place to review feedback across locations and quickly identify which operational issues required attention.',
-    supportingMetric: '6 locations monitored from one workspace',
+      'Management could review guest experience patterns across locations from a centralized Guestly workspace.',
+    supportingMetric: 'One shared operations view',
   },
   {
     type: 'Restaurant Operator',
-    metric: '72%',
-    metricLabel: 'of urgent feedback reviewed the same day',
+    title: 'Urgent feedback separated from routine comments',
+    metric: '250+',
+    metricLabel: 'feedback signals processed',
     detail:
-      'Guestly helped the team separate routine comments from higher-priority guest concerns so managers could focus on issues that needed immediate attention.',
-    supportingMetric: '220+ guest signals captured',
+      'Guestly’s classification workflow helped management understand which incoming concerns required attention.',
+    supportingMetric: 'Priority and sentiment reviewed in one queue',
   },
 ];
 
@@ -1007,8 +1010,8 @@ function CustomerOutcomes() {
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Customer outcomes"
-          title="Private feedback, measurable operational clarity."
-          text="Guestly helps hospitality teams turn more guest input into faster, more focused action."
+          title="Guestly in day-to-day hospitality operations."
+          text="Anonymous operators use Guestly to capture private feedback, organize incoming signals, and review what needs attention."
         />
         <div className="mt-10 grid items-stretch gap-4 md:grid-cols-3">
           {customerOutcomes.map((outcome, index) => (
@@ -1019,8 +1022,11 @@ function CustomerOutcomes() {
                   <span className="font-mono text-xs text-zinc-400">0{index + 1}</span>
                 </div>
                 <div className="mt-9 border-y border-zinc-200 py-6">
+                  <p className="mb-8 max-w-[16rem] text-lg font-semibold leading-6 tracking-[-0.025em] text-zinc-800">
+                    {outcome.title}
+                  </p>
                   <p className="text-5xl font-semibold tracking-[-0.06em] text-zinc-950">{outcome.metric}</p>
-                  <p className="mt-2 max-w-[16rem] text-lg font-semibold leading-6 tracking-[-0.025em] text-zinc-800">
+                  <p className="mt-2 max-w-[16rem] text-sm font-medium leading-6 text-zinc-600">
                     {outcome.metricLabel}
                   </p>
                 </div>
@@ -1034,7 +1040,7 @@ function CustomerOutcomes() {
             </Reveal>
           ))}
         </div>
-        <p className="mt-6 text-sm text-zinc-500">Customer identities withheld for privacy. Results vary by operator.</p>
+        <p className="mt-6 text-sm text-zinc-500">Customer identities withheld for privacy.</p>
       </div>
     </section>
   );
