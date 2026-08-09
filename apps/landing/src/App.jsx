@@ -102,9 +102,9 @@ const riskDots = [
 ];
 
 const dashboardMetrics = [
-  { label: 'Signals processed', value: '1,284', detail: '30-day volume', tone: 'ink' },
-  { label: 'Escalation queue', value: '23', detail: 'Needs owner review', tone: 'ink' },
-  { label: 'Risk exposures', value: '4', detail: 'Safety, legal, PR', tone: 'ink' },
+  { label: 'Open signals', value: '18', detail: 'Current workspace queue', tone: 'ink' },
+  { label: 'Needs attention', value: '4', detail: 'Critical or high priority', tone: 'ink' },
+  { label: 'Median triage', value: '11m', detail: 'From intake to owner', tone: 'ink' },
 ];
 
 const sentimentData = [
@@ -116,22 +116,40 @@ const sentimentData = [
 const recentFeedback = [
   {
     source: 'Room 307',
-    text: 'Noise and humidity signal mapped to room experience risk.',
+    summary: 'Climate and noise',
+    text: 'Guest reported humidity and intermittent mechanical noise overnight.',
     department: 'Rooms',
+    category: 'Room environment',
     priority: 'High',
+    sentiment: 'Negative',
+    timestamp: '12 min ago',
   },
   {
     source: 'Cafe counter',
-    text: 'Positive staff mention with queue-time friction.',
+    summary: 'Breakfast queue delay',
+    text: 'Coffee line moved slowly during the breakfast rush.',
     department: 'Service',
+    category: 'Wait time',
     priority: 'Medium',
+    sentiment: 'Neutral',
+    timestamp: '19 min ago',
   },
   {
     source: 'Table 18',
-    text: 'Possible allergen handling issue routed as exposure risk.',
+    summary: 'Allergen handling',
+    text: 'Guest requested a follow-up after a possible ingredient mix-up.',
     department: 'Kitchen',
+    category: 'Food safety',
     priority: 'Critical',
+    sentiment: 'Negative',
+    timestamp: '31 min ago',
   },
+];
+
+const decisionQueue = [
+  { title: 'Review allergen handling signal', detail: 'Table 18 · Kitchen', status: 'Assigned' },
+  { title: 'Inspect room climate pattern', detail: 'Rooms · Maintenance', status: 'In progress' },
+  { title: 'Staff breakfast queue coverage', detail: 'Cafe counter · Service', status: 'Scheduled' },
 ];
 
 const pricingPlans = [
@@ -744,20 +762,23 @@ function DemoPreview() {
     <section id="demo" className="section-padding">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Demo preview"
-          title="A sample command view for guest experience risk."
-          text="Sample data only. Built to show intake, scoring, routing, and resolution states."
+          eyebrow="Product preview"
+          title="One workspace for every guest signal."
+          text="An illustrative view of Guestly’s intake, triage, and resolution workflow."
           align="center"
         />
         <Reveal delay={120}>
           <GlassCard className="mt-10 overflow-hidden rounded-[1.5rem]">
             <div className="flex flex-col gap-4 border-b border-white/10 bg-white/[0.035] p-5 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-400">Guestly intelligence</p>
-                <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">Signal command view</h3>
+                <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-400">Guestly workspace</p>
+                <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">Operations overview</h3>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {['Hotel', 'Cafe', 'Restaurant'].map((label) => (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium text-zinc-600">
+                  Demo workspace
+                </span>
+                {['All locations', 'Today'].map((label) => (
                   <span key={label} className="rounded-full border border-white/10 px-3 py-1 text-sm text-slate-400">
                     {label}
                   </span>
@@ -776,11 +797,11 @@ function DemoPreview() {
                     <h4 className="font-semibold text-white">Classified guest signals</h4>
                     <span className="inline-flex w-fit items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-sm text-zinc-600">
                       <Flag className="h-3.5 w-3.5" />
-                      Recurrence cluster: peak-hour service latency
+                      Pattern flagged: breakfast queue delays
                     </span>
                   </div>
                   <div className="mt-5 space-y-3">
-                    {recentFeedback.slice(0, 2).map((item) => (
+                    {recentFeedback.map((item) => (
                       <FeedbackRow key={`${item.source}-${item.text}`} item={item} />
                     ))}
                   </div>
@@ -799,15 +820,22 @@ function DemoPreview() {
                   </div>
                 </GlassCard>
                 <GlassCard className="p-5">
-                  <h4 className="font-semibold text-white">Decision queue</h4>
-                  <div className="mt-5 space-y-4">
-                    {[
-                      'Escalate allergen exposure signal to kitchen lead.',
-                      'Inspect recurring room-environment complaints.',
-                    ].map((item) => (
-                      <div key={item} className="flex gap-3 text-sm leading-6 text-slate-300">
-                        <Check className="mt-1 h-4 w-4 flex-none text-zinc-900" />
-                        {item}
+                  <div className="flex items-center justify-between gap-3">
+                    <h4 className="font-semibold text-white">Decision queue</h4>
+                    <span className="text-xs text-zinc-500">3 active</span>
+                  </div>
+                  <div className="mt-5 space-y-3">
+                    {decisionQueue.map((item) => (
+                      <div key={item.title} className="rounded-xl border border-zinc-200 bg-white/92 p-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-medium text-zinc-950">{item.title}</p>
+                            <p className="mt-1 text-xs text-zinc-500">{item.detail}</p>
+                          </div>
+                          <span className="whitespace-nowrap rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[11px] font-medium text-zinc-600">
+                            {item.status}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -826,11 +854,17 @@ function FeedbackRow({ item, compact = false }) {
     <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-200">{item.source}</p>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <p className="text-sm font-medium text-slate-200">{item.summary}</p>
+            <span className="text-xs text-zinc-500">{item.source}</span>
+            <span className="text-xs text-zinc-400">{item.timestamp}</span>
+          </div>
           <p className={`mt-2 leading-6 text-slate-400 ${compact ? 'text-xs' : 'text-sm'}`}>{item.text}</p>
         </div>
         <div className="flex flex-wrap gap-2 sm:justify-end">
           <span className="rounded-full border border-white/10 px-2.5 py-1 text-xs text-slate-400">{item.department}</span>
+          <span className="rounded-full border border-white/10 px-2.5 py-1 text-xs text-slate-400">{item.category}</span>
+          <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs text-zinc-600">{item.sentiment}</span>
           <PriorityBadge priority={item.priority} />
         </div>
       </div>
