@@ -113,6 +113,48 @@ const sentimentData = [
   { label: 'Negative', value: 18, color: 'bg-zinc-600' },
 ];
 
+const locationPerformance = [
+  { name: 'Downtown', signals: '248', positive: '82%', urgent: '6' },
+  { name: 'Airport', signals: '193', positive: '76%', urgent: '11' },
+  { name: 'Waterfront', signals: '164', positive: '88%', urgent: '3' },
+  { name: 'Northside', signals: '121', positive: '80%', urgent: '5' },
+];
+
+const locationSentiment = [
+  { label: 'Positive', value: 81, color: 'bg-zinc-900' },
+  { label: 'Neutral', value: 13, color: 'bg-zinc-400' },
+  { label: 'Negative', value: 6, color: 'bg-zinc-600' },
+];
+
+const locationCategories = [
+  { label: 'Wait time', count: '18 signals' },
+  { label: 'Room comfort', count: '14 signals' },
+  { label: 'Cleanliness', count: '9 signals' },
+];
+
+const locationActivity = [
+  { location: 'Airport', text: 'Breakfast queue flagged for review', priority: 'High', time: '9 min ago' },
+  { location: 'Waterfront', text: 'Room comfort pattern added to trend view', priority: 'Medium', time: '27 min ago' },
+];
+
+const locationCapabilities = [
+  {
+    title: 'Compare locations',
+    text: 'Quickly see where guest experience patterns differ across your operation.',
+    icon: MapPin,
+  },
+  {
+    title: 'Spot recurring issues',
+    text: 'Identify problems appearing repeatedly across properties, departments, or touchpoints.',
+    icon: TrendingUp,
+  },
+  {
+    title: 'Centralize visibility',
+    text: 'Give operators one place to understand guest feedback without manually combining data from separate locations.',
+    icon: ScanLine,
+  },
+];
+
 const recentFeedback = [
   {
     source: 'Room 307',
@@ -759,6 +801,138 @@ function Features() {
   );
 }
 
+function MultiLocationVisibility() {
+  return (
+    <section className="section-padding">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow="Multi-location operations"
+          title="Visibility across every location."
+          text="See what guests are experiencing across your operation, from individual touchpoints to multiple properties, in one place."
+        />
+
+        <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(18rem,0.55fr)] lg:items-start">
+          <Reveal>
+            <GlassCard className="overflow-hidden rounded-[1.5rem]">
+              <div className="flex flex-col gap-4 border-b border-zinc-200 p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-mono text-xs uppercase tracking-[0.22em] text-zinc-500">Guestly workspace</p>
+                    <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-zinc-500">
+                      Demo workspace
+                    </span>
+                  </div>
+                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-white">Location performance</h3>
+                </div>
+                <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-700">
+                  <MapPin className="h-4 w-4" />
+                  All locations
+                  <span className="ml-1 text-zinc-400">⌄</span>
+                </div>
+              </div>
+
+              <div className="p-4 sm:p-5">
+                <div className="overflow-hidden rounded-2xl border border-zinc-200">
+                  <div className="grid grid-cols-[1.25fr_.75fr_.75fr_.55fr] gap-2 border-b border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-[9px] uppercase tracking-[0.12em] text-zinc-500 sm:text-[10px]">
+                    <span>Location</span>
+                    <span>Signals</span>
+                    <span>Positive</span>
+                    <span>Urgent</span>
+                  </div>
+                  {locationPerformance.map((location, index) => (
+                    <div key={location.name} className={`grid grid-cols-[1.25fr_.75fr_.75fr_.55fr] items-center gap-2 px-4 py-4 ${index < locationPerformance.length - 1 ? 'border-b border-zinc-200' : ''}`}>
+                      <div className="flex min-w-0 items-center gap-2">
+                        <span className="h-2 w-2 shrink-0 rounded-full bg-zinc-900" />
+                        <span className="truncate text-sm font-semibold text-zinc-950">{location.name}</span>
+                      </div>
+                      <span className="text-sm text-zinc-700">{location.signals}</span>
+                      <span className="text-sm text-zinc-700">{location.positive}</span>
+                      <span className="text-sm font-semibold text-zinc-950">{location.urgent}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 grid overflow-hidden rounded-2xl border border-zinc-200 md:grid-cols-[0.82fr_1.18fr]">
+                  <div className="border-b border-zinc-200 p-5 md:border-b-0 md:border-r">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">Sentiment overview</p>
+                        <p className="mt-1 text-2xl font-semibold tracking-[-0.04em] text-zinc-950">81% positive</p>
+                      </div>
+                      <TrendingUp className="h-4 w-4 text-zinc-500" />
+                    </div>
+                    <div className="mt-5 space-y-3">
+                      {locationSentiment.map((item) => (
+                        <div key={item.label}>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-zinc-600">{item.label}</span>
+                            <span className="font-mono text-zinc-500">{item.value}%</span>
+                          </div>
+                          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                            <div className={`h-full rounded-full ${item.color}`} style={{ width: `${item.value}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">Recurring categories</p>
+                      <Flag className="h-4 w-4 text-zinc-500" />
+                    </div>
+                    <div className="mt-4 space-y-3">
+                      {locationCategories.map((category) => (
+                        <div key={category.label} className="flex items-center justify-between gap-3 border-b border-zinc-100 pb-3 last:border-0 last:pb-0">
+                          <span className="text-sm font-medium text-zinc-800">{category.label}</span>
+                          <span className="whitespace-nowrap font-mono text-[11px] text-zinc-500">{category.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 rounded-2xl border border-zinc-200 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">Recent activity</p>
+                    <span className="text-xs text-zinc-500">Location-aware feed</span>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {locationActivity.map((activity) => (
+                      <div key={`${activity.location}-${activity.text}`} className="flex flex-col gap-2 border-b border-zinc-100 pb-3 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-zinc-900">{activity.text}</p>
+                          <p className="mt-1 text-xs text-zinc-500">{activity.location} · {activity.time}</p>
+                        </div>
+                        <PriorityBadge priority={activity.priority} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </GlassCard>
+          </Reveal>
+
+          <div className="border-t border-zinc-200 lg:mt-1">
+            {locationCapabilities.map(({ title, text, icon: Icon }, index) => (
+              <Reveal key={title} delay={index * 70}>
+                <div className={`flex gap-4 py-6 ${index < locationCapabilities.length - 1 ? 'border-b border-zinc-200' : ''}`}>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-zinc-200 bg-white text-zinc-800">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold tracking-tight text-zinc-950">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">{text}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CustomerOutcomes() {
   return (
     <section className="section-padding">
@@ -1243,6 +1417,7 @@ export default function App() {
         <Hero />
         <HowItWorks />
         <Features />
+        <MultiLocationVisibility />
         <CustomerOutcomes />
         <DemoPreview />
         <Pricing />
