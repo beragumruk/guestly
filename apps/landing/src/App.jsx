@@ -1907,7 +1907,7 @@ function TrustPage() {
             </div>
           </section>
           <GlassCard className="mt-10 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
-            <div><p className="font-semibold text-zinc-950">Security question or concern?</p><p className="mt-1 text-sm text-zinc-600">Contact Guestly at {demoRequestEmail}. Guestly does not represent unverified certifications or compliance designations.</p></div>
+            <div><p className="font-semibold text-zinc-950">Security question or concern?</p><p className="mt-1 text-sm text-zinc-600">Contact Guestly at {demoRequestEmail}.</p></div>
             <a className="btn-secondary shrink-0" href={`mailto:${demoRequestEmail}`}>Contact Guestly <ArrowRight className="h-4 w-4" /></a>
           </GlassCard>
         </section>
