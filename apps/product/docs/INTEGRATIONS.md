@@ -2,6 +2,10 @@
 
 Guestly integrations are organization-scoped and require the production database path. The current local workspace continues to work without these values, but it correctly leaves server-backed integrations unavailable until setup is complete.
 
+## Deploy the product application
+
+The marketing site and the authenticated product are separate applications. Deploy `apps/product` as the project root for the deployment serving `app.getguestly.com`, then set its build command to `npm run build`. The integration API routes, Slack callback, and daily cron are part of that product deployment, not the marketing-site deployment.
+
 ## 1. Provision integration storage
 
 Apply these SQL files to the same Supabase project that holds the Guestly production tables:
