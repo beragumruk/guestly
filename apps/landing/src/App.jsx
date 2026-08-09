@@ -336,7 +336,11 @@ function Hero() {
           <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-zinc-600">
             Guestly turns QR feedback into prioritized operational intelligence for hospitality teams.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-5 flex items-center gap-2 text-sm font-medium text-zinc-500">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+            <span>Trusted by 100+ hospitality teams</span>
+          </div>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
               Contact for Demo
               <ArrowRight className="h-4 w-4" />
