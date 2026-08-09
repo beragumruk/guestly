@@ -43,24 +43,28 @@ const signalStages = [
 
 const workflowSteps = [
   {
-    title: 'Place Guestly QR codes',
-    text: 'Deploy scan points across rooms, tables, receipts, and guest messages.',
+    title: 'Capture feedback in the moment',
+    text: 'Guests scan a Guestly QR touchpoint and privately share their experience in seconds, with no app or account required.',
+    meta: 'Private QR touchpoint',
     icon: QrCode,
   },
   {
-    title: 'Capture structured signals',
-    text: 'Capture source, location, issue type, and sentiment.',
-    icon: ScanLine,
-  },
-  {
-    title: 'Classify operational risk',
-    text: 'Score urgency, recurrence, department, and exposure.',
+    title: 'Understand what needs attention',
+    text: 'Guestly automatically organizes incoming feedback by category, urgency, and sentiment so teams can quickly understand what matters.',
+    meta: 'Category · urgency · sentiment',
     icon: Sparkles,
   },
   {
-    title: 'Route what matters',
-    text: 'Route priority items before they become public reviews.',
-    icon: Zap,
+    title: 'Surface the right issues',
+    text: 'Higher-priority feedback is surfaced clearly so managers can focus on issues that may require immediate operational attention.',
+    meta: 'Priority review queue',
+    icon: ShieldAlert,
+  },
+  {
+    title: 'Spot patterns over time',
+    text: 'Guestly brings feedback together so operators can identify recurring issues, monitor trends, and understand the guest experience across their operation.',
+    meta: 'Cross-location trend view',
+    icon: TrendingUp,
   },
 ];
 
@@ -681,25 +685,41 @@ function HowItWorks() {
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="How it works"
-          title="From guest signal to operational decision."
-          text="Capture, classify, and route guest issues before they become public reviews."
+          title="From guest feedback to operational insight."
+          text="Guestly turns individual guest experiences into organized information your team can actually use."
           align="center"
         />
-        <div className="mt-10 grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {workflowSteps.map(({ title, text, icon: Icon }, index) => (
-            <Reveal key={title} delay={index * 80} className="h-full">
-              <GlassCard className="group flex h-full min-h-[18rem] flex-col p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300">
-                <div className="flex items-center justify-between">
-                  <span className="grid h-11 w-11 place-items-center rounded-xl border border-zinc-200 bg-white text-zinc-800 transition group-hover:bg-zinc-50">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="font-mono text-xs text-slate-600">0{index + 1}</span>
-                </div>
-                <h3 className="mt-7 text-xl font-semibold tracking-tight text-white">{title}</h3>
-                <p className="mt-4 leading-7 text-slate-400">{text}</p>
-              </GlassCard>
-            </Reveal>
-          ))}
+        <div className="relative mt-10">
+          <div className="absolute left-[12.5%] right-[12.5%] top-[2rem] hidden h-px bg-zinc-200 xl:block" aria-hidden="true" />
+          <div className="grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4 xl:gap-6">
+            {workflowSteps.map(({ title, text, meta, icon: Icon }, index) => (
+              <Reveal key={title} delay={index * 70} className="relative h-full">
+                <GlassCard className="group relative flex h-full min-h-[19rem] flex-col p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300">
+                  <div className="flex items-center justify-between">
+                    <span className="relative z-10 grid h-16 w-16 place-items-center rounded-2xl border border-zinc-200 bg-white text-zinc-800 transition duration-300 group-hover:bg-zinc-50">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="font-mono text-xs tracking-[0.18em] text-slate-500">0{index + 1}</span>
+                  </div>
+                  <div className="mt-7 border-t border-zinc-200 pt-5">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500">{meta}</p>
+                    <h3 className="mt-4 text-xl font-semibold tracking-tight text-white">{title}</h3>
+                    <p className="mt-4 leading-7 text-slate-400">{text}</p>
+                  </div>
+                </GlassCard>
+                {index < workflowSteps.length - 1 && (
+                  <>
+                    <span className="absolute -bottom-[0.85rem] left-1/2 z-20 grid h-7 w-7 -translate-x-1/2 place-items-center rounded-full border border-zinc-200 bg-white text-zinc-500 xl:hidden" aria-hidden="true">
+                      <ArrowRight className="h-3 w-3 rotate-90" />
+                    </span>
+                    <span className="absolute -right-[1.1rem] top-[1.55rem] z-20 hidden h-4 w-4 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 xl:flex" aria-hidden="true">
+                      <ArrowRight className="h-3 w-3" />
+                    </span>
+                  </>
+                )}
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
