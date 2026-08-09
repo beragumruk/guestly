@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { Plug, Save } from "lucide-react";
+import { Plug, Save, ShieldCheck, Users } from "lucide-react";
 import { Button, Card, FormField, Input, PageHeader, Select } from "@/components/ui";
 import { useGuestly } from "@/components/use-guestly";
 import { updateSettings } from "@/lib/store";
@@ -101,6 +101,16 @@ export default function SettingsPage() {
           Manage integrations
         </Link>
       </Card>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div><p className="mono-label">Team access</p><h2 className="mt-2 text-xl font-semibold text-zinc-950">Members, roles, and locations.</h2><p className="mt-2 text-sm text-zinc-500">Invite teammates, set access levels, and review pending access.</p></div>
+          <Link href="/dashboard/settings/team" className="button-secondary w-fit"><Users className="h-4 w-4" />Manage team</Link>
+        </Card>
+        <Card className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div><p className="mono-label">Security & privacy</p><h2 className="mt-2 text-xl font-semibold text-zinc-950">Controls and activity.</h2><p className="mt-2 text-sm text-zinc-500">Review security posture, organization activity, and data controls.</p></div>
+          <Link href="/dashboard/settings/security" className="button-secondary w-fit"><ShieldCheck className="h-4 w-4" />Open security</Link>
+        </Card>
+      </div>
     </div>
   );
 }

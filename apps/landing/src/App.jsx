@@ -12,6 +12,7 @@ import {
   QrCode,
   ScanLine,
   ShieldAlert,
+  ShieldCheck,
   Sparkles,
   TrendingUp,
   Webhook,
@@ -458,6 +459,11 @@ function Hero() {
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
             <span>Trusted by 100+ hospitality teams</span>
           </div>
+          <a href="/trust" className="mt-4 inline-flex w-fit items-center gap-2 text-sm text-zinc-500 transition hover:text-zinc-950">
+            <ShieldCheck className="h-4 w-4" />
+            Built with guest privacy and operational security in mind.
+            <ArrowRight className="h-3.5 w-3.5" />
+          </a>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
               Contact for Demo
@@ -1442,12 +1448,14 @@ function Footer() {
             ['Demo', '#demo'],
             ['Pricing', '#pricing'],
             ['Contact', '#access'],
+            ['Trust', '/trust'],
           ].map(([label, href]) => (
             <a
               key={href}
               href={href}
               className="transition hover:text-zinc-950"
               onClick={(event) => {
+                if (href === '/trust') return;
                 event.preventDefault();
                 goToHref(href);
               }}
@@ -1461,6 +1469,65 @@ function Footer() {
   );
 }
 
+function TrustPage() {
+  const areas = [
+    {
+      title: 'Authentication',
+      text: 'Guestly uses signed, time-limited dashboard sessions. Session cookies are HTTP-only and same-site, with the secure flag enabled in production.',
+    },
+    {
+      title: 'Access controls',
+      text: 'Organization roles are checked on the server for sensitive actions. Owners, Admins, Managers, and Viewers receive deliberately different access scopes.',
+    },
+    {
+      title: 'Organization isolation',
+      text: 'Administrative and feedback operations resolve the organization from the signed server session, rather than trusting an organization identifier supplied by the browser.',
+    },
+    {
+      title: 'Data handling',
+      text: 'Guestly stores submitted feedback, optional guest contact details, feedback context, and the operational fields needed to triage and analyze a signal. Authorized administrators can export data and use confirmation-protected deletion controls.',
+    },
+    {
+      title: 'Integration credentials',
+      text: 'Integration credentials and signing material are kept server-side. Guestly does not expose provider secrets, webhook signing secrets, or private environment variables to the browser.',
+    },
+    {
+      title: 'Privacy choices',
+      text: 'Organizations can document a feedback retention preference. To avoid unattended loss of operational records, retention purges require an Owner to explicitly confirm the action.',
+    },
+  ];
+
+  return (
+    <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <Navbar />
+      <main className="px-5 pb-20 pt-32 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">Trust & security</p>
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl">Security built for guest feedback operations.</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600">Guestly is designed to help hospitality teams handle operational feedback with clear access boundaries, privacy controls, and accountable administration.</p>
+          </div>
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {areas.map((area) => (
+              <GlassCard key={area.title} className="p-6">
+                <ShieldCheck className="h-5 w-5 text-zinc-500" />
+                <h2 className="mt-6 text-xl font-semibold tracking-tight text-zinc-950">{area.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-zinc-600">{area.text}</p>
+              </GlassCard>
+            ))}
+          </div>
+          <GlassCard className="mt-10 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div><p className="font-semibold text-zinc-950">Security question or concern?</p><p className="mt-1 text-sm text-zinc-600">Contact Guestly at {demoRequestEmail}. We do not represent unverified certifications or compliance designations.</p></div>
+            <a className="btn-secondary shrink-0" href={`mailto:${demoRequestEmail}`}>Contact Guestly <ArrowRight className="h-4 w-4" /></a>
+          </GlassCard>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   const [redirecting, setRedirecting] = useState(false);
 
@@ -1469,6 +1536,10 @@ export default function App() {
     window.addEventListener('guestly:product-redirect', handleRedirect);
     return () => window.removeEventListener('guestly:product-redirect', handleRedirect);
   }, []);
+
+  if (typeof window !== 'undefined' && window.location.pathname === '/trust') {
+    return <TrustPage />;
+  }
 
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">

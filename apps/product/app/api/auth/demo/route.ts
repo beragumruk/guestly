@@ -1,11 +1,10 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { createWorkspaceAccessToken, DEMO_ACCESS_EMAIL, hasDemoAccessPassword, WORKSPACE_ACCESS_COOKIE } from "@/lib/auth";
+import { createWorkspaceAccessToken, DEMO_ACCESS_EMAIL, getWorkspaceSession, hasDemoAccessPassword, WORKSPACE_ACCESS_COOKIE, workspaceSessionMaxAge } from "@/lib/auth";
 
 export async function GET() {
   const storedToken = (await cookies()).get(WORKSPACE_ACCESS_COOKIE)?.value;
-  const expectedToken = hasDemoAccessPassword() ? await createWorkspaceAccessToken() : "";
-  return NextResponse.json({ ok: Boolean(storedToken && expectedToken && storedToken === expectedToken) });
+  return NextResponse.json({ ok: Boolean(await getWorkspaceSession(storedToken)) });
 }
 
 export async function POST(request: Request) {
@@ -24,7 +23,7 @@ export async function POST(request: Request) {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: 60 * 60 * 12,
+    maxAge: workspaceSessionMaxAge(),
   });
   return response;
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isIntegrationStoreAvailable, listConnections, listWebhooks, saveConnection } from "@/lib/integrations/repository";
 import { IntegrationAccessError, requireIntegrationAdmin } from "@/lib/integrations/server-auth";
 import type { EmailIntegrationConfig, EmailRules } from "@/lib/integrations/types";
+import { recordActivity } from "@/lib/security/repository";
 
 const defaultEmailRules: EmailRules = {
   allNewFeedback: false,
@@ -25,7 +26,8 @@ function publicIntegration(integration: Awaited<ReturnType<typeof listConnection
 
 export async function GET() {
   try {
-    const { organizationId } = await requireIntegrationAdmin();
+    const actor = await requireIntegrationAdmin();
+    const { organizationId } = actor;
     const storageAvailable = isIntegrationStoreAvailable();
     if (!storageAvailable) {
       return NextResponse.json({
@@ -54,7 +56,8 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
-    const { organizationId } = await requireIntegrationAdmin();
+    const actor = await requireIntegrationAdmin();
+    const { organizationId } = actor;
     if (!isIntegrationStoreAvailable()) throw new Error("Integration storage is not configured. Add Supabase service credentials and run the integration migration first.");
     const body = (await request.json()) as { recipients?: unknown; enabled?: unknown; rules?: Partial<EmailRules> };
     const recipients = Array.isArray(body.recipients)
@@ -73,6 +76,7 @@ export async function PUT(request: Request) {
       status: enabled ? "connected" : recipients.length > 0 ? "needs_attention" : "not_connected",
       config,
     });
+    await recordActivity({ organizationId, actorId: actor.userId, actorLabel: actor.email, eventType: enabled ? "integration.email_connected" : "integration.email_disconnected", objectType: "integration", objectLabel: "Email notifications" });
     return NextResponse.json({
       ok: true,
       integration: publicIntegration(integration),

@@ -18,7 +18,9 @@ create table profiles (
   organization_id text not null references organizations(id) on delete cascade,
   email text not null unique,
   name text not null,
-  role text not null check (role in ('owner', 'manager', 'staff')),
+  role text not null check (role in ('owner', 'admin', 'manager', 'viewer')),
+  status text not null default 'active' check (status in ('active', 'access_revoked')),
+  revoked_at timestamptz,
   created_at timestamptz not null default now()
 );
 

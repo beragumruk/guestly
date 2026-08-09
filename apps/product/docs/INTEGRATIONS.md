@@ -12,6 +12,7 @@ Apply these SQL files to the same Supabase project that holds the Guestly produc
 
 1. `database/schema.sql`
 2. `database/integrations.sql`
+3. `database/security_admin.sql`
 
 `integrations.sql` adds organization-scoped integration connections, webhook endpoints, delivery logs, and row-level security policies. Server routes also filter every storage query by organization ID.
 
@@ -80,4 +81,4 @@ Webhook endpoints must be public HTTPS URLs. Localhost and `.local` addresses ar
 
 ## Production authentication note
 
-The existing project currently uses a single secured demo workspace cookie and browser persistence. `lib/integrations/server-auth.ts` maps that demo session to `GUESTLY_DEMO_ORGANIZATION_ID`. Before enabling the routes for multiple live organizations, replace that resolver with the production authenticated profile lookup. The SQL row-level security policies and repository filters are already organization-scoped, but the session resolver must supply the real authenticated organization ID.
+The current project ships with a secured demo workspace credential flow and browser persistence for local review. It is not a full identity-provider integration or an invitation-acceptance service. For a multi-organization production launch, connect the signed session issuer to the selected authentication provider, use that provider's verified user ID as the profile ID, and complete the invite-acceptance flow before enabling live invitations.

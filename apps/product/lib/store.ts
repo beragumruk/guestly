@@ -92,6 +92,15 @@ function dispatchIntegrationEvent(event: IntegrationEvent, feedback: Feedback, s
   }).catch(() => {});
 }
 
+function recordSecurityActivity(eventType: "location.created" | "location.updated" | "organization.settings_changed", objectLabel?: string) {
+  if (!isBrowser() || !getSession()) return;
+  void fetch("/api/security/activity", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ eventType, objectLabel }),
+  }).catch(() => {});
+}
+
 export function getSession(): GuestlySession | null {
   if (!isBrowser()) return null;
   const stored = window.localStorage.getItem(SESSION_KEY);
@@ -118,7 +127,7 @@ export function findLocationBySlug(slug: string) {
 }
 
 export function createLocation(input: { name: string; locationType: LocationType; referenceCode: string }) {
-  return commitState((state) => {
+  const next = commitState((state) => {
     const baseSlug = slugify(`${state.organization.name}-${input.name}-${input.referenceCode}`);
     const publicSlug = state.locations.some((location) => location.publicSlug === baseSlug)
       ? `${baseSlug}-${state.locations.length + 1}`
@@ -135,13 +144,17 @@ export function createLocation(input: { name: string; locationType: LocationType
     };
     return { ...state, locations: [location, ...state.locations] };
   });
+  recordSecurityActivity("location.created", input.name);
+  return next;
 }
 
 export function updateLocation(id: string, patch: Partial<Pick<FeedbackLocation, "name" | "referenceCode" | "active">>) {
-  return commitState((state) => ({
+  const next = commitState((state) => ({
     ...state,
     locations: state.locations.map((location) => (location.id === id ? { ...location, ...patch } : location)),
   }));
+  recordSecurityActivity("location.updated", next.locations.find((location) => location.id === id)?.name);
+  return next;
 }
 
 export function submitFeedback(input: {
@@ -216,10 +229,12 @@ export function updateSettings(input: {
   email: string;
   notificationPreferences: NotificationPreferences;
 }) {
-  return commitState((state) => ({
+  const next = commitState((state) => ({
     ...state,
     organization: { ...state.organization, name: input.organizationName, businessType: input.businessType },
     user: { ...state.user, name: input.userName, email: input.email },
     notificationPreferences: input.notificationPreferences,
   }));
+  recordSecurityActivity("organization.settings_changed", input.organizationName);
+  return next;
 }

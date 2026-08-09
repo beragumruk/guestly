@@ -49,6 +49,8 @@ Guestly includes:
 - Billing and plan management UI for Core and Pro plans
 - Settings for organization profile and notification preferences
 - Settings → Integrations for CSV export, email alert rules, Slack OAuth setup, and signed webhook management
+- Settings → Team for organization roles, invitations, location assignments, and access revocation
+- Settings → Security and Privacy & Data for activity records, organization export, retention preferences, and confirmation-protected deletion controls
 
 ## Architecture
 
@@ -95,7 +97,7 @@ node scripts/visual-check.mjs
 
 No secrets are committed. Runtime configuration belongs in environment variables, using `.env.example` as the reference.
 
-See [`docs/INTEGRATIONS.md`](docs/INTEGRATIONS.md) for the integration migration, server variables, Slack OAuth callback, Resend email setup, webhook signatures, and production authentication handoff.
+See [`docs/INTEGRATIONS.md`](docs/INTEGRATIONS.md) for integration setup and [`docs/SECURITY_ADMIN.md`](docs/SECURITY_ADMIN.md) for security administration, sessions, team invitations, and production readiness.
 
 ## Rights
 

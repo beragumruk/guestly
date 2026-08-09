@@ -1,6 +1,6 @@
 export type BusinessType = "hotel" | "boutique_hotel" | "cafe" | "restaurant" | "hospitality_group" | "other";
 export type SubscriptionStatus = "trialing" | "active" | "past_due" | "canceled" | "free";
-export type UserRole = "owner" | "manager" | "staff";
+export type UserRole = "owner" | "admin" | "manager" | "viewer";
 export type LocationType = "room" | "lobby" | "table" | "receipt" | "counter" | "email" | "other";
 export type Sentiment = "positive" | "neutral" | "negative" | "mixed";
 export type Urgency = "low" | "medium" | "high" | "critical";
@@ -43,6 +43,13 @@ export interface UserProfile {
   organizationId: string;
   role: UserRole;
   createdAt: string;
+}
+
+export type MemberStatus = "active" | "invitation_pending" | "access_revoked";
+
+export interface TeamMember extends UserProfile {
+  status: MemberStatus;
+  locationIds: string[];
 }
 
 export interface FeedbackLocation {
