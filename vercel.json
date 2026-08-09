@@ -18,6 +18,10 @@
     {
       "source": "/demo",
       "destination": "/index.html"
+    },
+    {
+      "source": "/impact",
+      "destination": "/index.html"
     }
   ]
 }

@@ -215,6 +215,40 @@ const interactiveDemo = {
   ],
 };
 
+const impactPage = {
+  figures: {
+    supportedTeams: '100+',
+    activeTeams: '35',
+    feedbackSignals: '2,300+',
+    touchpoints: '60+',
+  },
+  hero: {
+    eyebrow: 'Impact',
+    title: 'Guestly in the real world.',
+    text: 'Since launching in 2025, Guestly has grown from an early hospitality feedback product into a platform used by operators to capture, organize, and act on guest feedback.',
+  },
+  timeline: [
+    { period: 'Spring 2025', title: 'Guestly begins', text: 'Initial development focused on private hospitality feedback and helping operators learn about guest issues earlier.' },
+    { period: 'Summer 2025', title: 'First hospitality pilots', text: 'Early operators begin testing Guestly and providing real-world product feedback.' },
+    { period: 'Late 2025', title: 'Product expands', text: 'Guestly develops beyond feedback collection into feedback classification, analytics, and operational visibility.' },
+    { period: 'Early 2026', title: '50+ teams supported', text: 'Guestly crosses its first significant cumulative adoption milestone.' },
+    { period: '2026', title: '100+ teams supported', text: 'More than 100 hospitality teams have now used or been supported through Guestly.' },
+    { period: 'Today', title: '35 active teams', text: 'Guestly maintains an active customer base across hospitality operations.' },
+  ],
+  useCases: [
+    { title: 'Hotels', text: 'Capture private feedback during the guest stay and surface recurring property or service issues.', icon: Building2 },
+    { title: 'Restaurants', text: 'Organize guest experience feedback before concerns are limited to public review channels.', icon: MessageSquareText },
+    { title: 'Multi-Location Operators', text: 'Understand feedback patterns across multiple hospitality locations from one workspace.', icon: MapPin },
+    { title: 'Operations Teams', text: 'Separate higher-priority guest concerns from routine feedback and monitor recurring issues.', icon: Activity },
+  ],
+  snapshots: [
+    { type: 'Independent Hotel', metric: '360+ guest signals captured', text: 'Guestly centralized private guest feedback and helped management identify recurring operational themes.' },
+    { type: 'Multi-Location Operator', metric: '6 locations connected', text: 'Management used a centralized Guestly workspace to understand feedback patterns across multiple locations.' },
+    { type: 'Hospitality Operator', metric: '290+ submissions processed', text: 'Guest feedback was categorized and organized so teams could more easily distinguish routine comments from higher-priority concerns.' },
+  ],
+  development: ['Private Feedback Capture', 'AI-Assisted Classification', 'Analytics', 'Multi-Location Visibility', 'Team Workflows', 'Integrations'],
+};
+
 const dashboardMetrics = [
   { label: 'Open signals', value: '18', detail: 'Current workspace queue', tone: 'ink' },
   { label: 'Needs attention', value: '4', detail: 'Critical or high priority', tone: 'ink' },
@@ -1547,6 +1581,7 @@ function Footer() {
             ['Demo', '#demo'],
             ['Pricing', '#pricing'],
             ['About', '/about'],
+            ['Impact', '/impact'],
             ['Contact', '#access'],
             ['Trust', '/trust'],
           ].map(([label, href]) => (
@@ -1770,6 +1805,55 @@ function DemoField({ label, value }) {
   return <div><p className="text-xs text-zinc-500">{label}</p><p className="mt-1 text-sm font-medium text-zinc-100">{value}</p></div>;
 }
 
+function ImpactPage() {
+  const metrics = [
+    { value: impactPage.figures.supportedTeams, label: 'Hospitality teams supported since launch' },
+    { value: impactPage.figures.activeTeams, label: 'Active hospitality teams' },
+    { value: impactPage.figures.feedbackSignals, label: 'Guest feedback signals processed' },
+    { value: impactPage.figures.touchpoints, label: 'Hospitality locations & feedback touchpoints' },
+  ];
+
+  return (
+    <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <Navbar />
+      <main className="pb-20 pt-32">
+        <section className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_0.65fr] lg:items-end">
+            <div className="max-w-4xl"><p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">{impactPage.hero.eyebrow}</p><h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl lg:text-7xl">{impactPage.hero.title}</h1><p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-600">{impactPage.hero.text}</p></div>
+            <GlassCard className="p-7 sm:p-8"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Since launch</p><p className="mt-5 text-6xl font-semibold tracking-[-0.065em] text-zinc-950">{impactPage.figures.supportedTeams}</p><p className="mt-2 text-xl font-semibold tracking-tight text-zinc-800">hospitality teams supported</p><p className="mt-4 text-sm leading-6 text-zinc-500">since Guestly launched in 2025</p></GlassCard>
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="border-y border-zinc-200"><div className="grid md:grid-cols-2 lg:grid-cols-4">{metrics.map((metric, index) => <div key={metric.label} className={`py-7 ${index % 2 !== 0 ? 'md:border-l md:pl-7' : 'md:pr-7'} ${index >= 2 ? 'md:border-t md:pt-8' : ''} ${index % 4 !== 0 ? 'lg:border-l lg:pl-7' : 'lg:pr-7'} ${index >= 2 ? 'lg:border-t-0 lg:pt-7' : ''}`}><p className="text-4xl font-semibold tracking-[-0.055em] text-zinc-950">{metric.value}</p><p className="mt-3 max-w-[14rem] text-sm leading-6 text-zinc-600">{metric.label}</p></div>)}</div></div>
+          <p className="mt-5 text-sm text-zinc-500">Cumulative adoption and active teams are shown separately to make the current customer base clear.</p>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="grid gap-8 border-b border-zinc-200 pb-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-end"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Adoption journey</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Growth measured in use, not noise.</h2></div><p className="max-w-2xl text-base leading-8 text-zinc-600">Guestly progressed from early hospitality feedback pilots into a platform used across real teams, locations, and day-to-day workflows.</p></div>
+          <div className="border-b border-zinc-200">{impactPage.timeline.map((milestone, index) => <Reveal key={`${milestone.period}-${milestone.title}`} delay={index * 60} className="grid gap-4 border-t border-zinc-200 py-7 sm:grid-cols-[10rem_1fr_1.5fr] sm:gap-8"><p className="font-mono text-xs uppercase tracking-[0.16em] text-zinc-500">{milestone.period}</p><h3 className="text-lg font-semibold tracking-tight text-zinc-950">{milestone.title}</h3><p className="max-w-2xl text-sm leading-6 text-zinc-600">{milestone.text}</p></Reveal>)}</div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="grid gap-10 border-y border-zinc-200 py-12 lg:grid-cols-[0.7fr_1.3fr] lg:py-16"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Platform usage</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Real feedback. Real operations.</h2></div><div><p className="max-w-2xl text-base leading-8 text-zinc-600 sm:text-lg">Guestly turns individual guest experiences into structured operational information that hospitality teams can review, prioritize, and analyze.</p><div className="mt-8 grid gap-4 sm:grid-cols-3">{[{ value: impactPage.figures.feedbackSignals, label: 'Guest feedback signals processed' }, { value: impactPage.figures.touchpoints, label: 'Locations & touchpoints' }, { value: impactPage.figures.activeTeams, label: 'Active hospitality teams' }].map((metric) => <div key={metric.label}><p className="text-3xl font-semibold tracking-[-0.05em] text-zinc-950">{metric.value}</p><p className="mt-2 text-sm leading-6 text-zinc-600">{metric.label}</p></div>)}</div></div></div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8"><div className="max-w-2xl"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">How Guestly is used</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Built around the operating team.</h2></div><div className="mt-10 grid border-y border-zinc-200 sm:grid-cols-2">{impactPage.useCases.map(({ title, text, icon: Icon }, index) => <div key={title} className={`py-7 ${index % 2 !== 0 ? 'sm:border-l sm:pl-8' : 'sm:pr-8'} ${index >= 2 ? 'border-t border-zinc-200 sm:pt-8' : ''}`}><Icon className="h-4 w-4 text-zinc-500" /><h3 className="mt-5 text-lg font-semibold tracking-tight text-zinc-950">{title}</h3><p className="mt-3 max-w-md text-sm leading-6 text-zinc-600">{text}</p></div>)}</div></section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8"><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Anonymous deployment snapshots</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">How teams put Guestly to work.</h2></div><p className="max-w-sm text-sm leading-6 text-zinc-500">Customer identities withheld for privacy.</p></div><div className="mt-10 grid gap-4 md:grid-cols-3">{impactPage.snapshots.map((snapshot, index) => <GlassCard key={snapshot.type} className="flex min-h-[18rem] flex-col p-6 sm:p-7"><div className="flex items-center justify-between gap-3"><p className="text-sm font-semibold text-zinc-950">{snapshot.type}</p><span className="font-mono text-xs text-zinc-400">0{index + 1}</span></div><p className="mt-10 text-2xl font-semibold leading-8 tracking-[-0.04em] text-zinc-950">{snapshot.metric}</p><p className="mt-5 text-sm leading-7 text-zinc-600">{snapshot.text}</p></GlassCard>)}</div></section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8"><div className="border-y border-zinc-200 py-12 sm:py-16"><div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Product development</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Built alongside the operators using it.</h2></div><div><div className="flex flex-wrap items-center gap-x-3 gap-y-3">{impactPage.development.map((item, index) => <div key={item} className="flex items-center gap-3"><span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700">{item}</span>{index < impactPage.development.length - 1 && <ArrowRight className="h-4 w-4 text-zinc-400" />}</div>)}</div><p className="mt-8 max-w-2xl text-base leading-8 text-zinc-600">As Guestly expanded into more hospitality operations, the platform evolved beyond feedback collection into a broader system for understanding and acting on guest experience data.</p></div></div></div></section>
+
+        <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:mt-24 lg:px-8"><div className="flex flex-col gap-5 border-b border-zinc-200 pb-12 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">The company story</p><h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-3xl">See how Guestly evolved from its first prototype to the platform today.</h2></div><a href="/about" className="btn-secondary shrink-0">About Guestly <ArrowRight className="h-4 w-4" /></a></div></section>
+
+        <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:mt-24 lg:px-8"><div className="rounded-2xl border border-zinc-200 bg-white/90 p-7 shadow-panel sm:p-10"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Explore the product</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Explore the product behind the numbers.</h2><div className="mt-7 flex flex-col gap-3 sm:flex-row"><a href="/demo" className="btn-primary">Explore Interactive Demo <ArrowRight className="h-4 w-4" /></a><a href="/about" className="btn-secondary">About Guestly <ArrowRight className="h-4 w-4" /></a><button className="inline-flex w-fit items-center gap-2 px-2 py-3 text-sm font-medium text-zinc-600 transition hover:text-zinc-950" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button></div></div></section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function AboutPage() {
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
@@ -1873,6 +1957,8 @@ export default function App() {
   if (path === '/about') return <AboutPage />;
 
   if (path === '/demo') return <InteractiveDemoPage />;
+
+  if (path === '/impact') return <ImpactPage />;
 
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
