@@ -4,8 +4,8 @@ import {
   ArrowRight,
   Check,
   Flag,
+  MapPin,
   Menu,
-  MessageSquareText,
   QrCode,
   ScanLine,
   ShieldAlert,
@@ -66,39 +66,35 @@ const workflowSteps = [
 
 const features = [
   {
-    title: 'Signal intake infrastructure',
-    text: 'QR feedback collection with source and service-moment context.',
+    title: 'Guest feedback capture',
+    text: 'Guests can share private feedback from Guestly touchpoints without downloading an app, with the context your team needs to follow up.',
     icon: QrCode,
   },
   {
-    title: 'Context normalization',
-    text: 'Short comments become structured operational metadata.',
-    icon: MessageSquareText,
+    title: 'AI-powered triage',
+    text: 'Guestly organizes incoming feedback into clear operational fields, so teams can work from a focused queue instead of manually sorting every response.',
+    icon: Sparkles,
   },
   {
-    title: 'Risk classification',
-    text: 'Separate routine friction from safety, legal, PR, and reputation exposure.',
+    title: 'Urgency & sentiment detection',
+    text: 'See sentiment alongside priority signals to separate routine comments from guest concerns that need attention sooner.',
     icon: ShieldAlert,
   },
   {
-    title: 'Pattern intelligence',
-    text: 'Detect recurring failures before they trend publicly.',
+    title: 'Issue routing',
+    text: 'Surface important feedback to the relevant operational owner and track it from review through resolution.',
+    icon: Zap,
+  },
+  {
+    title: 'Trend analytics',
+    text: 'Spot recurring complaints, common issue categories, and shifts in guest sentiment over time.',
     icon: TrendingUp,
   },
-];
-
-const intelligenceLayers = [
-  { label: 'Language normalization', value: 'short comments, complaints, mixed tone' },
-  { label: 'Risk scoring', value: 'severity, exposure, recurrence' },
-  { label: 'Operator routing', value: 'owner, action state, weekly rollup' },
-];
-
-const riskDots = [
-  { label: 'Allergen', x: 78, y: 24, size: 'h-3.5 w-3.5' },
-  { label: 'Noise', x: 48, y: 38, size: 'h-3 w-3' },
-  { label: 'Queue', x: 38, y: 62, size: 'h-2.5 w-2.5' },
-  { label: 'Cleanliness', x: 62, y: 52, size: 'h-3 w-3' },
-  { label: 'Staff praise', x: 22, y: 76, size: 'h-2 w-2' },
+  {
+    title: 'Multi-location visibility',
+    text: 'Review feedback across properties, locations, and Guestly touchpoints from one operational workspace.',
+    icon: MapPin,
+  },
 ];
 
 const dashboardMetrics = [
@@ -715,72 +711,31 @@ function Features() {
     <section className="section-padding">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Feedback intelligence"
-          title="More than summaries. A feedback intelligence layer."
-          text="Guestly converts unstructured guest language into severity, recurrence, and routed action."
+          eyebrow="Platform capabilities"
+          title="Everything you need to turn feedback into action."
+          text="Capture what guests are experiencing, understand what matters, and give your team the visibility to respond."
         />
-        <div className="mt-10 grid gap-5 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
-          <Reveal>
-            <IntelligenceVisual />
-          </Reveal>
-          <div className="grid items-stretch gap-4 md:grid-cols-2">
-            {features.map(({ title, text, icon: Icon }, index) => (
-              <Reveal key={title} delay={(index % 2) * 70} className="h-full">
-                <GlassCard className="flex h-full min-h-[17rem] flex-col p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300 hover:bg-white">
-                  <Icon className="h-5 w-5 text-zinc-800" />
+        <div className="mt-10 grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {features.map(({ title, text, icon: Icon }, index) => (
+            <Reveal key={title} delay={(index % 3) * 60} className="h-full">
+              <GlassCard className="group flex h-full min-h-[15.5rem] flex-col p-6 transition duration-300 hover:-translate-y-1 hover:border-zinc-300 hover:bg-white">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="grid h-11 w-11 place-items-center rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-900 transition duration-300 group-hover:bg-zinc-100">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="font-mono text-xs tracking-[0.18em] text-zinc-400">0{index + 1}</span>
+                </div>
+                <div className="mt-auto pt-8">
+                  <div className="h-px w-full bg-zinc-100" />
                   <h3 className="mt-5 text-lg font-semibold tracking-tight text-white">{title}</h3>
                   <p className="mt-3 leading-7 text-slate-400">{text}</p>
-                </GlassCard>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function IntelligenceVisual() {
-  return (
-    <GlassCard className="overflow-hidden p-5 sm:p-6 lg:sticky lg:top-28">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-400">Processing layer</p>
-          <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">Signal intelligence model</h3>
-        </div>
-        <Sparkles className="h-5 w-5 text-zinc-500" />
-      </div>
-      <div className="mt-6 space-y-3">
-        {intelligenceLayers.map((layer, index) => (
-          <div key={layer.label} className="rounded-2xl border border-zinc-200 bg-white/92 p-4">
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-zinc-950">{layer.label}</p>
-              <span className="font-mono text-xs text-zinc-400">L{index + 1}</span>
-            </div>
-            <p className="mt-2 text-sm leading-6 text-zinc-500">{layer.value}</p>
-          </div>
-        ))}
-      </div>
-      <div className="mt-5 rounded-2xl border border-zinc-200 bg-zinc-50 p-4">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-semibold text-zinc-950">Risk routing map</p>
-          <p className="font-mono text-xs text-zinc-500">impact / recurrence</p>
-        </div>
-        <div className="relative mt-4 h-52 overflow-hidden rounded-xl border border-zinc-200 bg-white">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(228,228,231,0.8)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.8)_1px,transparent_1px)] bg-[size:36px_36px]" />
-          <div className="absolute bottom-3 left-3 text-[11px] text-zinc-400">low signal</div>
-          <div className="absolute right-3 top-3 text-[11px] text-zinc-500">operator review</div>
-          {riskDots.map((dot) => (
-            <div
-              key={dot.label}
-              className={`absolute rounded-full border border-zinc-950 bg-zinc-950 shadow-[0_0_0_6px_rgba(24,24,27,0.08)] ${dot.size}`}
-              style={{ left: `${dot.x}%`, top: `${dot.y}%` }}
-              title={dot.label}
-            />
+                </div>
+              </GlassCard>
+            </Reveal>
           ))}
         </div>
       </div>
-    </GlassCard>
+    </section>
   );
 }
 
