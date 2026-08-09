@@ -30,6 +30,7 @@ const navigation = [
   { label: 'How it works', href: '#how-it-works' },
   { label: 'Demo', href: '#demo' },
   { label: 'Pricing', href: '#pricing' },
+  { label: 'About', href: '/about' },
   { label: 'Contact', href: '#access' },
 ];
 
@@ -137,6 +138,49 @@ const integrations = [
     icon: Webhook,
   },
 ];
+
+const aboutPage = {
+  hero: {
+    eyebrow: 'About Guestly',
+    title: 'Making guest feedback useful before it becomes a public problem.',
+    text: 'Guestly helps hospitality teams capture private guest feedback, identify what needs attention, and understand recurring operational issues.',
+  },
+  journey: [
+    {
+      period: 'Spring 2025',
+      title: 'Guestly begins',
+      text: 'Initial concept and product development focused on private hospitality feedback.',
+    },
+    {
+      period: 'Summer 2025',
+      title: 'First pilots',
+      text: 'Early versions were tested with hospitality operators and refined around real operational feedback.',
+    },
+    {
+      period: '2025–2026',
+      title: 'Product expands',
+      text: 'Guestly grew beyond feedback capture into AI-assisted triage, urgency and sentiment classification, analytics, multi-location visibility, integrations, and team workflows.',
+    },
+    {
+      period: '2026',
+      title: '100+ hospitality teams',
+      text: 'More than 100 hospitality teams have used Guestly so far.',
+    },
+  ],
+  capabilities: [
+    { title: 'Guest Feedback Infrastructure', text: 'QR-based guest feedback flows and private submission experiences.', icon: QrCode },
+    { title: 'AI-Assisted Processing', text: 'Classification of feedback by category, sentiment, and urgency.', icon: Sparkles },
+    { title: 'Operations Dashboard', text: 'A workspace for teams to review guest feedback and prioritize issues.', icon: ScanLine },
+    { title: 'Analytics', text: 'Tools for identifying recurring themes and patterns over time.', icon: TrendingUp },
+    { title: 'Multi-Location Support', text: 'Visibility across multiple hospitality locations and operations.', icon: MapPin },
+    { title: 'Integrations', text: 'Notifications, exports, and connections to external workflows.', icon: Webhook },
+    { title: 'Team & Access Management', text: 'Organization accounts, user roles, permissions, and administration.', icon: UsersRound },
+  ],
+  founder: {
+    title: 'Built from the ground up',
+    text: 'Guestly has been taken from initial concept through product development, customer discovery, iteration, onboarding, and growth through hands-on founder involvement. The work stays close to hospitality operators, so the product continues to evolve around how teams actually receive, interpret, and act on guest feedback.',
+  },
+};
 
 const dashboardMetrics = [
   { label: 'Open signals', value: '18', detail: 'Current workspace queue', tone: 'ink' },
@@ -1465,6 +1509,7 @@ function Footer() {
             ['Home', '#home'],
             ['Demo', '#demo'],
             ['Pricing', '#pricing'],
+            ['About', '/about'],
             ['Contact', '#access'],
             ['Trust', '/trust'],
           ].map(([label, href]) => (
@@ -1473,7 +1518,7 @@ function Footer() {
               href={href}
               className="transition hover:text-zinc-950"
               onClick={(event) => {
-                if (href === '/trust') return;
+                if (href.startsWith('/')) return;
                 event.preventDefault();
                 goToHref(href);
               }}
@@ -1570,18 +1615,107 @@ function TrustPage() {
   );
 }
 
+function AboutPage() {
+  return (
+    <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <Navbar />
+      <main className="pb-20 pt-32">
+        <section className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-[0.95fr_0.65fr] lg:items-end">
+            <div className="max-w-4xl">
+              <p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">{aboutPage.hero.eyebrow}</p>
+              <h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl lg:text-7xl">{aboutPage.hero.title}</h1>
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-600">{aboutPage.hero.text}</p>
+            </div>
+            <GlassCard className="p-6 sm:p-7">
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">The operating idea</p>
+              <p className="mt-5 text-2xl font-semibold leading-8 tracking-[-0.035em] text-zinc-950">Make the private signal useful while a team can still act on it.</p>
+              <div className="mt-7 grid grid-cols-3 divide-x divide-zinc-200 border-y border-zinc-200 py-4 text-center">
+                {['Capture', 'Understand', 'Respond'].map((step, index) => <div key={step} className="px-2"><p className="font-mono text-[10px] text-zinc-400">0{index + 1}</p><p className="mt-1 text-xs font-semibold text-zinc-700">{step}</p></div>)}
+              </div>
+            </GlassCard>
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="grid gap-10 border-y border-zinc-200 py-12 lg:grid-cols-[0.7fr_1.3fr] lg:py-16">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">The starting point</p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Why Guestly started</h2>
+            </div>
+            <div className="max-w-2xl text-base leading-8 text-zinc-600 sm:text-lg">
+              <p>Guestly began in 2025 around a common hospitality problem: businesses often learn about a poor guest experience only after it appears in a public review. Traditional feedback methods can be slow, fragmented, or difficult for a team to act on.</p>
+              <p className="mt-5">Guestly was created to move feedback earlier in the guest experience and turn it into information a hospitality team can actually use.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Company journey</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Built through operator feedback and product iteration.</h2>
+          </div>
+          <div className="mt-12 border-t border-zinc-200">
+            {aboutPage.journey.map((milestone, index) => (
+              <Reveal key={milestone.period} delay={index * 70} className="grid gap-4 border-b border-zinc-200 py-7 sm:grid-cols-[10rem_1fr_1.6fr] sm:items-start sm:gap-8">
+                <p className="font-mono text-xs uppercase tracking-[0.16em] text-zinc-500">{milestone.period}</p>
+                <h3 className="text-lg font-semibold tracking-tight text-zinc-950">{milestone.title}</h3>
+                <p className="max-w-2xl text-sm leading-6 text-zinc-600">{milestone.text}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="flex flex-col gap-5 border-b border-zinc-200 pb-10 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-2xl"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">What was built</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">From idea to operating platform.</h2></div>
+            <p className="max-w-md text-sm leading-6 text-zinc-600">The product now connects guest feedback capture, operational triage, visibility, and team administration in one system.</p>
+          </div>
+          <div className="grid border-b border-zinc-200 md:grid-cols-2 lg:grid-cols-3">
+            {aboutPage.capabilities.map(({ title, text, icon: Icon }, index) => (
+              <Reveal key={title} delay={index * 55} className={`border-zinc-200 py-7 ${index % 3 !== 0 ? 'lg:border-l lg:pl-7' : 'lg:pr-7'} ${index % 2 !== 0 ? 'md:border-l md:pl-7 lg:border-l' : 'md:pr-7'} ${index >= 3 ? 'lg:border-t lg:pt-8' : ''}`}>
+                <Icon className="h-4 w-4 text-zinc-500" />
+                <h3 className="mt-5 text-lg font-semibold tracking-tight text-zinc-950">{title}</h3>
+                <p className="mt-3 max-w-sm text-sm leading-6 text-zinc-600">{text}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <GlassCard className="grid gap-8 p-7 sm:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+            <div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Founder-built</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">{aboutPage.founder.title}</h2></div>
+            <p className="max-w-2xl text-base leading-8 text-zinc-600">{aboutPage.founder.text}</p>
+          </GlassCard>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="border-y border-zinc-200 py-12 sm:py-16"><div className="flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">See the product</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">See how Guestly works.</h2></div><div className="flex flex-col gap-3 sm:flex-row"><button className="btn-secondary" type="button" onClick={openProductLogin}>Explore the platform <ArrowRight className="h-4 w-4" /></button><button className="btn-primary" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button></div></div></div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   const [redirecting, setRedirecting] = useState(false);
+  const [path, setPath] = useState(() => (typeof window === 'undefined' ? '/' : window.location.pathname));
 
   useEffect(() => {
     const handleRedirect = () => setRedirecting(true);
+    const handlePathChange = () => setPath(window.location.pathname);
     window.addEventListener('guestly:product-redirect', handleRedirect);
-    return () => window.removeEventListener('guestly:product-redirect', handleRedirect);
+    window.addEventListener('popstate', handlePathChange);
+    return () => { window.removeEventListener('guestly:product-redirect', handleRedirect); window.removeEventListener('popstate', handlePathChange); };
   }, []);
 
-  if (typeof window !== 'undefined' && window.location.pathname === '/trust') {
+  if (path === '/trust') {
     return <TrustPage />;
   }
+
+  if (path === '/about') return <AboutPage />;
 
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
