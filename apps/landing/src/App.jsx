@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
+  Activity,
   ArrowRight,
+  Building2,
   Check,
   Download,
   Flag,
@@ -9,12 +11,15 @@ import {
   Mail,
   Menu,
   MessageSquareText,
+  Plug,
   QrCode,
   ScanLine,
   ShieldAlert,
   ShieldCheck,
+  SlidersHorizontal,
   Sparkles,
   TrendingUp,
+  UsersRound,
   Webhook,
   X,
   Zap,
@@ -1485,29 +1490,42 @@ function Footer() {
 function TrustPage() {
   const areas = [
     {
-      title: 'Authentication',
-      text: 'Guestly uses signed, time-limited dashboard sessions. Session cookies are HTTP-only and same-site, with the secure flag enabled in production.',
+      title: 'Organization accounts',
+      text: 'Each hospitality team works from its own organization workspace, with account administration built into the platform.',
+      icon: Building2,
     },
     {
-      title: 'Access controls',
-      text: 'Organization roles are checked on the server for sensitive actions. Owners, Admins, Managers, and Viewers receive deliberately different access scopes.',
+      title: 'Role-based team access',
+      text: 'Owners, Admins, Managers, and Viewers receive different access scopes. Administrators can also assign members to selected locations where appropriate.',
+      icon: UsersRound,
     },
     {
-      title: 'Organization isolation',
-      text: 'Administrative and feedback operations resolve the organization from the signed server session, rather than trusting an organization identifier supplied by the browser.',
+      title: 'Account administration',
+      text: 'Authorized team members can invite colleagues, update roles, manage access, and review pending invitations from one place.',
+      icon: SlidersHorizontal,
     },
     {
-      title: 'Data handling',
-      text: 'Guestly stores submitted feedback, optional guest contact details, feedback context, and the operational fields needed to triage and analyze a signal. Authorized administrators can export data and use confirmation-protected deletion controls.',
+      title: 'Protected dashboards',
+      text: 'The Guestly dashboard is reserved for authorized account access, so operational feedback and settings stay within the right team workspace.',
+      icon: ShieldCheck,
     },
     {
-      title: 'Integration credentials',
-      text: 'Integration credentials and signing material are kept server-side. Guestly does not expose provider secrets, webhook signing secrets, or private environment variables to the browser.',
+      title: 'Privacy and data controls',
+      text: 'Organizations can export feedback data, manage retention preferences, and use confirmation-protected data and account controls.',
+      icon: ShieldAlert,
     },
     {
-      title: 'Privacy choices',
-      text: 'Organizations can document a feedback retention preference. To avoid unattended loss of operational records, retention purges require an Owner to explicitly confirm the action.',
+      title: 'Integration settings',
+      text: 'Email alerts, Slack, webhooks, and other connected tools are configured inside the organization workspace by authorized team members.',
+      icon: Plug,
     },
+  ];
+
+  const depthPoints = [
+    { title: 'Team access', text: 'Organizations can manage users, roles, and account access from one workspace.', icon: UsersRound },
+    { title: 'Data separation', text: 'Guestly scopes organization data to the appropriate customer workspace.', icon: Building2 },
+    { title: 'Operational accountability', text: 'Important account and administration changes can be tracked within the platform.', icon: Activity },
+    { title: 'Privacy controls', text: 'Organizations have controls for managing Guestly data and account access.', icon: ShieldCheck },
   ];
 
   return (
@@ -1518,20 +1536,31 @@ function TrustPage() {
         <section className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
             <p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">Trust & security</p>
-            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl">Security built for guest feedback operations.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600">Guestly is designed to help hospitality teams handle operational feedback with clear access boundaries, privacy controls, and accountable administration.</p>
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl">Built for real hospitality operations.</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600">Guestly includes the access controls, account infrastructure, and privacy safeguards needed to support teams operating across real hospitality environments.</p>
           </div>
           <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {areas.map((area) => (
               <GlassCard key={area.title} className="p-6">
-                <ShieldCheck className="h-5 w-5 text-zinc-500" />
+                <area.icon className="h-5 w-5 text-zinc-500" />
                 <h2 className="mt-6 text-xl font-semibold tracking-tight text-zinc-950">{area.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-zinc-600">{area.text}</p>
               </GlassCard>
             ))}
           </div>
+          <section className="mt-14 border-y border-zinc-200 py-10">
+            <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Platform foundations</p>
+                <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950">Designed beyond the prototype stage.</h2>
+              </div>
+              <div className="grid gap-x-8 gap-y-7 sm:grid-cols-2">
+                {depthPoints.map(({ title, text, icon: Icon }) => <div key={title}><Icon className="h-4 w-4 text-zinc-500" /><h3 className="mt-4 text-sm font-semibold text-zinc-950">{title}</h3><p className="mt-2 text-sm leading-6 text-zinc-600">{text}</p></div>)}
+              </div>
+            </div>
+          </section>
           <GlassCard className="mt-10 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
-            <div><p className="font-semibold text-zinc-950">Security question or concern?</p><p className="mt-1 text-sm text-zinc-600">Contact Guestly at {demoRequestEmail}. We do not represent unverified certifications or compliance designations.</p></div>
+            <div><p className="font-semibold text-zinc-950">Security question or concern?</p><p className="mt-1 text-sm text-zinc-600">Contact Guestly at {demoRequestEmail}. Guestly does not represent unverified certifications or compliance designations.</p></div>
             <a className="btn-secondary shrink-0" href={`mailto:${demoRequestEmail}`}>Contact Guestly <ArrowRight className="h-4 w-4" /></a>
           </GlassCard>
         </section>
