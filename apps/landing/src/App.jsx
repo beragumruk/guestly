@@ -29,7 +29,7 @@ const navigation = [
   { label: 'Home', href: '#home' },
   { label: 'How it works', href: '#how-it-works' },
   { label: 'Demo', href: '#demo' },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '#access' },
 ];
@@ -377,16 +377,15 @@ const pricingPlans = [
     name: 'Core Plan',
     price: '$29',
     unit: '/month',
-    description: 'For teams building a structured feedback layer across key guest touchpoints.',
-    features: ['QR signal capture', 'Issue taxonomy', 'Action queue'],
+    description: 'For independent properties and smaller hospitality teams building a structured feedback workflow.',
+    features: ['QR feedback links', 'AI-assisted classification', 'Feedback inbox', 'Action queue', 'Basic analytics'],
   },
   {
     name: 'Pro Plan',
     price: '$99',
     unit: '/month',
-    description: 'For operators that need risk scoring, recurrence detection, and leadership reporting.',
-    features: ['Risk classification', 'Pattern detection', 'Executive summaries'],
-    featured: true,
+    description: 'For growing hospitality operations that need broader visibility and recurring-pattern reporting.',
+    features: ['Everything in Core', 'Up to 250 collection locations', 'Recurring pattern intelligence', 'Leadership reports', 'Priority onboarding'],
   },
 ];
 
@@ -495,7 +494,7 @@ function Navbar() {
           ))}
         </div>
         <div className="hidden items-center gap-3 lg:flex">
-          <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
+          <button className="btn-primary" type="button" onClick={() => goToHref('#access')}>
             Contact for Demo
           </button>
           <button className="btn-secondary" type="button" onClick={openProductLogin}>
@@ -529,7 +528,7 @@ function Navbar() {
                 {item.label}
               </a>
             ))}
-            <button className="btn-primary w-full" type="button" onClick={() => scrollToSection('#access')}>
+            <button className="btn-primary w-full" type="button" onClick={() => goToHref('#access')}>
               Contact for Demo
             </button>
             <button className="btn-secondary w-full" type="button" onClick={openProductLogin}>
@@ -1304,9 +1303,9 @@ function Pricing() {
     <section id="pricing" className="section-padding">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Pricing preview"
-          title="Access tiers for structured guest intelligence."
-          text="Choose the tier that fits your operation. Every new team starts with a guided demo so we can map Guestly to your guest experience workflow."
+          eyebrow="Pricing"
+          title="Plans for structured guest intelligence."
+          text="Start with the tools you need to capture and understand guest feedback, then scale as your operation grows."
           align="center"
         />
         <div className="mx-auto mt-10 grid max-w-5xl gap-5 lg:grid-cols-2">
@@ -1316,6 +1315,9 @@ function Pricing() {
             </Reveal>
           ))}
         </div>
+        <div className="mt-8 text-center">
+          <a href="/pricing" className="btn-secondary">View full pricing <ArrowRight className="h-4 w-4" /></a>
+        </div>
       </div>
     </section>
   );
@@ -1323,34 +1325,105 @@ function Pricing() {
 
 function PricingCard({ plan }) {
   return (
-    <GlassCard className={`p-7 ${plan.featured ? 'border-zinc-300 bg-zinc-50/80 shadow-cold' : ''}`}>
+    <GlassCard className="p-7">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-2xl font-semibold tracking-tight text-white">{plan.name}</h3>
-          <p className="mt-3 leading-7 text-slate-400">{plan.description}</p>
+          <h3 className="text-2xl font-semibold tracking-tight text-zinc-950">{plan.name}</h3>
+          <p className="mt-3 leading-7 text-zinc-600">{plan.description}</p>
         </div>
-        {plan.featured && (
-          <span className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-600">
-            Popular
-          </span>
-        )}
       </div>
       <div className="mt-8 flex items-end gap-2">
-        <span className="text-5xl font-semibold tracking-[-0.05em] text-white">{plan.price}</span>
-        <span className="pb-2 text-slate-500">{plan.unit}</span>
+        <span className="text-5xl font-semibold tracking-[-0.05em] text-zinc-950">{plan.price}</span>
+        <span className="pb-2 text-zinc-500">{plan.unit}</span>
       </div>
       <div className="mt-8 space-y-3">
         {plan.features.map((item) => (
-          <div key={item} className="flex items-center gap-3 text-slate-300">
+          <div key={item} className="flex items-center gap-3 text-zinc-700">
             <Check className="h-4 w-4 text-zinc-900" />
             {item}
           </div>
         ))}
       </div>
-      <button className="btn-primary mt-8 w-full" type="button" onClick={() => scrollToSection('#access')}>
+      <button className="btn-primary mt-8 w-full" type="button" onClick={() => goToHref('#access')}>
         Contact for Demo
       </button>
     </GlassCard>
+  );
+}
+
+const pricingComparison = [
+  ['Guest feedback capture', 'Included', 'Included'],
+  ['AI-assisted classification', 'Included', 'Included'],
+  ['Urgency and sentiment insights', 'Included', 'Included'],
+  ['Feedback inbox and action queue', 'Included', 'Included'],
+  ['Analytics', 'Basic analytics', 'Basic analytics'],
+  ['Feedback collection locations', 'Up to 25', 'Up to 250'],
+  ['Recurring pattern intelligence', 'Not included', 'Included'],
+  ['Leadership reports', 'Not included', 'Included'],
+  ['Priority onboarding', 'Not included', 'Included'],
+];
+
+const pricingFaqs = [
+  ['Do guests need an account?', 'No. Guests can share feedback through a Guestly touchpoint without creating an account.'],
+  ['Do guests need to download an app?', 'No. Guestly feedback flows open in the browser, so there is no guest app to download.'],
+  ['Can I change plans later?', 'Yes. If your operation changes, you can request a plan review with the Guestly team.'],
+  ['Can Guestly support multiple locations?', 'Yes. Core supports up to 25 feedback collection locations, while Pro supports up to 250 and includes multi-location reporting.'],
+  ['Is onboarding included?', 'Every new team starts with a guided demo. Pro includes priority onboarding for teams planning a broader rollout.'],
+  ['Can I request a demo?', 'Yes. Contact Guestly to see the product and discuss the workflow that fits your operation.'],
+  ['What if I need more than the listed plan supports?', 'Contact us to discuss a larger or more complex deployment.'],
+];
+
+function PricingPage() {
+  return (
+    <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <Navbar />
+      <main className="pb-20 pt-32">
+        <section className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">Pricing</p>
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl lg:text-7xl">Simple pricing for hospitality teams.</h1>
+            <p className="mt-7 text-lg leading-8 text-zinc-600">Start with the tools you need to capture and understand guest feedback, then scale as your operation grows.</p>
+          </div>
+          <div className="mx-auto mt-14 grid max-w-5xl gap-5 lg:grid-cols-2">
+            {pricingPlans.map((plan, index) => (
+              <Reveal key={plan.name} delay={index * 80}>
+                <GlassCard className="flex min-h-full flex-col p-7 sm:p-8">
+                  <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">{index === 0 ? 'For independent teams' : 'For growing operations'}</p>
+                  <h2 className="mt-5 text-3xl font-semibold tracking-[-0.045em] text-zinc-950">{plan.name}</h2>
+                  <p className="mt-3 min-h-14 text-sm leading-6 text-zinc-600">{plan.description}</p>
+                  <div className="mt-8 flex items-end gap-2"><span className="text-5xl font-semibold tracking-[-0.065em] text-zinc-950">{plan.price}</span><span className="pb-2 text-sm text-zinc-500">{plan.unit}</span></div>
+                  <div className="mt-8 space-y-3 border-t border-zinc-200 pt-7">
+                    {plan.features.map((feature) => <div key={feature} className="flex items-start gap-3 text-sm leading-6 text-zinc-700"><Check className="mt-1 h-4 w-4 shrink-0 text-zinc-900" />{feature}</div>)}
+                  </div>
+                  <button className="btn-primary mt-8 w-full" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button>
+                </GlassCard>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-5xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="border-b border-zinc-200 pb-10"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Plan comparison</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">A clear path from first touchpoint to broader operations.</h2></div>
+          <div className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-panel">
+            <div className="grid grid-cols-[1.2fr_0.8fr_0.8fr] border-b border-zinc-200 bg-zinc-50 px-5 py-4 text-sm font-semibold text-zinc-950 sm:px-7"><span>Capability</span><span>Core</span><span>Pro</span></div>
+            {pricingComparison.map(([capability, core, pro]) => <div key={capability} className="grid grid-cols-[1.2fr_0.8fr_0.8fr] items-center border-b border-zinc-200 px-5 py-4 text-sm last:border-b-0 sm:px-7"><span className="pr-3 font-medium leading-5 text-zinc-800">{capability}</span><span className={`pr-3 leading-5 ${core === 'Not included' ? 'text-zinc-400' : 'text-zinc-600'}`}>{core}</span><span className={`leading-5 ${pro === 'Not included' ? 'text-zinc-400' : 'text-zinc-600'}`}>{pro}</span></div>)}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <GlassCard className="grid gap-8 p-7 sm:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Built to grow</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Built to grow with your operation.</h2></div><p className="max-w-2xl text-base leading-8 text-zinc-600">Guestly can grow with the volume of guest feedback, number of collection points, and reporting needs across your operation, without asking your team to rebuild its workflow.</p></GlassCard>
+        </section>
+
+        <section className="mx-auto mt-24 max-w-5xl px-5 sm:px-6 lg:mt-32 lg:px-8">
+          <div className="max-w-2xl"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Pricing FAQ</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Questions before you start.</h2></div>
+          <div className="mt-10 border-y border-zinc-200">{pricingFaqs.map(([question, answer]) => <details key={question} className="group border-b border-zinc-200 py-5 last:border-b-0"><summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-base font-semibold text-zinc-900 marker:content-none">{question}<span className="text-xl font-normal text-zinc-400 transition group-open:rotate-45">+</span></summary><p className="max-w-2xl pt-4 text-sm leading-7 text-zinc-600">{answer}</p></details>)}</div>
+        </section>
+
+        <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:mt-24 lg:px-8"><div className="flex flex-col gap-7 border-y border-zinc-200 py-12 sm:flex-row sm:items-end sm:justify-between sm:py-16"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">See it in context</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">See how Guestly fits your operation.</h2></div><div className="flex flex-col gap-3 sm:flex-row"><a href="/demo" className="btn-secondary">Explore Interactive Demo <ArrowRight className="h-4 w-4" /></a><button className="btn-primary" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button></div></div></section>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
@@ -1579,7 +1652,7 @@ function Footer() {
           {[
             ['Home', '#home'],
             ['Demo', '#demo'],
-            ['Pricing', '#pricing'],
+            ['Pricing', '/pricing'],
             ['About', '/about'],
             ['Impact', '/impact'],
             ['Contact', '#access'],
@@ -1959,6 +2032,8 @@ export default function App() {
   if (path === '/demo') return <InteractiveDemoPage />;
 
   if (path === '/impact') return <ImpactPage />;
+
+  if (path === '/pricing') return <PricingPage />;
 
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">

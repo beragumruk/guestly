@@ -22,6 +22,10 @@
     {
       "source": "/impact",
       "destination": "/index.html"
+    },
+    {
+      "source": "/pricing",
+      "destination": "/index.html"
     }
   ]
 }

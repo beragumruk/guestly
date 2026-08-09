@@ -94,7 +94,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     price: 29,
     interval: "month",
     featured: false,
-    features: ["QR feedback links", "AI-style classification", "Feedback inbox", "Action queue", "Basic analytics"],
+    features: ["QR feedback links", "AI-assisted classification", "Feedback inbox", "Action queue", "Basic analytics"],
   },
   {
     id: "pro",
@@ -102,7 +102,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     price: 99,
     interval: "month",
     featured: true,
-    features: ["Everything in Core", "Advanced pattern detection", "Multi-location reporting", "Leadership summaries", "Priority onboarding"],
+    features: ["Everything in Core", "Up to 250 collection locations", "Recurring pattern intelligence", "Leadership reports", "Priority onboarding"],
   },
 ];
 
