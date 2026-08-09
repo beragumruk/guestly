@@ -36,6 +36,11 @@ export default function PublicFeedbackPage() {
       guestEmail,
       visitContext: "Public QR submission",
     });
+    void fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug, rating, message, guestName, guestEmail, visitContext: "Public QR submission" }),
+    }).catch(() => {});
     setSubmitted(true);
   }
 

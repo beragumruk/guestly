@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { Save } from "lucide-react";
+import Link from "next/link";
+import { Plug, Save } from "lucide-react";
 import { Button, Card, FormField, Input, PageHeader, Select } from "@/components/ui";
 import { useGuestly } from "@/components/use-guestly";
 import { updateSettings } from "@/lib/store";
@@ -89,6 +90,17 @@ export default function SettingsPage() {
           </Button>
         </Card>
       </form>
+      <Card className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="mono-label">Integrations</p>
+          <h2 className="mt-2 text-xl font-semibold text-zinc-950">Connect your operational workflow.</h2>
+          <p className="mt-2 text-sm text-zinc-500">Configure email notifications, Slack delivery, signed webhooks, and export access.</p>
+        </div>
+        <Link href="/dashboard/settings/integrations" className="button-secondary w-fit">
+          <Plug className="h-4 w-4" />
+          Manage integrations
+        </Link>
+      </Card>
     </div>
   );
 }

@@ -3,14 +3,18 @@ import {
   AlertTriangle,
   ArrowRight,
   Check,
+  Download,
   Flag,
   MapPin,
+  Mail,
   Menu,
+  MessageSquareText,
   QrCode,
   ScanLine,
   ShieldAlert,
   Sparkles,
   TrendingUp,
+  Webhook,
   X,
   Zap,
 } from 'lucide-react';
@@ -98,6 +102,33 @@ const features = [
     title: 'Multi-location visibility',
     text: 'Review feedback across properties, locations, and Guestly touchpoints from one operational workspace.',
     icon: MapPin,
+  },
+];
+
+const integrations = [
+  {
+    title: 'Email notifications',
+    text: 'Configurable delivery rules for the guest feedback events your team needs to see.',
+    status: 'Configuration required',
+    icon: Mail,
+  },
+  {
+    title: 'Slack',
+    text: 'A secure channel connection flow is ready for teams that use Slack in their operating workflow.',
+    status: 'Coming soon',
+    icon: MessageSquareText,
+  },
+  {
+    title: 'CSV export',
+    text: 'Export the feedback currently visible in the inbox, including its active filters.',
+    status: 'Available',
+    icon: Download,
+  },
+  {
+    title: 'Webhooks / API',
+    text: 'Signed feedback events and delivery logging are ready when secure integration storage is configured.',
+    status: 'Configuration required',
+    icon: Webhook,
   },
 ];
 
@@ -933,6 +964,37 @@ function MultiLocationVisibility() {
   );
 }
 
+function Integrations() {
+  return (
+    <section className="section-padding">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="border-y border-zinc-200 py-8 sm:py-10">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Integrations</p>
+              <h2 className="mt-4 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Fits into the way your team already works.</h2>
+            </div>
+            <p className="max-w-2xl text-base leading-8 text-zinc-600">Bring Guestly feedback into the right workflow with export, notification, and event-delivery options that remain under your team’s control.</p>
+          </div>
+
+          <div className="mt-8 grid divide-y divide-zinc-200 border-t border-zinc-200 md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">
+            {integrations.map(({ title, text, status, icon: Icon }, index) => (
+              <div key={title} className={`py-6 md:px-6 md:py-0 ${index === 0 ? 'md:pl-0' : ''} ${index === integrations.length - 1 ? 'md:pr-0' : ''}`}>
+                <div className="flex items-center justify-between gap-3">
+                  <Icon className="h-4 w-4 text-zinc-700" />
+                  <span className={`rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em] ${status === 'Available' ? 'border-zinc-300 bg-zinc-950 text-zinc-50' : 'border-zinc-200 bg-zinc-50 text-zinc-500'}`}>{status}</span>
+                </div>
+                <h3 className="mt-6 text-lg font-semibold tracking-tight text-zinc-950">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-zinc-600">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CustomerOutcomes() {
   return (
     <section className="section-padding">
@@ -1418,6 +1480,7 @@ export default function App() {
         <HowItWorks />
         <Features />
         <MultiLocationVisibility />
+        <Integrations />
         <CustomerOutcomes />
         <DemoPreview />
         <Pricing />

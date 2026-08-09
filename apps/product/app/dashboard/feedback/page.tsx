@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { Download } from "lucide-react";
 import { FeedbackTable } from "@/components/feedback-components";
-import { FilterBar, PageHeader, Select } from "@/components/ui";
+import { Button, FilterBar, PageHeader, Select } from "@/components/ui";
 import { useGuestly } from "@/components/use-guestly";
+import { downloadFeedbackCsv } from "@/lib/csv";
 import type { Department, FeedbackStatus, IssueType, Sentiment, Urgency } from "@/lib/types";
 
 export default function FeedbackPage() {
@@ -45,6 +47,12 @@ export default function FeedbackPage() {
         eyebrow="Feedback inbox"
         title="Classify, prioritize, and close the loop."
         text="Every guest signal is normalized with sentiment, urgency, issue type, department routing, and a suggested action."
+        action={
+          <Button variant="secondary" onClick={() => downloadFeedbackCsv(filtered, state.locations)} disabled={filtered.length === 0}>
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        }
       />
       <FilterBar search={search} onSearch={setSearch}>
         <Select value={sentiment} onChange={(event) => setSentiment(event.target.value as Sentiment | "all")}>

@@ -13,6 +13,8 @@ Guestly is structured as a complete product workspace with intake, intelligence,
 - Analytics show trends by time, urgency, department, issue type, and location.
 - Billing presents Core and Pro plan paths.
 - Settings persist workspace profile and alert preferences.
+- CSV export downloads the filtered feedback inbox with operational fields.
+- Integrations remain Not connected or Coming soon until their required database and provider setup is complete.
 
 ## Repository Checks
 

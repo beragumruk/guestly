@@ -300,9 +300,10 @@ function OperationsOverlay({ visible, onClose }: { visible: boolean; onClose: ()
 
 export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [checked, setChecked] = useState(false);
   const [open, setOpen] = useState(false);
-  const [overlayVisible, setOverlayVisible] = useState(true);
+  const [overlayVisible, setOverlayVisible] = useState(false);
 
   useEffect(() => {
     if (!getSession()) {
@@ -311,6 +312,10 @@ export function AppShell({ children }: { children: ReactNode }) {
     }
     setChecked(true);
   }, [router]);
+
+  useEffect(() => {
+    setOverlayVisible(!pathname.startsWith("/dashboard/settings"));
+  }, [pathname]);
 
   if (!checked) {
     return (

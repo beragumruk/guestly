@@ -13,6 +13,7 @@ import type {
   LocationType,
   NotificationPreferences,
 } from "./types";
+import type { IntegrationEvent } from "./integrations/types";
 
 const STATE_KEY = "guestly.workspace.state.v2";
 const SESSION_KEY = "guestly.workspace.session.v1";
@@ -78,6 +79,17 @@ function commitState(mutator: (state: GuestlyState) => GuestlyState) {
   writeState(next);
   if (isBrowser()) window.dispatchEvent(new Event("guestly-state-change"));
   return next;
+}
+
+function dispatchIntegrationEvent(event: IntegrationEvent, feedback: Feedback, state: GuestlyState) {
+  if (!isBrowser() || !getSession()) return;
+  const location = state.locations.find((item) => item.id === feedback.locationId);
+  if (!location) return;
+  void fetch("/api/integrations/dispatch", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event, feedback, location }),
+  }).catch(() => {});
 }
 
 export function getSession(): GuestlySession | null {
@@ -161,12 +173,17 @@ export function submitFeedback(input: {
 }
 
 export function updateFeedbackStatus(id: string, status: FeedbackStatus) {
-  return commitState((state) => ({
+  const previous = readState();
+  const feedback = previous.feedback.find((item) => item.id === id);
+  const next = commitState((state) => ({
     ...state,
     feedback: state.feedback.map((feedback) =>
       feedback.id === id ? { ...feedback, status, updatedAt: new Date().toISOString() } : feedback,
     ),
   }));
+  const updated = next.feedback.find((item) => item.id === id);
+  if (feedback && updated && feedback.status !== updated.status) dispatchIntegrationEvent("feedback.updated", updated, next);
+  return next;
 }
 
 export function createActionItem(feedbackId: string, title?: string) {

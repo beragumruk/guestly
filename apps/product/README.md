@@ -48,6 +48,7 @@ Guestly includes:
 - Analytics for recurring complaints, department load, urgency distribution, and location performance
 - Billing and plan management UI for Core and Pro plans
 - Settings for organization profile and notification preferences
+- Settings → Integrations for CSV export, email alert rules, Slack OAuth setup, and signed webhook management
 
 ## Architecture
 
@@ -93,6 +94,8 @@ node scripts/visual-check.mjs
 ## Environment
 
 No secrets are committed. Runtime configuration belongs in environment variables, using `.env.example` as the reference.
+
+See [`docs/INTEGRATIONS.md`](docs/INTEGRATIONS.md) for the integration migration, server variables, Slack OAuth callback, Resend email setup, webhook signatures, and production authentication handoff.
 
 ## Rights
 
