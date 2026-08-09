@@ -1965,8 +1965,8 @@ function InteractiveDemoPage() {
             <div className="flex items-center gap-3"><span className="font-mono text-xs uppercase tracking-[0.16em] text-zinc-500">{step + 1} of {interactiveDemo.steps.length}</span><button type="button" className="text-sm font-medium text-zinc-600 transition hover:text-zinc-950" onClick={restart}>Restart tour</button></div>
           </div>
 
-          <div className="mt-8 flex gap-2 overflow-x-auto pb-2" aria-label="Tour progress">
-            {interactiveDemo.steps.map((item, index) => <button key={item.title} type="button" onClick={() => (exploring || index <= step) && setStep(index)} disabled={!exploring && index > step} className={`min-w-[9rem] border-b-2 px-1 pb-3 text-left text-xs transition ${index === step ? 'border-zinc-950 text-zinc-950' : index < step || exploring ? 'border-zinc-300 text-zinc-600 hover:border-zinc-500' : 'cursor-not-allowed border-zinc-100 text-zinc-300'}`}><span className="font-mono text-[10px]">0{index + 1}</span><span className="ml-2 font-medium">{item.title}</span></button>)}
+          <div className="mt-8 grid grid-cols-2 gap-x-3 sm:flex sm:gap-2 sm:overflow-x-auto sm:pb-2" aria-label="Tour progress">
+            {interactiveDemo.steps.map((item, index) => <button key={item.title} type="button" onClick={() => (exploring || index <= step) && setStep(index)} disabled={!exploring && index > step} className={`min-w-0 border-b-2 px-1 pb-3 text-left text-xs transition sm:min-w-[9rem] ${index === step ? 'border-zinc-950 text-zinc-950' : index < step || exploring ? 'border-zinc-300 text-zinc-600 hover:border-zinc-500' : 'cursor-not-allowed border-zinc-200 text-zinc-400'}`}><span className="font-mono text-[10px]">0{index + 1}</span><span className="ml-2 font-medium">{item.title}</span></button>)}
           </div>
 
           <div className="demo-workspace mt-8 overflow-hidden rounded-[1.5rem] border border-zinc-200 bg-zinc-950 shadow-panel">
