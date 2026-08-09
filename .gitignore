@@ -19,6 +19,7 @@ yarn-error.log*
 pnpm-debug.log*
 /guestly-*.png
 **/guestly-*.png
+!apps/landing/public/guestly-share.png
 .guestly-landing-inspect.png
 **/.guestly-landing-inspect.png
 .env

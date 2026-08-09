@@ -1,0 +1,17 @@
+{
+  "name": "Guestly",
+  "short_name": "Guestly",
+  "description": "Guest feedback intelligence for hospitality teams.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f6",
+  "theme_color": "#f7f7f6",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

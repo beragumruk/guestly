@@ -4,28 +4,44 @@
   "outputDirectory": "apps/landing/dist",
   "rewrites": [
     {
-      "source": "/access-code",
-      "destination": "/index.html"
-    },
-    {
       "source": "/trust",
-      "destination": "/index.html"
+      "destination": "/trust.html"
     },
     {
       "source": "/about",
-      "destination": "/index.html"
+      "destination": "/about.html"
     },
     {
       "source": "/demo",
-      "destination": "/index.html"
+      "destination": "/demo.html"
     },
     {
       "source": "/impact",
-      "destination": "/index.html"
+      "destination": "/impact.html"
     },
     {
       "source": "/pricing",
-      "destination": "/index.html"
+      "destination": "/pricing.html"
+    },
+    {
+      "source": "/product",
+      "destination": "/product.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
     }
   ]
 }

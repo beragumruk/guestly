@@ -28,16 +28,69 @@ import {
 const navigation = [
   { label: 'Home', href: '#home' },
   { label: 'How it works', href: '#how-it-works' },
-  { label: 'Demo', href: '#demo' },
+  { label: 'Product', href: '/product' },
+  { label: 'Demo', href: '/demo' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '#access' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const appUrl = import.meta.env.VITE_GUESTLY_APP_URL || 'https://app.getguestly.com';
 const demoRequestEmail = import.meta.env.VITE_DEMO_REQUEST_EMAIL || 'hello@getguestly.com';
 
 const productLoginUrl = `${appUrl.replace(/\/$/, '')}/login`;
+
+const siteUrl = 'https://www.getguestly.com';
+const publicPageMeta = {
+  '/': {
+    title: 'Guestly | Guest Feedback Intelligence for Hospitality Teams',
+    description: 'Guestly helps hospitality teams capture private guest feedback, identify urgent issues, and understand recurring experience trends across their operation.',
+  },
+  '/product': {
+    title: 'Guestly Product | Guest Feedback Intelligence for Hospitality Teams',
+    description: 'Explore Guestly’s feedback capture, operational triage, analytics, multi-location visibility, and team workflows for hospitality teams.',
+  },
+  '/demo': {
+    title: 'Guestly Interactive Demo | See the Platform in Action',
+    description: 'Explore a guided Guestly workspace with clearly labeled demo data, from private guest feedback through operational insight.',
+  },
+  '/pricing': {
+    title: 'Guestly Pricing | Plans for Hospitality Teams',
+    description: 'Compare Guestly’s $29 Core Plan and $99 Pro Plan for hospitality teams that need structured guest feedback intelligence.',
+  },
+  '/impact': {
+    title: 'Guestly Impact | 100+ Hospitality Teams Supported',
+    description: 'See how Guestly has grown since 2025 into a hospitality feedback platform supporting more than 100 teams.',
+  },
+  '/about': {
+    title: 'About Guestly | From Hospitality Feedback Idea to Operating Platform',
+    description: 'Learn why Guestly started in 2025 and how it grew from private hospitality feedback into an operating platform for teams.',
+  },
+  '/trust': {
+    title: 'Guestly Trust & Security | Built for Hospitality Operations',
+    description: 'Learn about Guestly’s organization workspaces, team access, privacy controls, and operational account infrastructure.',
+  },
+  '/contact': {
+    title: 'Contact Guestly | Talk Through Your Hospitality Feedback Workflow',
+    description: 'Contact Guestly to discuss private guest feedback capture, operational triage, and a workflow for your hospitality team.',
+  },
+  '/faq': {
+    title: 'Guestly FAQ | Questions About Hospitality Feedback Intelligence',
+    description: 'Find answers about Guestly’s guest feedback flows, hospitality operations workflows, locations, onboarding, and demos.',
+  },
+  '/privacy': {
+    title: 'Guestly Privacy | Guest Feedback Data and Account Controls',
+    description: 'Read how Guestly handles operational guest feedback data, organization access, and privacy controls.',
+  },
+  '/terms': {
+    title: 'Guestly Terms | Commercial Hospitality Feedback Software',
+    description: 'Read the Guestly terms for commercial hospitality teams using the Guestly platform and services.',
+  },
+  notFound: {
+    title: 'Page Not Found | Guestly',
+    description: 'The requested Guestly page could not be found.',
+  },
+};
 
 const capturePoints = [
   { label: 'Room card', location: 'Room 307', signal: 'Noise and humidity signal mapped to room experience risk.' },
@@ -410,6 +463,25 @@ function goToHref(href) {
   window.dispatchEvent(new Event('popstate'));
 }
 
+function applyPageMeta(path) {
+  const page = publicPageMeta[path] || publicPageMeta.notFound;
+  const canonicalUrl = `${siteUrl}${path === '/' ? '/' : path}`;
+  document.title = page.title;
+
+  const setMeta = (selector, attribute, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.setAttribute(attribute, value);
+  };
+
+  setMeta('meta[name="description"]', 'content', page.description);
+  setMeta('link[rel="canonical"]', 'href', canonicalUrl);
+  setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+  setMeta('meta[property="og:title"]', 'content', page.title);
+  setMeta('meta[property="og:description"]', 'content', page.description);
+  setMeta('meta[name="twitter:title"]', 'content', page.title);
+  setMeta('meta[name="twitter:description"]', 'content', page.description);
+}
+
 function openProductLogin() {
   window.dispatchEvent(new CustomEvent('guestly:product-redirect'));
   window.setTimeout(() => {
@@ -575,7 +647,7 @@ function Hero() {
           </p>
           <div className="mt-5 flex items-center gap-2 text-sm font-medium text-zinc-500">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
-            <span>Trusted by 100+ hospitality teams</span>
+            <span>100+ hospitality teams supported since launch</span>
           </div>
           <a href="/trust" className="mt-4 inline-flex w-fit items-center gap-2 text-sm text-zinc-500 transition hover:text-zinc-950">
             <ShieldCheck className="h-4 w-4" />
@@ -1427,6 +1499,84 @@ function PricingPage() {
   );
 }
 
+const generalFaqs = [
+  ['What is Guestly?', 'Guestly is software for hospitality teams to capture private guest feedback, organize it into operational context, and identify what needs attention.'],
+  ['Do guests need an account or app?', 'No. Guests can share feedback through a Guestly touchpoint in the browser without creating an account or downloading an app.'],
+  ['What does Guestly help teams understand?', 'Guestly helps teams review feedback by category, urgency, sentiment, location, and recurring operational themes.'],
+  ['Can Guestly work across multiple locations?', 'Yes. Guestly supports feedback collection across locations and gives operators a shared view of patterns across their operation.'],
+  ['Is Guestly a paid product?', 'Yes. Guestly has paid Core and Pro plans for hospitality teams. See Pricing for the current plan details.'],
+  ['How do I see the product?', 'Explore the interactive demo for a public walkthrough, or contact Guestly to discuss a workflow for your operation.'],
+];
+
+function PublicPage({ children }) {
+  return (
+    <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <Navbar />
+      <main className="pb-20 pt-32">{children}</main>
+      <Footer />
+    </div>
+  );
+}
+
+function ProductPage() {
+  return (
+    <PublicPage>
+      <section className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[0.95fr_0.65fr] lg:items-end">
+          <div className="max-w-4xl"><p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">The platform</p><h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl lg:text-7xl">Turn guest feedback into operational insight.</h1><p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-600">Guestly gives hospitality teams a practical system for capturing private feedback, understanding priority, and spotting the patterns that need attention.</p></div>
+          <GlassCard className="p-7 sm:p-8"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">From signal to action</p><div className="mt-6 space-y-4">{['Private feedback capture', 'Operational classification', 'Prioritized team review', 'Trend visibility'].map((item, index) => <div key={item} className="flex items-center gap-4"><span className="grid h-8 w-8 place-items-center rounded-full border border-zinc-200 text-xs font-semibold text-zinc-600">0{index + 1}</span><p className="text-sm font-medium text-zinc-800">{item}</p></div>)}</div></GlassCard>
+        </div>
+      </section>
+      <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8"><div className="grid border-y border-zinc-200 md:grid-cols-2 lg:grid-cols-3">{features.map(({ title, text, icon: Icon }, index) => <Reveal key={title} delay={index * 50} className={`border-zinc-200 py-7 ${index % 3 !== 0 ? 'lg:border-l lg:pl-7' : 'lg:pr-7'} ${index % 2 !== 0 ? 'md:border-l md:pl-7 lg:border-l' : 'md:pr-7'} ${index >= 3 ? 'lg:border-t lg:pt-8' : ''}`}><Icon className="h-4 w-4 text-zinc-500" /><h2 className="mt-5 text-lg font-semibold tracking-tight text-zinc-950">{title}</h2><p className="mt-3 max-w-sm text-sm leading-6 text-zinc-600">{text}</p></Reveal>)}</div></section>
+      <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8"><div className="border-y border-zinc-200 py-12 sm:py-16"><div className="flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Explore Guestly</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">See the workflow in action.</h2></div><div className="flex flex-col gap-3 sm:flex-row"><a href="/demo" className="btn-primary">Explore Interactive Demo <ArrowRight className="h-4 w-4" /></a><a href="/pricing" className="btn-secondary">View pricing <ArrowRight className="h-4 w-4" /></a></div></div></div></section>
+    </PublicPage>
+  );
+}
+
+function ContactPage() {
+  return <PublicPage><RequestAccess /></PublicPage>;
+}
+
+function FaqPage() {
+  return (
+    <PublicPage>
+      <section className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8"><div className="max-w-3xl"><p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">FAQ</p><h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl">Questions about Guestly.</h1><p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-600">The essentials for hospitality teams considering a more structured way to understand guest feedback.</p></div><div className="mt-14 border-y border-zinc-200">{generalFaqs.map(([question, answer]) => <details key={question} className="group border-b border-zinc-200 py-5 last:border-b-0"><summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-base font-semibold text-zinc-900 marker:content-none">{question}<span className="text-xl font-normal text-zinc-400 transition group-open:rotate-45">+</span></summary><p className="max-w-2xl pt-4 text-sm leading-7 text-zinc-600">{answer}</p></details>)}</div></section>
+      <section className="mx-auto mt-20 max-w-5xl px-5 sm:px-6 lg:mt-24 lg:px-8"><div className="flex flex-col gap-5 border-y border-zinc-200 py-10 sm:flex-row sm:items-center sm:justify-between"><p className="text-base text-zinc-600">Need to talk through your operation?</p><a href="/contact" className="btn-primary">Contact Guestly <ArrowRight className="h-4 w-4" /></a></div></section>
+    </PublicPage>
+  );
+}
+
+function LegalPage({ type }) {
+  const privacy = type === 'privacy';
+  const title = privacy ? 'Privacy, built into the workflow.' : 'Terms for using Guestly.';
+  const intro = privacy
+    ? 'Guestly is designed to help hospitality teams handle guest feedback with clear organization controls and a practical approach to operational data.'
+    : 'These terms describe the commercial use of Guestly by hospitality teams and organizations.';
+  const sections = privacy
+    ? [
+        ['Operational data', 'Guestly may store feedback messages, optional contact details, ratings, touchpoint context, and the classifications used to organize and review feedback.'],
+        ['Organization access', 'Guestly organizes data by customer workspace. Teams can manage access, roles, and account administration within the platform where those controls are configured.'],
+        ['Data management', 'Authorized organizations can access privacy and data-management controls in their workspace, including export and confirmation-protected deletion workflows where available.'],
+        ['Questions', 'For questions about privacy or data handling, contact Guestly through the public contact page.'],
+      ]
+    : [
+        ['Commercial use', 'Guestly is a paid software product for hospitality teams. Use of the hosted product is subject to the plan, deployment, and commercial arrangement agreed with Guestly.'],
+        ['Your workspace', 'Organizations are responsible for keeping account access current and for using Guestly only with information they are authorized to process.'],
+        ['Service changes', 'Guestly may improve, update, or change product capabilities as the platform evolves. Plan access and onboarding are discussed with the Guestly team.'],
+        ['Questions', 'For questions about these terms or a commercial deployment, contact Guestly through the public contact page.'],
+      ];
+  return (
+    <PublicPage>
+      <section className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8"><div className="max-w-3xl"><p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">{privacy ? 'Privacy' : 'Terms'}</p><h1 className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-zinc-950 sm:text-6xl">{title}</h1><p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-600">{intro}</p></div><div className="mt-14 border-y border-zinc-200">{sections.map(([heading, text]) => <section key={heading} className="grid gap-3 border-b border-zinc-200 py-7 sm:grid-cols-[12rem_1fr] sm:gap-8"><h2 className="text-lg font-semibold tracking-tight text-zinc-950">{heading}</h2><p className="max-w-2xl text-sm leading-7 text-zinc-600">{text}</p></section>)}</div></section>
+    </PublicPage>
+  );
+}
+
+function NotFoundPage() {
+  return <PublicPage><section className="mx-auto max-w-5xl px-5 py-20 sm:px-6 lg:px-8"><p className="font-mono text-xs uppercase tracking-[0.28em] text-zinc-500">404</p><h1 className="mt-5 text-5xl font-semibold tracking-[-0.06em] text-zinc-950 sm:text-6xl">That page is not here.</h1><p className="mt-6 max-w-xl text-lg leading-8 text-zinc-600">The page may have moved, or the link may be incomplete.</p><a href="/" className="btn-primary mt-10">Back to Guestly <ArrowRight className="h-4 w-4" /></a></section></PublicPage>;
+}
+
 function RequestAccess() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -1645,18 +1795,22 @@ function Footer() {
         <div>
           <Logo />
           <p className="mt-4 max-w-md text-sm leading-6 text-slate-500">
-            Customer feedback intelligence for hotels, cafes, restaurants, and hospitality operators.
+            Guestly helps hospitality teams capture, understand, and act on guest feedback.
           </p>
         </div>
         <div className="flex flex-wrap gap-x-7 gap-y-3 text-sm text-slate-400">
           {[
             ['Home', '#home'],
-            ['Demo', '#demo'],
+            ['Product', '/product'],
+            ['Demo', '/demo'],
             ['Pricing', '/pricing'],
             ['About', '/about'],
             ['Impact', '/impact'],
-            ['Contact', '#access'],
             ['Trust', '/trust'],
+            ['FAQ', '/faq'],
+            ['Privacy', '/privacy'],
+            ['Terms', '/terms'],
+            ['Contact', '/contact'],
           ].map(([label, href]) => (
             <a
               key={href}
@@ -2023,6 +2177,10 @@ export default function App() {
     return () => { window.removeEventListener('guestly:product-redirect', handleRedirect); window.removeEventListener('popstate', handlePathChange); };
   }, []);
 
+  useEffect(() => {
+    applyPageMeta(path);
+  }, [path]);
+
   if (path === '/trust') {
     return <TrustPage />;
   }
@@ -2034,6 +2192,18 @@ export default function App() {
   if (path === '/impact') return <ImpactPage />;
 
   if (path === '/pricing') return <PricingPage />;
+
+  if (path === '/product') return <ProductPage />;
+
+  if (path === '/contact') return <ContactPage />;
+
+  if (path === '/faq') return <FaqPage />;
+
+  if (path === '/privacy') return <LegalPage type="privacy" />;
+
+  if (path === '/terms') return <LegalPage type="terms" />;
+
+  if (path !== '/') return <NotFoundPage />;
 
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">

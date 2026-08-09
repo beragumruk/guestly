@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Guestly, guest feedback intelligence for hospitality teams</title>
+  <desc id="desc">A branded Guestly product overview with an operational feedback workspace preview.</desc>
+  <rect width="1200" height="630" fill="#f7f7f6"/>
+  <g stroke="#e3e3df" stroke-width="1">
+    <path d="M0 70H1200M0 140H1200M0 210H1200M0 280H1200M0 350H1200M0 420H1200M0 490H1200M0 560H1200"/>
+    <path d="M70 0V630M140 0V630M210 0V630M280 0V630M350 0V630M420 0V630M490 0V630M560 0V630M630 0V630M700 0V630M770 0V630M840 0V630M910 0V630M980 0V630M1050 0V630M1120 0V630"/>
+  </g>
+  <g transform="translate(76 68)">
+    <circle cx="22" cy="22" r="20" fill="#1c1c1a"/>
+    <path d="M31 12.5A15.5 15.5 0 1 0 33 25H23" fill="none" stroke="#f7f7f6" stroke-width="5" stroke-linecap="butt"/>
+    <circle cx="18.5" cy="22" r="3.8" fill="#f7f7f6"/>
+    <text x="58" y="30" fill="#1c1c1a" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">Guestly</text>
+  </g>
+  <text x="76" y="181" fill="#1c1c1a" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700" letter-spacing="-2.5">Guest feedback</text>
+  <text x="76" y="242" fill="#1c1c1a" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700" letter-spacing="-2.5">intelligence for</text>
+  <text x="76" y="303" fill="#1c1c1a" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700" letter-spacing="-2.5">hospitality teams.</text>
+  <text x="78" y="353" fill="#626260" font-family="Arial, Helvetica, sans-serif" font-size="20">Capture private feedback.</text>
+  <text x="78" y="385" fill="#626260" font-family="Arial, Helvetica, sans-serif" font-size="20">Identify what needs attention.</text>
+  <text x="78" y="417" fill="#626260" font-family="Arial, Helvetica, sans-serif" font-size="20">Spot recurring trends.</text>
+  <g transform="translate(706 112)">
+    <rect width="416" height="360" rx="22" fill="#ffffff" stroke="#d9d9d4"/>
+    <rect x="28" y="28" width="122" height="10" rx="5" fill="#d5d5d0"/>
+    <rect x="28" y="57" width="236" height="19" rx="9.5" fill="#1c1c1a"/>
+    <rect x="28" y="96" width="360" height="1" fill="#e4e4df"/>
+    <text x="28" y="130" fill="#686864" font-family="Arial, Helvetica, sans-serif" font-size="14">New guest feedback</text>
+    <rect x="28" y="147" width="360" height="90" rx="13" fill="#f7f7f6" stroke="#e1e1dc"/>
+    <text x="47" y="177" fill="#1c1c1a" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">Downtown Property</text>
+    <text x="47" y="204" fill="#626260" font-family="Arial, Helvetica, sans-serif" font-size="14">A/C failure and front desk wait</text>
+    <rect x="285" y="166" width="74" height="25" rx="12.5" fill="#e8e8e4"/>
+    <text x="303" y="183" fill="#1c1c1a" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700">HIGH</text>
+    <text x="28" y="278" fill="#686864" font-family="Arial, Helvetica, sans-serif" font-size="14">Operational view</text>
+    <rect x="28" y="296" width="104" height="34" rx="8" fill="#ecece8"/>
+    <rect x="144" y="296" width="104" height="34" rx="8" fill="#ecece8"/>
+    <rect x="260" y="296" width="128" height="34" rx="8" fill="#1c1c1a"/>
+  </g>
+  <text x="77" y="541" fill="#626260" font-family="Arial, Helvetica, sans-serif" font-size="18">100+ hospitality teams supported since 2025</text>
+</svg>
