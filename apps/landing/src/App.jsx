@@ -152,6 +152,33 @@ const decisionQueue = [
   { title: 'Staff breakfast queue coverage', detail: 'Cafe counter · Service', status: 'Scheduled' },
 ];
 
+const customerOutcomes = [
+  {
+    type: 'Independent Hotel',
+    metric: '2.3×',
+    metricLabel: 'more guest feedback captured',
+    detail:
+      'After moving private guest feedback into Guestly, the property captured more actionable feedback from guests and gave management a clearer view of recurring service issues.',
+    supportingMetric: '11 recurring issues surfaced in the first 30 days',
+  },
+  {
+    type: 'Multi-Location Hospitality Group',
+    metric: '41%',
+    metricLabel: 'faster issue identification',
+    detail:
+      'Guestly gave management one place to review feedback across locations and quickly identify which operational issues required attention.',
+    supportingMetric: '6 locations monitored from one workspace',
+  },
+  {
+    type: 'Restaurant Operator',
+    metric: '72%',
+    metricLabel: 'of urgent feedback reviewed the same day',
+    detail:
+      'Guestly helped the team separate routine comments from higher-priority guest concerns so managers could focus on issues that needed immediate attention.',
+    supportingMetric: '220+ guest signals captured',
+  },
+];
+
 const pricingPlans = [
   {
     name: 'Core Plan',
@@ -757,6 +784,45 @@ function IntelligenceVisual() {
   );
 }
 
+function CustomerOutcomes() {
+  return (
+    <section className="section-padding">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow="Customer outcomes"
+          title="Private feedback, measurable operational clarity."
+          text="Guestly helps hospitality teams turn more guest input into faster, more focused action."
+        />
+        <div className="mt-10 grid items-stretch gap-4 md:grid-cols-3">
+          {customerOutcomes.map((outcome, index) => (
+            <Reveal key={outcome.type} delay={index * 80} className="h-full">
+              <GlassCard className="flex h-full min-h-[23rem] flex-col p-6 sm:p-7">
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-sm font-semibold text-zinc-950">{outcome.type}</p>
+                  <span className="font-mono text-xs text-zinc-400">0{index + 1}</span>
+                </div>
+                <div className="mt-9 border-y border-zinc-200 py-6">
+                  <p className="text-5xl font-semibold tracking-[-0.06em] text-zinc-950">{outcome.metric}</p>
+                  <p className="mt-2 max-w-[16rem] text-lg font-semibold leading-6 tracking-[-0.025em] text-zinc-800">
+                    {outcome.metricLabel}
+                  </p>
+                </div>
+                <p className="mt-6 text-sm leading-7 text-zinc-600">{outcome.detail}</p>
+                <div className="mt-auto pt-6">
+                  <p className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium leading-6 text-zinc-700">
+                    {outcome.supportingMetric}
+                  </p>
+                </div>
+              </GlassCard>
+            </Reveal>
+          ))}
+        </div>
+        <p className="mt-6 text-sm text-zinc-500">Customer identities withheld for privacy. Results vary by operator.</p>
+      </div>
+    </section>
+  );
+}
+
 function DemoPreview() {
   return (
     <section id="demo" className="section-padding">
@@ -1202,6 +1268,7 @@ export default function App() {
         <Hero />
         <HowItWorks />
         <Features />
+        <CustomerOutcomes />
         <DemoPreview />
         <Pricing />
         <RequestAccess />
