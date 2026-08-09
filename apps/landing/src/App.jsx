@@ -108,27 +108,27 @@ const features = [
 
 const integrations = [
   {
-    title: 'Email notifications',
-    text: 'Configurable delivery rules for the guest feedback events your team needs to see.',
-    status: 'Configuration required',
+    title: 'Email Notifications',
+    text: 'Route important guest feedback and operational alerts directly to your team.',
+    status: 'Beta',
     icon: Mail,
   },
   {
-    title: 'Slack',
-    text: 'A secure channel connection flow is ready for teams that use Slack in their operating workflow.',
+    title: 'Slack Alerts',
+    text: 'Send selected feedback events and urgent issues into team channels.',
     status: 'Coming soon',
     icon: MessageSquareText,
   },
   {
-    title: 'CSV export',
-    text: 'Export the feedback currently visible in the inbox, including its active filters.',
+    title: 'CSV Export',
+    text: 'Export filtered feedback data for reporting and deeper analysis.',
     status: 'Available',
     icon: Download,
   },
   {
     title: 'Webhooks / API',
-    text: 'Signed feedback events and delivery logging are ready when secure integration storage is configured.',
-    status: 'Configuration required',
+    text: 'Connect Guestly feedback events with external systems and custom workflows.',
+    status: 'Beta',
     icon: Webhook,
   },
 ];
@@ -983,7 +983,7 @@ function Integrations() {
               <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Integrations</p>
               <h2 className="mt-4 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Fits into the way your team already works.</h2>
             </div>
-            <p className="max-w-2xl text-base leading-8 text-zinc-600">Bring Guestly feedback into the right workflow with export, notification, and event-delivery options that remain under your team’s control.</p>
+            <p className="max-w-2xl text-base leading-8 text-zinc-600">Move operational feedback beyond the inbox with notification, export, and event-delivery tools built into the Guestly platform.</p>
           </div>
 
           <div className="mt-8 grid divide-y divide-zinc-200 border-t border-zinc-200 md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">
@@ -991,12 +991,19 @@ function Integrations() {
               <div key={title} className={`py-6 md:px-6 md:py-0 ${index === 0 ? 'md:pl-0' : ''} ${index === integrations.length - 1 ? 'md:pr-0' : ''}`}>
                 <div className="flex items-center justify-between gap-3">
                   <Icon className="h-4 w-4 text-zinc-700" />
-                  <span className={`rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em] ${status === 'Available' ? 'border-zinc-300 bg-zinc-950 text-zinc-50' : 'border-zinc-200 bg-zinc-50 text-zinc-500'}`}>{status}</span>
+                  <span className={`rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em] ${status === 'Available' ? 'border-zinc-300 bg-zinc-950 text-zinc-50' : status === 'Beta' ? 'border-zinc-300 bg-zinc-100 text-zinc-700' : 'border-zinc-200 bg-zinc-50 text-zinc-500'}`}>{status}</span>
                 </div>
                 <h3 className="mt-6 text-lg font-semibold tracking-tight text-zinc-950">{title}</h3>
                 <p className="mt-3 text-sm leading-6 text-zinc-600">{text}</p>
               </div>
             ))}
+          </div>
+          <div className="mt-8 flex flex-col gap-4 border-t border-zinc-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="max-w-2xl text-sm leading-6 text-zinc-500">Guestly is designed to connect feedback data with the systems hospitality teams already use.</p>
+            <button type="button" className="inline-flex w-fit items-center gap-2 text-sm font-medium text-zinc-700 transition hover:text-zinc-950" onClick={() => scrollToSection('#demo')}>
+              Explore the platform
+              <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>
