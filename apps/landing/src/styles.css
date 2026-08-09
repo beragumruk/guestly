@@ -46,6 +46,13 @@
     @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white/90 px-5 text-sm font-semibold text-zinc-900 shadow-sm backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-950/10 focus:ring-offset-2 focus:ring-offset-white;
   }
 
+  .btn-primary:disabled,
+  .btn-secondary:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+    transform: none;
+  }
+
   .form-label {
     @apply mb-2 block text-sm font-medium text-zinc-700;
   }
@@ -53,6 +60,11 @@
   .form-input {
     @apply w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white focus:ring-2 focus:ring-zinc-950/5;
   }
+}
+
+:focus-visible {
+  outline: 2px solid #18181b;
+  outline-offset: 3px;
 }
 
 .light-theme {
@@ -195,6 +207,17 @@
     box-shadow 780ms cubic-bezier(0.16, 1, 0.3, 1),
     border-color 780ms cubic-bezier(0.16, 1, 0.3, 1),
     background-color 780ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
 .animate-soft-enter {

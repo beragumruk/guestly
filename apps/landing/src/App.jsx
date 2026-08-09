@@ -139,7 +139,7 @@ const features = [
     icon: QrCode,
   },
   {
-    title: 'AI-powered triage',
+    title: 'Feedback triage',
     text: 'Guestly organizes incoming feedback into clear operational fields, so teams can work from a focused queue instead of manually sorting every response.',
     icon: Sparkles,
   },
@@ -567,7 +567,7 @@ function Navbar() {
         </div>
         <div className="hidden items-center gap-3 lg:flex">
           <button className="btn-primary" type="button" onClick={() => goToHref('#access')}>
-            Contact for Demo
+            Book a Demo
           </button>
           <button className="btn-secondary" type="button" onClick={openProductLogin}>
             Product Login
@@ -601,7 +601,7 @@ function Navbar() {
               </a>
             ))}
             <button className="btn-primary w-full" type="button" onClick={() => goToHref('#access')}>
-              Contact for Demo
+              Book a Demo
             </button>
             <button className="btn-secondary w-full" type="button" onClick={openProductLogin}>
               Product Login
@@ -643,7 +643,7 @@ function Hero() {
             Turn Silent Guest Feedback Into Action
           </h1>
           <p className="mt-7 max-w-2xl text-pretty text-lg leading-8 text-zinc-600">
-            Guestly turns QR feedback into prioritized operational intelligence for hospitality teams.
+            Guestly turns private guest feedback into prioritized operational intelligence for hospitality teams.
           </p>
           <div className="mt-5 flex items-center gap-2 text-sm font-medium text-zinc-500">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
@@ -656,7 +656,7 @@ function Hero() {
           </a>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button className="btn-primary" type="button" onClick={() => scrollToSection('#access')}>
-              Contact for Demo
+              Book a Demo
               <ArrowRight className="h-4 w-4" />
             </button>
             <button className="btn-secondary" type="button" onClick={openProductLogin}>
@@ -1191,8 +1191,8 @@ function Integrations() {
           </div>
           <div className="mt-8 flex flex-col gap-4 border-t border-zinc-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
             <p className="max-w-2xl text-sm leading-6 text-zinc-500">Guestly is designed to connect feedback data with the systems hospitality teams already use.</p>
-            <button type="button" className="inline-flex w-fit items-center gap-2 text-sm font-medium text-zinc-700 transition hover:text-zinc-950" onClick={() => scrollToSection('#demo')}>
-              Explore the platform
+            <button type="button" className="inline-flex w-fit items-center gap-2 text-sm font-medium text-zinc-700 transition hover:text-zinc-950" onClick={() => goToHref('/demo')}>
+              Explore Interactive Demo
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -1417,7 +1417,7 @@ function PricingCard({ plan }) {
         ))}
       </div>
       <button className="btn-primary mt-8 w-full" type="button" onClick={() => goToHref('#access')}>
-        Contact for Demo
+        Book a Demo
       </button>
     </GlassCard>
   );
@@ -1535,7 +1535,7 @@ function ProductPage() {
 }
 
 function ContactPage() {
-  return <PublicPage><RequestAccess /></PublicPage>;
+  return <PublicPage><h1 className="sr-only">Contact Guestly</h1><RequestAccess /></PublicPage>;
 }
 
 function FaqPage() {
@@ -1668,7 +1668,7 @@ function RequestAccess() {
         <div>
           <SectionHeading
             eyebrow="Plan demo"
-            title="Contact Guestly to start your guided product demo."
+            title="Book a demo for your hospitality operation."
             text="After we understand your property or hospitality workflow, we set up the right workspace path and login credentials for your team."
           />
           <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.035] p-5">
@@ -1742,8 +1742,8 @@ function RequestAccess() {
                   required
                 />
               </div>
-              <button className="btn-primary mt-2 w-full disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={submitting}>
-                {submitting ? 'Sending request' : 'Contact for Demo'}
+              <button className="btn-primary mt-2 w-full" type="submit" disabled={submitting} aria-busy={submitting}>
+                {submitting ? 'Sending request' : 'Book a Demo'}
                 {!submitting && <ArrowRight className="h-4 w-4" />}
               </button>
             </form>
@@ -1896,7 +1896,7 @@ function TrustPage() {
             <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Platform foundations</p>
-                <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950">Designed beyond the prototype stage.</h2>
+                <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950">Built for ongoing hospitality operations.</h2>
               </div>
               <div className="grid gap-x-8 gap-y-7 sm:grid-cols-2">
                 {depthPoints.map(({ title, text, icon: Icon }) => <div key={title}><Icon className="h-4 w-4 text-zinc-500" /><h3 className="mt-4 text-sm font-semibold text-zinc-950">{title}</h3><p className="mt-2 text-sm leading-6 text-zinc-600">{text}</p></div>)}
@@ -2072,7 +2072,7 @@ function ImpactPage() {
 
         <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8"><div className="border-y border-zinc-200 py-12 sm:py-16"><div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Product development</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Built alongside the operators using it.</h2></div><div><div className="flex flex-wrap items-center gap-x-3 gap-y-3">{impactPage.development.map((item, index) => <div key={item} className="flex items-center gap-3"><span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700">{item}</span>{index < impactPage.development.length - 1 && <ArrowRight className="h-4 w-4 text-zinc-400" />}</div>)}</div><p className="mt-8 max-w-2xl text-base leading-8 text-zinc-600">As Guestly expanded into more hospitality operations, the platform evolved beyond feedback collection into a broader system for understanding and acting on guest experience data.</p></div></div></div></section>
 
-        <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:mt-24 lg:px-8"><div className="flex flex-col gap-5 border-b border-zinc-200 pb-12 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">The company story</p><h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-3xl">See how Guestly evolved from its first prototype to the platform today.</h2></div><a href="/about" className="btn-secondary shrink-0">About Guestly <ArrowRight className="h-4 w-4" /></a></div></section>
+        <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:mt-24 lg:px-8"><div className="flex flex-col gap-5 border-b border-zinc-200 pb-12 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">The company story</p><h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-3xl">See how Guestly evolved from its earliest release to the platform today.</h2></div><a href="/about" className="btn-secondary shrink-0">About Guestly <ArrowRight className="h-4 w-4" /></a></div></section>
 
         <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:mt-24 lg:px-8"><div className="rounded-2xl border border-zinc-200 bg-white/90 p-7 shadow-panel sm:p-10"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Explore the product</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">Explore the product behind the numbers.</h2><div className="mt-7 flex flex-col gap-3 sm:flex-row"><a href="/demo" className="btn-primary">Explore Interactive Demo <ArrowRight className="h-4 w-4" /></a><a href="/about" className="btn-secondary">About Guestly <ArrowRight className="h-4 w-4" /></a><button className="inline-flex w-fit items-center gap-2 px-2 py-3 text-sm font-medium text-zinc-600 transition hover:text-zinc-950" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button></div></div></section>
       </main>
@@ -2157,7 +2157,7 @@ function AboutPage() {
         </section>
 
         <section className="mx-auto mt-24 max-w-7xl px-5 sm:px-6 lg:mt-32 lg:px-8">
-          <div className="border-y border-zinc-200 py-12 sm:py-16"><div className="flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">See the product</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">See how Guestly works.</h2></div><div className="flex flex-col gap-3 sm:flex-row"><button className="btn-secondary" type="button" onClick={openProductLogin}>Explore the platform <ArrowRight className="h-4 w-4" /></button><button className="btn-primary" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button></div></div></div>
+          <div className="border-y border-zinc-200 py-12 sm:py-16"><div className="flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between"><div><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">See the product</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">See how Guestly works.</h2></div><div className="flex flex-col gap-3 sm:flex-row"><a className="btn-secondary" href="/demo">Explore Interactive Demo <ArrowRight className="h-4 w-4" /></a><button className="btn-primary" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button></div></div></div>
         </section>
       </main>
       <Footer />

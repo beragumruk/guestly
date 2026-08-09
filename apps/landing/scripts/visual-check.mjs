@@ -40,7 +40,7 @@ await page.locator('input[name="business"]').fill('Northline Hotel');
 await page.locator('select[name="businessType"]').selectOption({ label: 'Hotel' });
 await page.locator('input[name="email"]').fill('alex@example.com');
 await page.locator('textarea[name="message"]').fill('We want to catch guest complaints before reviews.');
-await page.getByRole('button', { name: 'Contact for Demo' }).last().click();
+await page.getByRole('button', { name: 'Book a Demo' }).last().click();
 const success = await page.getByText('Demo request sent.').isVisible({ timeout: 5000 });
 
 await page.setViewportSize({ width: 390, height: 900 });
