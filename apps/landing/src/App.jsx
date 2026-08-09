@@ -182,6 +182,39 @@ const aboutPage = {
   },
 };
 
+const interactiveDemo = {
+  locations: [
+    { id: 'downtown', name: 'Downtown Property', signals: 24, positive: 78, urgent: 4 },
+    { id: 'airport', name: 'Airport', signals: 18, positive: 72, urgent: 6 },
+    { id: 'waterfront', name: 'Waterfront', signals: 16, positive: 84, urgent: 2 },
+  ],
+  feedback: {
+    id: 'demo-ac-204',
+    location: 'Downtown Property',
+    source: 'Room QR touchpoint',
+    timestamp: 'Today, 9:42 AM',
+    text: 'The room was clean, but the air conditioning stopped working overnight and the front desk line was busy.',
+    category: 'Maintenance',
+    sentiment: 'Negative',
+    urgency: 'High',
+    summary: 'Guest reports overnight A/C failure and difficulty reaching the front desk.',
+  },
+  steps: [
+    { title: 'Feedback arrives', caption: 'A private guest signal enters the workspace.' },
+    { title: 'Analysis', caption: 'Guestly structures what the team needs to know.' },
+    { title: 'Operations view', caption: 'Review the signal in the daily queue.' },
+    { title: 'Issue management', caption: 'Move the issue through a simple workflow.' },
+    { title: 'Analytics', caption: 'See how individual signals become patterns.' },
+    { title: 'Connected operations', caption: 'Send the right information into the right workflow.' },
+  ],
+  signals: [
+    { id: 'demo-ac-204', location: 'Downtown Property', title: 'A/C failure and front desk wait', category: 'Maintenance', sentiment: 'Negative', urgency: 'High', time: '9:42 AM', text: 'The room was clean, but the air conditioning stopped working overnight and the front desk line was busy.' },
+    { id: 'demo-queue-118', location: 'Airport', title: 'Breakfast queue', category: 'Service', sentiment: 'Neutral', urgency: 'Medium', time: '9:18 AM', text: 'The breakfast line moved slowly during the morning rush.' },
+    { id: 'demo-room-087', location: 'Waterfront', title: 'Room comfort follow-up', category: 'Rooms', sentiment: 'Negative', urgency: 'Medium', time: '8:54 AM', text: 'The room felt humid throughout the evening.' },
+    { id: 'demo-table-055', location: 'Downtown Property', title: 'Dining experience', category: 'Service', sentiment: 'Positive', urgency: 'Low', time: '8:31 AM', text: 'Dinner service was warm and attentive.' },
+  ],
+};
+
 const dashboardMetrics = [
   { label: 'Open signals', value: '18', detail: 'Current workspace queue', tone: 'ink' },
   { label: 'Needs attention', value: '4', detail: 'Critical or high priority', tone: 'ink' },
@@ -525,6 +558,10 @@ function Hero() {
               Product Login
             </button>
           </div>
+          <a href="/demo" className="mt-5 inline-flex w-fit items-center gap-2 text-sm font-medium text-zinc-600 transition hover:text-zinc-950">
+            Explore Interactive Demo
+            <ArrowRight className="h-4 w-4" />
+          </a>
         </Reveal>
         <Reveal delay={120}>
           <HeroFlowMockup />
@@ -1615,6 +1652,124 @@ function TrustPage() {
   );
 }
 
+function InteractiveDemoPage() {
+  const [step, setStep] = useState(0);
+  const [locationId, setLocationId] = useState('all');
+  const [selectedSignalId, setSelectedSignalId] = useState(interactiveDemo.feedback.id);
+  const [workflowStatus, setWorkflowStatus] = useState('New');
+  const [exploring, setExploring] = useState(false);
+
+  const activeLocation = interactiveDemo.locations.find((location) => location.id === locationId) || null;
+  const visibleSignals = locationId === 'all'
+    ? interactiveDemo.signals
+    : interactiveDemo.signals.filter((signal) => signal.location === activeLocation?.name);
+  const selectedSignal = interactiveDemo.signals.find((signal) => signal.id === selectedSignalId) || interactiveDemo.signals[0];
+  const currentLocationLabel = activeLocation?.name || 'All locations';
+  const analytics = activeLocation
+    ? [
+        { label: 'Maintenance', value: Math.max(4, Math.round(activeLocation.signals * 0.34)) },
+        { label: 'Service', value: Math.max(3, Math.round(activeLocation.signals * 0.28)) },
+        { label: 'Room comfort', value: Math.max(2, Math.round(activeLocation.signals * 0.18)) },
+      ]
+    : [
+        { label: 'Maintenance', value: 15 },
+        { label: 'Service', value: 12 },
+        { label: 'Room comfort', value: 9 },
+      ];
+
+  function restart() {
+    setStep(0);
+    setLocationId('all');
+    setSelectedSignalId(interactiveDemo.feedback.id);
+    setWorkflowStatus('New');
+    setExploring(false);
+  }
+
+  return (
+    <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(rgba(228,228,231,0.55)_1px,transparent_1px),linear-gradient(90deg,rgba(228,228,231,0.55)_1px,transparent_1px)] bg-[size:52px_52px]" />
+      <Navbar />
+      <main className="pb-20 pt-32">
+        <section className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-6 border-b border-zinc-200 pb-10 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <div className="flex flex-wrap items-center gap-3"><span className="rounded-full border border-zinc-300 bg-zinc-950 px-3 py-1 text-xs font-medium text-zinc-50">Interactive demo</span><span className="text-xs text-zinc-500">Illustrative data only</span></div>
+              <h1 className="mt-5 text-balance text-4xl font-semibold leading-[0.98] tracking-[-0.055em] text-zinc-950 sm:text-5xl">Follow one guest signal from arrival to action.</h1>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg">Explore a realistic Guestly workflow without an account or access to any customer data.</p>
+            </div>
+            <div className="flex items-center gap-3"><span className="font-mono text-xs uppercase tracking-[0.16em] text-zinc-500">{step + 1} of {interactiveDemo.steps.length}</span><button type="button" className="text-sm font-medium text-zinc-600 transition hover:text-zinc-950" onClick={restart}>Restart tour</button></div>
+          </div>
+
+          <div className="mt-8 flex gap-2 overflow-x-auto pb-2" aria-label="Tour progress">
+            {interactiveDemo.steps.map((item, index) => <button key={item.title} type="button" onClick={() => (exploring || index <= step) && setStep(index)} disabled={!exploring && index > step} className={`min-w-[9rem] border-b-2 px-1 pb-3 text-left text-xs transition ${index === step ? 'border-zinc-950 text-zinc-950' : index < step || exploring ? 'border-zinc-300 text-zinc-600 hover:border-zinc-500' : 'cursor-not-allowed border-zinc-100 text-zinc-300'}`}><span className="font-mono text-[10px]">0{index + 1}</span><span className="ml-2 font-medium">{item.title}</span></button>)}
+          </div>
+
+          <div className="demo-workspace mt-8 overflow-hidden rounded-[1.5rem] border border-zinc-200 bg-zinc-950 shadow-panel">
+            <div className="flex flex-col gap-4 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3"><span className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 bg-white/10"><img src="/favicon.svg" alt="" className="h-5 w-5 invert" /></span><div><p className="text-sm font-semibold text-white">Guestly demo workspace</p><p className="text-xs text-zinc-400">Interactive demo data, not a live customer workspace</p></div></div>
+              <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/10 px-2.5 py-1 text-xs text-zinc-300">{currentLocationLabel}</span><span className="rounded-full border border-zinc-200 bg-white px-2.5 py-1 text-xs font-medium text-zinc-700">Demo environment</span></div>
+            </div>
+
+            <div className="border-b border-white/10 bg-black/20 px-5 py-3"><div className="flex flex-wrap items-center gap-2"><span className="mr-1 text-xs text-zinc-500">Location filter</span><button type="button" onClick={() => setLocationId('all')} className={`rounded-full border px-3 py-1 text-xs transition ${locationId === 'all' ? 'border-zinc-200 bg-white text-zinc-900' : 'border-white/10 text-zinc-400 hover:text-white'}`}>All locations</button>{interactiveDemo.locations.map((location) => <button key={location.id} type="button" onClick={() => setLocationId(location.id)} className={`rounded-full border px-3 py-1 text-xs transition ${locationId === location.id ? 'border-zinc-200 bg-white text-zinc-900' : 'border-white/10 text-zinc-400 hover:text-white'}`}>{location.name}</button>)}</div></div>
+
+            <div className="min-h-[33rem] bg-zinc-950 p-5 sm:p-7">
+              {step === 0 && <DemoArrival feedback={interactiveDemo.feedback} />}
+              {step === 1 && <DemoAnalysis feedback={interactiveDemo.feedback} />}
+              {step === 2 && <DemoOperations signals={visibleSignals} selectedSignal={selectedSignal} onSelect={setSelectedSignalId} />}
+              {step === 3 && <DemoWorkflow feedback={interactiveDemo.feedback} status={workflowStatus} onStatus={setWorkflowStatus} />}
+              {step === 4 && <DemoAnalytics analytics={analytics} activeLocation={activeLocation} onLocation={setLocationId} />}
+              {step === 5 && <DemoIntegrations />}
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-5 border-b border-zinc-200 pb-8 sm:flex-row sm:items-center sm:justify-between">
+            <div><p className="text-sm font-semibold text-zinc-950">{interactiveDemo.steps[step].title}</p><p className="mt-1 text-sm text-zinc-600">{interactiveDemo.steps[step].caption}</p></div>
+            <div className="flex flex-wrap gap-3"><button type="button" className="btn-secondary" onClick={() => setExploring((value) => !value)}>{exploring ? 'Return to guided tour' : 'Explore this screen'}</button><button type="button" className="btn-secondary" disabled={step === 0} onClick={() => setStep((value) => Math.max(0, value - 1))}>Previous</button><button type="button" className="btn-primary" disabled={step === interactiveDemo.steps.length - 1} onClick={() => setStep((value) => Math.min(interactiveDemo.steps.length - 1, value + 1))}>Next <ArrowRight className="h-4 w-4" /></button></div>
+          </div>
+
+          {step === interactiveDemo.steps.length - 1 && <section className="mt-12 rounded-2xl border border-zinc-200 bg-white/90 p-7 shadow-panel sm:p-10"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Next step</p><h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-zinc-950 sm:text-4xl">See what Guestly could look like for your operation.</h2><div className="mt-7 flex flex-col gap-3 sm:flex-row"><button className="btn-primary" type="button" onClick={() => goToHref('#access')}>Book a Demo <ArrowRight className="h-4 w-4" /></button><button className="btn-secondary" type="button" onClick={openProductLogin}>Explore Guestly <ArrowRight className="h-4 w-4" /></button></div></section>}
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+function DemoArrival({ feedback }) {
+  return <div className="mx-auto max-w-3xl pt-7 sm:pt-12"><p className="font-mono text-xs uppercase tracking-[0.24em] text-zinc-500">Private feedback received</p><div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-7"><div className="flex flex-col gap-4 border-b border-white/10 pb-5 sm:flex-row sm:items-start sm:justify-between"><div><p className="text-lg font-semibold text-white">{feedback.location}</p><p className="mt-1 text-sm text-zinc-400">{feedback.source}</p></div><span className="text-xs text-zinc-400">{feedback.timestamp}</span></div><p className="mt-7 text-xl leading-8 text-zinc-100 sm:text-2xl">“{feedback.text}”</p><div className="mt-7 flex flex-wrap gap-2"><span className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300">Private submission</span><span className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300">New signal</span></div></div></div>;
+}
+
+function DemoAnalysis({ feedback }) {
+  const fields = [['Category', feedback.category], ['Sentiment', feedback.sentiment], ['Urgency', feedback.urgency]];
+  return <div className="mx-auto max-w-4xl pt-4 sm:pt-8"><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/10"><Sparkles className="h-4 w-4 text-zinc-100" /></span><div><p className="text-lg font-semibold text-white">AI-assisted analysis</p><p className="text-sm text-zinc-400">Guestly organizes the signal into operational fields.</p></div></div><div className="mt-7 grid gap-4 md:grid-cols-[1fr_1.2fr]"><div className="grid gap-3 sm:grid-cols-3 md:grid-cols-1">{fields.map(([label, value]) => <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] p-4"><p className="text-xs text-zinc-500">{label}</p><p className="mt-2 text-sm font-semibold text-white">{value}</p></div>)}</div><div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"><p className="text-xs uppercase tracking-[0.16em] text-zinc-500">Summary</p><p className="mt-4 text-lg leading-7 text-zinc-100">{feedback.summary}</p><div className="mt-6 border-t border-white/10 pt-4"><p className="text-xs text-zinc-500">Suggested next step</p><p className="mt-2 text-sm text-zinc-300">Review the maintenance issue and front desk coverage with the appropriate manager.</p></div></div></div></div>;
+}
+
+function DemoOperations({ signals, selectedSignal, onSelect }) {
+  return <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]"><div><div className="flex items-center justify-between"><div><p className="text-lg font-semibold text-white">Recent feedback</p><p className="mt-1 text-sm text-zinc-400">Click a signal to inspect the details.</p></div><span className="text-xs text-zinc-500">{signals.length} shown</span></div><div className="mt-5 space-y-3">{signals.map((signal) => <button key={signal.id} type="button" onClick={() => onSelect(signal.id)} className={`w-full rounded-xl border p-4 text-left transition ${selectedSignal.id === signal.id ? 'border-zinc-300 bg-white/10' : 'border-white/10 bg-white/[0.035] hover:bg-white/[0.07]'}`}><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div><p className="text-sm font-semibold text-white">{signal.title}</p><p className="mt-1 text-xs text-zinc-400">{signal.location} · {signal.time}</p><p className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-300">{signal.text}</p></div><div className="flex flex-wrap gap-2"><DemoTag>{signal.category}</DemoTag><DemoTag>{signal.sentiment}</DemoTag><DemoTag strong={signal.urgency === 'High'}>{signal.urgency}</DemoTag></div></div></button>)}</div></div><div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"><p className="text-xs uppercase tracking-[0.16em] text-zinc-500">Signal detail</p><h2 className="mt-4 text-xl font-semibold text-white">{selectedSignal.title}</h2><p className="mt-3 text-sm leading-6 text-zinc-300">{selectedSignal.text}</p><div className="mt-6 grid grid-cols-2 gap-3 border-t border-white/10 pt-5"><DemoField label="Location" value={selectedSignal.location} /><DemoField label="Status" value="New" /><DemoField label="Category" value={selectedSignal.category} /><DemoField label="Urgency" value={selectedSignal.urgency} /></div></div></div>;
+}
+
+function DemoWorkflow({ feedback, status, onStatus }) {
+  return <div className="mx-auto max-w-4xl"><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-lg font-semibold text-white">Issue management</p><p className="mt-1 text-sm text-zinc-400">Move the selected feedback item through the same simple review workflow.</p></div><span className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300">Demo action</span></div><div className="mt-7 rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-7"><p className="text-sm font-semibold text-white">{feedback.summary}</p><p className="mt-2 text-sm leading-6 text-zinc-400">{feedback.location} · {feedback.category} · {feedback.urgency} urgency</p><div className="mt-8 grid gap-3 sm:grid-cols-3">{['New', 'Reviewing', 'Resolved'].map((item, index) => <button key={item} type="button" onClick={() => onStatus(item)} className={`rounded-xl border p-4 text-left transition ${status === item ? 'border-zinc-200 bg-white text-zinc-950' : 'border-white/10 bg-black/20 text-zinc-400 hover:text-white'}`}><p className="font-mono text-[10px]">0{index + 1}</p><p className="mt-3 text-sm font-semibold">{item}</p><p className="mt-1 text-xs leading-5 opacity-70">{item === 'New' ? 'Awaiting review' : item === 'Reviewing' ? 'Team is assessing the issue' : 'Completed in this demo'}</p></button>)}</div><div className="mt-6 border-t border-white/10 pt-5"><p className="text-xs text-zinc-500">Current demo status</p><p className="mt-2 text-lg font-semibold text-white">{status}</p></div></div></div>;
+}
+
+function DemoAnalytics({ analytics, activeLocation, onLocation }) {
+  const max = Math.max(...analytics.map((item) => item.value));
+  return <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]"><div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"><div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"><div><p className="text-lg font-semibold text-white">Feedback by category</p><p className="mt-1 text-sm text-zinc-400">Illustrative trends update with the location filter.</p></div><span className="text-xs text-zinc-500">Demo analytics</span></div><div className="mt-7 space-y-5">{analytics.map((item) => <div key={item.label}><div className="flex items-center justify-between text-sm"><span className="text-zinc-300">{item.label}</span><span className="text-zinc-500">{item.value} signals</span></div><div className="mt-2 h-2 rounded-full bg-white/10"><div className="h-2 rounded-full bg-zinc-100 transition-[width] duration-500" style={{ width: `${(item.value / max) * 100}%` }} /></div></div>)}</div></div><div className="space-y-5"><div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"><p className="text-xs uppercase tracking-[0.16em] text-zinc-500">Location snapshot</p><p className="mt-3 text-xl font-semibold text-white">{activeLocation?.name || 'All locations'}</p><div className="mt-5 grid grid-cols-3 gap-3">{[['Signals', activeLocation?.signals || 58], ['Positive', `${activeLocation?.positive || 78}%`], ['Urgent', activeLocation?.urgent || 12]].map(([label, value]) => <div key={label}><p className="text-xs text-zinc-500">{label}</p><p className="mt-1 text-sm font-semibold text-white">{value}</p></div>)}</div></div><div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"><p className="text-sm font-semibold text-white">Compare locations</p><div className="mt-4 grid gap-2">{interactiveDemo.locations.map((location) => <button type="button" key={location.id} onClick={() => onLocation(location.id)} className="flex items-center justify-between rounded-lg border border-white/10 px-3 py-2 text-left text-sm text-zinc-300 transition hover:bg-white/10"><span>{location.name}</span><span className="text-zinc-500">{location.urgent} urgent</span></button>)}</div></div></div></div>;
+}
+
+function DemoIntegrations() {
+  const items = [[Mail, 'Email alerts', 'Route selected guest feedback to the team.'], [MessageSquareText, 'Slack notifications', 'Available when a Slack connection is configured.'], [Download, 'CSV export', 'Export filtered feedback for reporting.'], [Webhook, 'Webhooks', 'Send selected events into external workflows.']];
+  return <div className="mx-auto max-w-5xl"><div><p className="text-lg font-semibold text-white">Connected operations</p><p className="mt-1 text-sm text-zinc-400">Guestly can move feedback into the places a team already works.</p></div><div className="mt-7 grid gap-3 sm:grid-cols-2">{items.map(([Icon, title, text], index) => <div key={title} className="rounded-xl border border-white/10 bg-white/[0.04] p-5"><div className="flex items-center justify-between"><Icon className="h-4 w-4 text-zinc-200" /><span className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{index === 2 ? 'Available' : index === 1 ? 'Coming soon' : 'Demo'}</span></div><h3 className="mt-6 text-base font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-zinc-400">{text}</p></div>)}</div></div>;
+}
+
+function DemoTag({ children, strong = false }) {
+  return <span className={`rounded-full border px-2.5 py-1 text-xs ${strong ? 'border-zinc-300 bg-white text-zinc-900' : 'border-white/10 text-zinc-400'}`}>{children}</span>;
+}
+
+function DemoField({ label, value }) {
+  return <div><p className="text-xs text-zinc-500">{label}</p><p className="mt-1 text-sm font-medium text-zinc-100">{value}</p></div>;
+}
+
 function AboutPage() {
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
@@ -1716,6 +1871,8 @@ export default function App() {
   }
 
   if (path === '/about') return <AboutPage />;
+
+  if (path === '/demo') return <InteractiveDemoPage />;
 
   return (
     <div className="light-theme min-h-screen overflow-hidden text-zinc-900">
